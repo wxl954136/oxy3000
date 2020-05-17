@@ -1,28 +1,44 @@
-安装说明(请认真读完,每一步都等很重要):
+﻿安装说明(请认真读完,每一步都很重要):
 工具类软件:Common串口数据收集与交互(工业专用)
-开源项目:github项目暂不开源
+开源项目:github暂不开源
 1.本系统仅支持win7/win8/win10(建议64位操作系统)
 2.安装java JDK1.8(JDK须1.8以上任何版本)
-    2.1 JDK(windows x64位)下载参考路径:https://dl.pconline.com.cn/download/1117483.html?qq-pf-to=pcqq.group
-    2.2 JDK(windows x32位)下载参考路径:https://www.7down.com/soft/267473.html
-    用户注意，根据本机电脑操作系统类型下载不同的JDK.
+    2.1 JDK(windows x64位) 安装路径/resources/sys/tools/JDK_8.0.1310.11_64bit.exe
+    2.2 JDK(windows x32位) 安装路径/resources/sys/tools/JDK_8.0.1310.11_32bit.exe
 3.请将提供安装包所有文件夹&文件复制至用户本机(用户本机路径请勿有特殊字符)
 4.系统配置
-    4.1 winX  64位操作系统
+    4.1 winX  64位操作系统(注意是x64路径)
         4.1.1 串口所需jar包:
-            复制提供安装包中/resources/sys/x64/RXTXcomm.jar至本机路径 <JAVA_HOME>/jre/lib/ext
+            4.1.1 复制提供安装包中/resources/sys/x64/RXTXcomm.jar至本机路径
+                    <JAVA_HOME>/jre/lib
+                    <JRE_HOME>/lib
         4.1.2 串口所需c++ dll类库:
-            4.1.2.1 复制提供安装包中/resources/sys/x64/rxtxSerial.dll 至本机路径 <JAVA_HOME>\jre\bin
-            4.1.2.2 复制提供安装包中/resources/sys/x64/rxtxParallel.dll.dll 至本机路径 <JAVA_HOME>\jre\bin
-    4.2 winX  32位操作系统
+            4.1.2.1 复制提供安装包中/resources/sys/x64/rxtxSerial.dll 至本机路径
+                    <JAVA_HOME>\jre\bin
+                    <JRE_HOME>\bin
+            4.1.2.2 复制提供安装包中/resources/sys/x64/rxtxParallel.dll 至本机路径
+                    <JAVA_HOME>\jre\bin
+                    <JRE_HOME>\bin
+    4.2 winX  32位操作系统(注意是x86路径)
         4.2.1 串口所需jar包:
-            复制提供安装包中/resources/sys/x86/RXTXcomm.jar至本机路径 <JAVA_HOME>/jre/lib/ext
+            4.2.1.1 复制提供安装包中/resources/sys/x86/RXTXcomm.jar至本机路径
+                    <JAVA_HOME>/jre/lib
+                    <JRE_HOME>/lib
         4.2.2 串口所需c++ dll类库:
-            4.2.2.1 复制提供安装包中/resources/sys/x86/rxtxSerial.dll 至本机路径 <JAVA_HOME>\jre\bin
-            4.2.2.2 复制提供安装包中/resources/sys/x86/rxtxParallel.dll.dll 至本机路径 <JAVA_HOME>\jre\bin
+            4.2.2.1 复制提供安装包中/resources/sys/x86/rxtxSerial.dll 至本机路径
+                    <JAVA_HOME>\jre\bin
+                    <JRE_HOME>\bin
+            4.2.2.2 复制提供安装包中/resources/sys/x86/rxtxParallel.dll 至本机路径
+                    <JAVA_HOME>\jre\bin
+                    <JRE_HOME>\bin
     4.3 注意：<JAVA_HOME>路径，如果你在安装JDK时一路[下一步]默认路径在 C:\Program Files\Java\jdk1.8.0_131,
         将需要的文件放至路径 C:\Program Files\Java\jdk1.8.0_131\jre\【最后一个目录是jre，千万不要忽略】
-5. 双击run.exe即可启动
+    4.4 注意：<JRE_HOME>路径，如果你在安装JDK时一路[下一步]默认路径在  C:\Program Files\Java\jre1.8.0_231,
+
+5. 系统启动
+    5.1 win64位操作系统 :双击run.exe即可启动
+    5.2 win32位和win64位操作系统均可使用run.bat启动
+------------------------------------
 版权归属:湖北省赤壁市悠蓝科技
 联系人：王晓陆
 电话&微信:15272080011
