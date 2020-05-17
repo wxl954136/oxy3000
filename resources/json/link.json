@@ -1,0 +1,11 @@
+{
+  "title": "悠蓝科技",
+  "port": "",
+  "port-tips": "端口：更改为自动识别，当只有一个com口时系统默认，如果有一个以上须选择使用端口",
+  "rate": "19200",
+  "rate-tips": "波特率，该设备目前仅支持19200/115200",
+  "pdf-font": "simhei.ttf",
+  "pdf-font-tips": "请忽必保证该字体文件放至/resources/font,否则程序导出pdf将报错",
+  "sys-font": "simhei.ttf",
+  "sys-font-tips": "软件所使用的字体"
+}
