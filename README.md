@@ -14,9 +14,9 @@
 **开发文档：**  [本案例](https://www.youxueyou.cn)
 **试验：** 仅针对特定系列产品
 
-|     |   后端源码  |     |
+|     |   程序源码  |   备注  |
 |---  |--- | --- |
-|  github   |  https://github.com/wxl954136/oxy3000.git   |   |
+|  github   |  https://github.com/wxl954136/oxy3000.git   | 开源  |
 
 #### 主要特性
 - c/s项目 使用java-swing技术栈。
