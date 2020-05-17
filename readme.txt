@@ -9,10 +9,11 @@
 2.串口助手使用说明
     2.1 https://blog.csdn.net/qq_32714173/article/details/105379401
     2.2 数据解析https://www.cnblogs.com/jinghuyue/p/10226848.html
-    2.3 串口读取注意事项（注意是jdk下面的jre，不要放错了）
+    2.3 串口读取注意事项（注意是jdk下面的jre，不要放错了），开发者选项
         2.3.1 Copy RXTXcomm.jar ---> <JAVA_HOME>\jre\lib\ext
         2.3.2 Copy rxtxSerial.dll ---> <JAVA_HOME>\jre\bin
         2.3.3 Copy rxtxParallel.dll ---> <JAVA_HOME>\jre\bin
+    2.4 如果是用户使用，需将此文件放至jre的安装目录即可
 
 
 3.关于iText->pdf文件导出的说明
