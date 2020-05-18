@@ -106,7 +106,8 @@ public class PDFBuilder extends PdfPageEventHelper {
                 document.left(), document.top() + 20, 0);
         // 2.写入前半部分的 第 X页/共
         int pageS = writer.getPageNumber();
-        String foot1 = "第 " + pageS + " 页 / 共";
+//        String foot1 = "第 " + pageS + " 页 / 共"; //页码
+        String foot1 = " " + pageS + "  / ";
         Phrase footer = new Phrase(foot1, fontDetail);
 
         // 3.计算前半部分的foot1的长度，后面好定位最后一部分的'Y页'这俩字的x轴坐标，字体长度也要计算进去 = len
@@ -168,7 +169,9 @@ public class PDFBuilder extends PdfPageEventHelper {
         total.beginText();
         total.setFontAndSize(bf, presentFontSize);// 生成的模版的字体、颜色
         //String foot2 = " " + (writer.getPageNumber() - 1) + " 页";
-        String foot2 = " " + (writer.getPageNumber() ) + " 页";  //lukeWang总页数不减
+//        String foot2 = " " + (writer.getPageNumber() ) + " 页";  //lukeWang总页数不减
+        String foot2 = " " + (writer.getPageNumber() ) + " ";  //lukeWang总页数不减
+
         total.showText(foot2);// 模版显示的内容
         total.endText();
         total.closePath();

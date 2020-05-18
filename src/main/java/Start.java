@@ -1,7 +1,8 @@
+import bean.DataEntity;
 import common.CommonUtils;
-import gnu.io.NoSuchPortException;
+import pdf.PdfUtils;
 import sun.swing.table.DefaultTableCellHeaderRenderer;
-import utils.CommonMultipleSelect;
+import utils.DataColumnsUtils;
 import utils.JsonRead;
 
 import javax.swing.*;
@@ -11,9 +12,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
+import java.util.List;
 
 public class Start extends JFrame {
     private JPanel contentPane;
@@ -39,6 +44,7 @@ public class Start extends JFrame {
     public final static Color colorBackGround = new Color(47,63,80);
     public final static Color fontColor = new Color(173,206,47);
     String currentPort = "NONE";
+    CommonUtils commonUtils;
     //http://www.icosky.com/icon-search/图标合集
     public Start() {
         setContentPane(contentPane);
@@ -111,6 +117,16 @@ public class Start extends JFrame {
         btnExport.setIcon( changeImage(new ImageIcon("./resources/img/export.png"),0.5));
         btnExport.setText("");
         btnExport.setToolTipText("Export");
+
+
+        btnExport.addActionListener(e -> {
+            if (true){
+                exportPDF();
+            }else
+            {
+                JOptionPane.showMessageDialog(null,"未正确采集数据或数据正在采集中，无法导出" ,"提示信息", 1);
+            }
+        });
         btnSetting.setIcon( changeImage(new ImageIcon("./resources/img/settings.png"),0.5));
         btnSetting.setText("");
         btnExport.setToolTipText("Setting");
@@ -181,12 +197,13 @@ public class Start extends JFrame {
     private void readCom()
     {
         removeRowForDetailTable();
-        //ArrayList<Object> list= CommonUtils.getLocalHostPortNames();
+        ArrayList<Object> list= CommonUtils.getLocalHostPortNames();
+        /*
         ArrayList<Object> list= new ArrayList<>();
         list.add("COM1");
         list.add("COM8");
         list.add("COM9");
-
+*/
 
         if (list.size() <= 0)
         {
@@ -206,10 +223,6 @@ public class Start extends JFrame {
             connectStatus.setText("Disconnected");
             return ;
         }
-
-
-
-
 /*
         Object currentPort = CommonMultipleSelect.getSelectCommonPort(list,this);
         if (null == currentPort || currentPort.toString().equalsIgnoreCase("NONE"))
@@ -217,44 +230,115 @@ public class Start extends JFrame {
             JOptionPane.showMessageDialog(this,"请选择串口进行通讯" ,"提示信息", 1);
             return ;
         }
-
  */
-
-
-        Thread thread = new Thread(new Runnable(){
-            public void run(){
-                try{
-                    CommonUtils.commUtil = null;
-                    CommonUtils commonUtils = CommonUtils.getInstance(currentPort);
-                    commonUtils.dataModel = dataModel;
-                    String _sendContent = "at+record=?";
-                    String _endChar = "\r\n";
-                    //setCommonInfo("正在读取数据中，请稍等..."  , false);
-                    commonUtils.send(_sendContent + _endChar);
-                }catch(Exception e)
-                {
-                    String className = e.getClass().toString();
-                    if (className.indexOf("gnu.io.PortInUseException") >=0){
-                        JOptionPane.showMessageDialog(null,"当前使用的串口被其它应用打开占用" ,"提示信息", 1);
-                    }else
-                    {
-                        e.printStackTrace();
-                    }
-                }
-
-
+        //获取DeviceId
+        CommonUtils.commUtil = null;
+        commonUtils = CommonUtils.getInstance(currentPort);
+        String _sendContent = "at+deviceid=?";
+        String _endChar = "\r\n";
+        commonUtils.send(_sendContent + _endChar);
+        deviceName.setText("Device Name " + commonUtils.deviceId.substring("at+deviceid=".length() ));
+        try{
+            // CommonUtils.commUtil = null;
+            commonUtils = CommonUtils.getInstance(currentPort);
+            commonUtils.dataModel = dataModel;
+            _sendContent = "at+record=?";
+            _endChar = "\r\n";
+            //setCommonInfo("正在读取数据中，请稍等..."  , false);
+            commonUtils.send(_sendContent + _endChar);
+        }catch(Exception e)
+        {
+            String className = e.getClass().toString();
+            if (className.indexOf("gnu.io.PortInUseException") >=0){
+                JOptionPane.showMessageDialog(null,"当前使用的串口被其它应用打开占用" ,"提示信息", 1);
+            }else
+            {
+                e.printStackTrace();
             }
-        });
-        thread.start();
-
-
-
+        }
     }
     private void removeRowForDetailTable()
     {
         dataModel.setRowCount( 0 );
     }
+
+
+    private List<DataEntity> getTableDataList(){
+        List<DataEntity> list = new ArrayList<DataEntity>();
+        for (int row = 0 ; row< dataModel.getRowCount(); row++){
+            DataEntity value = new DataEntity();
+            for (int col = 0 ; col <dataModel.getColumnCount() ; col ++ )
+            {
+                String val = dataModel.getValueAt(row,col) == null?"":dataModel.getValueAt(row,col).toString();
+                switch(col)
+                {
+                    case DataColumnsUtils.COL_TREATENT :
+                        value.setsTreatent(val);
+                        break;
+                    case DataColumnsUtils.COL_DATE:
+                        value.setsDate(val);
+                        break;
+                    case DataColumnsUtils.COL_TIME:
+                        value.setsTime(val);
+                        break;
+                    case DataColumnsUtils.COL_VOLUME:
+                        value.setsVolume(val);
+                        break;
+                    case DataColumnsUtils.COL_DURATION:
+                        value.setsDuration(val);
+                        break;
+                    case DataColumnsUtils.COL_OPERATORNAME:
+                        value.setsOperatorName(val);
+                        break;
+                    case DataColumnsUtils.COL_ROOM:
+                        value.setsRoom(val);
+                        break;
+                    case DataColumnsUtils.COL_CONTENT:
+                        value.setsContent(val);
+                        break;
+                }
+            }
+            list.add(value);
+
+        }
+        return list;
+
+    }
+    private void exportPDF()
+    {
+        JFileChooser jfc=new JFileChooser();
+        //jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );
+        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);  //仅能选择目录
+        int jfcOper = jfc.showDialog(new JLabel(), "请选择文件导出路径");
+        if (jfcOper != JFileChooser.APPROVE_OPTION) return ;  //当点击取消按钮时
+
+        File file=jfc.getSelectedFile();
+        if (!file.exists()) {
+            JOptionPane.showMessageDialog(this, "导出文件的路径不存在", "提示信息", 1);
+            return;
+        }
+        if(file.isDirectory()){
+            System.out.println("Main.java-文件夹:"+file.getAbsolutePath());
+        }else if(file.isFile()){
+            System.out.println("Main.java-文件:"+file.getAbsolutePath());
+        }
+        Date currentDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+
+        String fileFullName = file.getAbsolutePath() + "\\" + sdf.format(currentDate) + ".pdf";
+        fileFullName = fileFullName.replace("\\\\","\\"); //，当选择根目录的时候，可能会有异常,不替换windows下适配
+        try{
+            PdfUtils.createHardwarePDF(fileFullName,getTableDataList());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+
     private void onCancel() {
+
         if (CommonUtils.commUtil != null) {
             CommonUtils.commUtil.close();
             CommonUtils.commUtil = null;

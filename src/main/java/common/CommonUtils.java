@@ -126,7 +126,7 @@ public class CommonUtils implements SerialPortEventListener {
         }
     }
 
-    public void serialEvent(SerialPortEvent event) {
+    public  void serialEvent(SerialPortEvent event) {
         switch (event.getEventType()){
             case SerialPortEvent.DATA_AVAILABLE:
                 //receive();
@@ -137,8 +137,10 @@ public class CommonUtils implements SerialPortEventListener {
                         processRecordsData(result);
                     }
                     if (sendMessag.indexOf("at+deviceid") >=0){
-                        System.out.println("1-------------" + result);
-                        deviceId = result;
+                        if (result.indexOf("at+deviceid") >=0) {
+                            deviceId = result;
+                            //System.out.println("rrrr---" + deviceId);
+                        }
                     }
                 }catch(Exception e){
                     e.printStackTrace();
