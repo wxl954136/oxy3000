@@ -28,9 +28,10 @@ public class CommonUtils implements SerialPortEventListener {
     private static OutputStream out;
     public static CommonUtils commUtil;
 
-    public JEditorPane editPaneHelp;  //和Main窗口共用指针，同一个对象传递
+
     public DefaultTableModel dataModel;
     public String sendMessag;
+    public String deviceId;
     private CommonUtils(){}
 
     public static CommonUtils getInstance(String portName){
@@ -42,9 +43,32 @@ public class CommonUtils implements SerialPortEventListener {
         }
         return commUtil;
     }
+
+    public static boolean portIsUsed(String portName){
+        boolean status = false;
+        try {
+            CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
+            if (portIdentifier.isCurrentlyOwned()){
+                status  = false;
+            }else if(portIdentifier.getPortType()==1){
+                SerialPort tSerialPort = (SerialPort) portIdentifier.open(portName,1000);
+                tSerialPort.setSerialPortParams(BIT_RATE,DATA_BITS,STOP_BIT,PARITY_BIT);
+                tSerialPort.close();
+
+                portIdentifier=null;
+                status = true;
+                //serialPort.notifyOnDataAvailable(true);
+            }else{
+                status = false;
+            }
+        } catch (Exception e) {
+            status = false;
+            //e.printStackTrace();
+        }
+        return status;
+    }
+
     public static  ArrayList<Object> getLocalHostPortNames(){
-
-
         ArrayList<Object> list = new ArrayList<>();
         CommPortIdentifier portIdentifier;
         Enumeration<CommPortIdentifier> portList = CommPortIdentifier.getPortIdentifiers();
@@ -112,6 +136,10 @@ public class CommonUtils implements SerialPortEventListener {
                     if (sendMessag.indexOf("at+record") >=0){
                         processRecordsData(result);
                     }
+                    if (sendMessag.indexOf("at+deviceid") >=0){
+                        System.out.println("1-------------" + result);
+                        deviceId = result;
+                    }
                 }catch(Exception e){
                     e.printStackTrace();
                     this.close();
@@ -119,18 +147,26 @@ public class CommonUtils implements SerialPortEventListener {
                 break;
         }
     }
+    /*
+    public void processDeviceData(String result){
+        deviceId = result
+        System.out.println("查询 设备号: " + result);
+    }
+
+     */
     public void processRecordsData(String result){
 
         if (result.indexOf("at+record=begin") >=0)
         {
-            this.setCommonInfo("开始读取数据[at+record=begin]" ,false);
+            //this.setCommonInfo("开始读取数据[at+record=begin]" ,false);
         }
         if (result.indexOf("at+record=end") >=0){
             //System.out.println("数据读取结束 ");
-            this.setCommonInfo("读取数据完毕[at+record=end]" ,false);
+           // this.setCommonInfo("读取数据完毕[at+record=end]" ,false);
         }
-        if (result.indexOf("at+record=")<0) prcessTableModelData(result);
+        if ( result.indexOf("at+record=")<0) prcessTableModelData(result);
     }
+    /*
     private void setCommonInfo(String msg,boolean isClear)
     {
         if (editPaneHelp == null) return ;
@@ -140,6 +176,8 @@ public class CommonUtils implements SerialPortEventListener {
         editPaneHelp.setText(text);
 
     }
+
+     */
     public void prcessTableModelData(String receive){
         String _year = receive.substring(0,4);  //年年年年
         String _month = receive.substring(5,7);  //月月
@@ -256,4 +294,11 @@ public class CommonUtils implements SerialPortEventListener {
 
  */
 }
+
+
+
+
+
+
+
 
