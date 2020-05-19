@@ -87,6 +87,7 @@ public class Start extends JFrame {
     }
     private  void initSystemStyle()
     {
+        connectStatus.setText("Disconnected");
         panelTop.setBackground(colorBackGround);
         panelTopLeft.setBackground(colorBackGround);
         panelTopCenter.setBackground(colorBackGround);
@@ -179,8 +180,10 @@ public class Start extends JFrame {
         this.setBackground(colorBackGround);
         //table.getColumnModel().getColumn(0).setPreferredWidth(40); 设置列宽
     }
-    private void readCom()
+    private synchronized void readCom()
     {
+
+
         PublicParameter.isReadRecordOver = false;
         removeRowForDetailTable();
         ArrayList<Object> list= CommonUtils.getLocalHostPortNames();
@@ -221,14 +224,7 @@ public class Start extends JFrame {
             connectStatus.setText("Disconnected");
             return ;
         }
-/*
-        Object currentPort = CommonMultipleSelect.getSelectCommonPort(list,this);
-        if (null == currentPort || currentPort.toString().equalsIgnoreCase("NONE"))
-        {
-            JOptionPane.showMessageDialog(this,"请选择串口进行通讯" ,"提示信息", 1);
-            return ;
-        }
- */
+        connectStatus.setText("Connected");
         try{
             //获取DeviceId
             CommonUtils.commUtil = null;
@@ -310,6 +306,7 @@ public class Start extends JFrame {
         //setting.setResizable(false);
         setting.setUndecorated(true);// 不绘制边框
         setting.setVisible(true);
+        
     }
     private void exportPDF()
     {
@@ -329,9 +326,9 @@ public class Start extends JFrame {
             return;
         }
         if(file.isDirectory()){
-            System.out.println("Main.java-文件夹:"+file.getAbsolutePath());
+            System.out.println("文件夹:"+file.getAbsolutePath());
         }else if(file.isFile()){
-            System.out.println("Main.java-文件:"+file.getAbsolutePath());
+            System.out.println("java-文件:"+file.getAbsolutePath());
         }
         Date currentDate = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -349,6 +346,7 @@ public class Start extends JFrame {
 
 
     private void onCancel() {
+
 
         if (CommonUtils.commUtil != null) {
             CommonUtils.commUtil.close();

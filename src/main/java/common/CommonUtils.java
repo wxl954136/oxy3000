@@ -16,7 +16,7 @@ import java.util.*;
  * @author: lukeWang
  * @create 2020-05-20
  */
-public class CommonUtils implements SerialPortEventListener {
+public   class CommonUtils implements SerialPortEventListener {
 
     private static  String PORT_NAME = "";
     private static final int BIT_RATE = 19200;
@@ -51,7 +51,6 @@ public class CommonUtils implements SerialPortEventListener {
 
             CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
             if (portIdentifier.isCurrentlyOwned()){
-
                 status  = false;
             }else if(portIdentifier.getPortType()==1){
 
@@ -68,7 +67,6 @@ public class CommonUtils implements SerialPortEventListener {
             }
         } catch (Exception e) {
             status = false;
-            System.out.println("link 端口错误信息" + e.getMessage());
             //e.printStackTrace();
         }
         return status;
@@ -87,7 +85,7 @@ public class CommonUtils implements SerialPortEventListener {
         return list;
     }
 
-    public void init(){
+    public synchronized   void init(){
         try {
             CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(PORT_NAME);
             if (portIdentifier.isCurrentlyOwned()){
@@ -114,11 +112,11 @@ public class CommonUtils implements SerialPortEventListener {
         }
     }
 
-    public void send(String message){
+    public synchronized void send(String message){
         try {
 
             sendMessag = message;
-            if (out == null ) return ;
+            if (out == null || in == null ) return ;
             out.write(message.getBytes());
             Thread.sleep(1000);
             /*
@@ -132,11 +130,12 @@ public class CommonUtils implements SerialPortEventListener {
         }
     }
 
-    public  void serialEvent(SerialPortEvent event) {
+    public   void serialEvent(SerialPortEvent event) {
         switch (event.getEventType()){
             case SerialPortEvent.DATA_AVAILABLE:
                 //receive();
                 try{
+                    //"不能加线程等待，否则会丢失数据-------------"
                     String result = receive();
                     if (result.length() == 0 ) return ;
                     //处理数据采集at+record=?/r/n
@@ -150,7 +149,6 @@ public class CommonUtils implements SerialPortEventListener {
                             if (result.indexOf("=error")>=0){
                                 deviceId = "ERROR";
                             }
-                            //System.out.println("rrrr---" + deviceId);
                         }
                     }
                 }catch(Exception e){
@@ -160,21 +158,15 @@ public class CommonUtils implements SerialPortEventListener {
                 break;
         }
     }
-    /*
-    public void processDeviceData(String result){
-        deviceId = result
-        System.out.println("查询 设备号: " + result);
-    }
 
-     */
     public void processRecordsData(String result){
 
         if (result.indexOf("at+record=begin") >=0)
         {
-
             return ;
         }
         //为什么这里会截断显示，设备有问题
+       // System.out.println("xyz============" + result.replaceAll("jhjhjk","").replace("\n",""));
         if (result.indexOf("at+record=end") >=0  || result.indexOf("ord=end") >= 0){
             //Error 0x5 at ..\rxtx\src\termios.c(892)
             //|| result.indexOf("=end") >= 0
@@ -183,23 +175,11 @@ public class CommonUtils implements SerialPortEventListener {
         }
         if ( result.indexOf("at+record=")<0) prcessTableModelData(result);
     }
-    /*
-    private void setCommonInfo(String msg,boolean isClear)
-    {
-        if (editPaneHelp == null) return ;
-        if (isClear)  editPaneHelp.setText("");
-        String text = editPaneHelp.getText();
-        text = text + msg + "\n";
-        editPaneHelp.setText(text);
 
-    }
-
-     */
     public void prcessTableModelData(String receive){
         try{
             receive = receive.replaceAll("\r","");
             receive = receive.replaceAll("\n","");
-//            System.out.println("y=====" + receive);
             if (receive.length() <  15) return ;
             String _year = receive.substring(0,4);  //年年年年
             String _month = receive.substring(5,7);  //月月
@@ -225,20 +205,26 @@ public class CommonUtils implements SerialPortEventListener {
 
     }
 
-    public String receive(){
+    public  String receive(){
         String result = "";
         try{
+
             int count = 0;
             while (count == 0) {
                 count = in.available();
             }
             byte[] buffer = new byte[count];  //还有四个字符/r/n
+
             in.read(buffer);
+
             result = new String(buffer);
+
         } catch(Exception eg)
         {
             this.close();
             eg.printStackTrace();
+        }finally {
+
         }
         return result;
 
@@ -318,10 +304,13 @@ public class CommonUtils implements SerialPortEventListener {
                 serialPort.notifyOnDataAvailable(false);
                 serialPort.removeEventListener();
                 serialPort.close();
+                serialPort = null;
+                in = null;
+                out = null;
             }
-
-        } catch (IOException e) {
+        }catch (IOException e) {
             e.printStackTrace();
+        }catch (Exception eg){
         }
     }
 
@@ -353,15 +342,7 @@ public class CommonUtils implements SerialPortEventListener {
         return str;
     }
 */
-/*
-    public static void main ( String[] args ){
-        CommonUtils1 commUtil = CommonUtils1.getInstance("COM8");
-        String _sendContent = "at+record=?\r\n";
-        commUtil.send(_sendContent);
-        //commUtil.send("8101060108080301FF");
-    }
 
- */
 }
 
 
