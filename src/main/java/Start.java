@@ -16,6 +16,12 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
+/**
+ * http://www.icosky.com/icon-search/save图标合集选择自己喜欢的图标
+ *
+ *
+ *
+ */
 public class Start extends JFrame {
     private JPanel contentPane;
     private JPanel panelTop;
@@ -42,9 +48,7 @@ public class Start extends JFrame {
     String currentPort = "NONE";
     CommonUtils commonUtils;
 
-    //http://www.icosky.com/icon-search/save图标合集选择自己喜欢的图标
     public Start() {
-
         setContentPane(contentPane);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -54,7 +58,6 @@ public class Start extends JFrame {
         initSystemStyle();
         initDetailTable();
     }
-
 
     public static void main(String[] args) {
         try {
@@ -82,7 +85,6 @@ public class Start extends JFrame {
             eg.printStackTrace();
         }
     }
-
     private  void initSystemStyle()
     {
         panelTop.setBackground(colorBackGround);
@@ -105,16 +107,11 @@ public class Start extends JFrame {
         //panelTop.setPreferredSize(dim);
         panelTop.setSize(dim);
         panelTop.updateUI();
-
-        //panelBottom.setPreferredSize(dim);
         panelBottom.setSize(dim);
         panelBottom.updateUI();
-
         btnExport.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/export.png"),0.5));
         btnExport.setText("");
         btnExport.setToolTipText("Export");
-
-
         btnExport.addActionListener(e -> {
             if (true){
                 exportPDF();
@@ -125,11 +122,9 @@ public class Start extends JFrame {
         });
         btnSetting.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/settings.png"),0.5));
         btnSetting.setText("");
-
         btnSetting.addActionListener(e -> {
                 showSetting();
         });
-
         btnExport.setToolTipText("Setting");
         btnExport.setBackground(colorBackGround);
         btnSetting.setBackground(colorBackGround);
@@ -137,12 +132,9 @@ public class Start extends JFrame {
         btnSetting.setBorder(null);
         scrollPanelData.setBorder(null);
         tableData.setBorder(null);
-
         softwareVersionValue.setText(JsonRead.getInstance().getJsonTarget("version"));
         deviceVersionValue.setText("");
-
     }
-
 
 
     public void initDetailTable() {
@@ -185,7 +177,6 @@ public class Start extends JFrame {
         table.getTableHeader().setBackground(fontColor);
         scrollPanelData.setBackground(colorBackGround);
         this.setBackground(colorBackGround);
-
         //table.getColumnModel().getColumn(0).setPreferredWidth(40); 设置列宽
     }
     private void readCom()
@@ -193,8 +184,6 @@ public class Start extends JFrame {
         PublicParameter.isReadRecordOver = false;
         removeRowForDetailTable();
         ArrayList<Object> list= CommonUtils.getLocalHostPortNames();
-
-
         if (list.size() <= 0)
         {
             connectStatus.setText("Disconnected");
@@ -228,7 +217,6 @@ public class Start extends JFrame {
                 break;
             }
         }
-
         if (!isUsePort) {
             connectStatus.setText("Disconnected");
             return ;
@@ -241,7 +229,6 @@ public class Start extends JFrame {
             return ;
         }
  */
-
         try{
             //获取DeviceId
             CommonUtils.commUtil = null;
@@ -255,7 +242,6 @@ public class Start extends JFrame {
             commonUtils.dataModel = dataModel;
             _sendContent = "at+record=?";
             _endChar = "\r\n";
-            //setCommonInfo("正在读取数据中，请稍等..."  , false);
             commonUtils.send(_sendContent + _endChar);
         }catch(Exception e)
         {
@@ -272,7 +258,6 @@ public class Start extends JFrame {
     {
         dataModel.setRowCount( 0 );
     }
-
 
     private List<DataEntity> getTableDataList(){
         List<DataEntity> list = new ArrayList<DataEntity>();
@@ -331,7 +316,6 @@ public class Start extends JFrame {
         if (!PublicParameter.isReadRecordOver ){
             JOptionPane.showMessageDialog(this, "请稍等:数据正在采集，采集完后再进行导出", "提示信息", 1);
             return ;
-            //在CommonUtils.java中监听更改数据
         }
         JFileChooser jfc=new JFileChooser();
         //jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );
