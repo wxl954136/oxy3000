@@ -209,7 +209,7 @@ public class CommonUtilsOther  implements SerialPortEventListener{
     public void readData() {
         byte[] rbuff = new byte[1024];
         int hasRead = 0;
-        System.out.println("read1-----------------------");
+
         try {
             while((hasRead=inputStream.read(rbuff)) > 0) {
                 System.out.println("read2************************");

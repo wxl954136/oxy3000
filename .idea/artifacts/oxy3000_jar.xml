@@ -1,15 +1,16 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="oxy3000:jar">
+  <artifact type="jar" build-on-make="true" name="oxy3000:jar">
     <output-path>$PROJECT_DIR$/../oxy3000-out/artifacts/oxy3000_jar</output-path>
     <root id="archive" name="oxy3000.jar">
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
       </element>
       <element id="module-output" name="oxy3000" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/itextpdf/itext-asian/5.2.0/itext-asian-5.2.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/itextpdf/itextpdf/5.5.10/itextpdf-5.5.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/com.siyue.org.jdesktop.swingx_1.6.4.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/RXTXcomm.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/alibaba/fastjson/1.2.4/fastjson-1.2.4.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/itextpdf/itext-asian/5.2.0/itext-asian-5.2.0.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

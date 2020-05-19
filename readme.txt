@@ -5,7 +5,11 @@
     1.4 回到IDEA的主菜单，选择“Build - Build Artifacts”下的“Build”或者“Rebuild”即可生成最终的可运行的jar.
     1.5 参照 : https://www.cnblogs.com/ffaiss/p/10908483.html
     1.6 切记，生成META-INF/MAINIFEST.MF,必须是在src下面，后面的子路径要删掉
+    1.7 java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
+          打开META-INF目录，将*.SF,*.DSA,*.RSA文件删除，即可。应为有些包有签名，导致错误
 
+
+打开META-INF目录，将*.SF,*.DSA,*.RSA文件删除，即可。应为有些包有签名，导致错误
 2.串口助手使用说明
     2.1 https://blog.csdn.net/qq_32714173/article/details/105379401
     2.2 数据解析https://www.cnblogs.com/jinghuyue/p/10226848.html

@@ -3,6 +3,7 @@ package common;
 import bean.DataEntity;
 import gnu.io.*;
 import utils.DataColumnsUtils;
+import utils.PublicParameter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -47,22 +48,27 @@ public class CommonUtils implements SerialPortEventListener {
     public static boolean portIsUsed(String portName){
         boolean status = false;
         try {
+
             CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
             if (portIdentifier.isCurrentlyOwned()){
+
                 status  = false;
             }else if(portIdentifier.getPortType()==1){
+
                 SerialPort tSerialPort = (SerialPort) portIdentifier.open(portName,1000);
                 tSerialPort.setSerialPortParams(BIT_RATE,DATA_BITS,STOP_BIT,PARITY_BIT);
                 tSerialPort.close();
-
                 portIdentifier=null;
                 status = true;
+
                 //serialPort.notifyOnDataAvailable(true);
             }else{
+
                 status = false;
             }
         } catch (Exception e) {
             status = false;
+            System.out.println("link 端口错误信息" + e.getMessage());
             //e.printStackTrace();
         }
         return status;
@@ -132,6 +138,7 @@ public class CommonUtils implements SerialPortEventListener {
                 //receive();
                 try{
                     String result = receive();
+                    if (result.length() == 0 ) return ;
                     //处理数据采集at+record=?/r/n
                     if (sendMessag.indexOf("at+record") >=0){
                         processRecordsData(result);
@@ -139,6 +146,10 @@ public class CommonUtils implements SerialPortEventListener {
                     if (sendMessag.indexOf("at+deviceid") >=0){
                         if (result.indexOf("at+deviceid") >=0) {
                             deviceId = result;
+                            //表示连接正确，但是设备有问题，返回ERROR
+                            if (result.indexOf("=error")>=0){
+                                deviceId = "ERROR";
+                            }
                             //System.out.println("rrrr---" + deviceId);
                         }
                     }
@@ -160,11 +171,15 @@ public class CommonUtils implements SerialPortEventListener {
 
         if (result.indexOf("at+record=begin") >=0)
         {
-            //this.setCommonInfo("开始读取数据[at+record=begin]" ,false);
+
+            return ;
         }
-        if (result.indexOf("at+record=end") >=0){
-            //System.out.println("数据读取结束 ");
-           // this.setCommonInfo("读取数据完毕[at+record=end]" ,false);
+        //为什么这里会截断显示，设备有问题
+        if (result.indexOf("at+record=end") >=0  || result.indexOf("ord=end") >= 0){
+            //Error 0x5 at ..\rxtx\src\termios.c(892)
+            //|| result.indexOf("=end") >= 0
+            PublicParameter.isReadRecordOver = true;
+            return ;
         }
         if ( result.indexOf("at+record=")<0) prcessTableModelData(result);
     }
@@ -181,25 +196,75 @@ public class CommonUtils implements SerialPortEventListener {
 
      */
     public void prcessTableModelData(String receive){
-        String _year = receive.substring(0,4);  //年年年年
-        String _month = receive.substring(5,7);  //月月
-        String _day = receive.substring(7,9);  //日日
-        String _hour = receive.substring(10,12);  //时时
-        String _sec = receive.substring(12,14);  //分分
-        String _use1 = receive.substring(15,17);  //用量1
-        String _use2 = receive.substring(17,19);  //用量2
-        String _time1 = receive.substring(20,22); //持续时间1
-        String _time2 = receive.substring(22,24); //持续时间2
-        DataEntity data = new DataEntity();
-        data.setsTreatent("");
-        data.setsDate(_day + "/" + _month + "/" + _year);
-        data.setsTime(_hour + ":" + _sec);
-        data.setsVolume(_use1 + _use2);
-        data.setsDuration(_time1 + _time2);
-        data.setsRoom("");
-        data.setsContent("");
-        dataModel.addRow(DataColumnsUtils.getListContent(data));
+        try{
+            receive = receive.replaceAll("\r","");
+            receive = receive.replaceAll("\n","");
+//            System.out.println("y=====" + receive);
+            if (receive.length() <  15) return ;
+            String _year = receive.substring(0,4);  //年年年年
+            String _month = receive.substring(5,7);  //月月
+            String _day = receive.substring(7,9);  //日日
+            String _hour = receive.substring(10,12);  //时时
+            String _sec = receive.substring(12,14);  //分分
+            String _use1 = receive.substring(15,17);  //用量1
+            String _use2 = receive.substring(17,19);  //用量2
+            String _time1 = receive.substring(20,22); //持续时间1
+            String _time2 = receive.substring(22,24); //持续时间2
+            DataEntity data = new DataEntity();
+            data.setsTreatent("");
+            data.setsDate(_day + "/" + _month + "/" + _year);
+            data.setsTime(_hour + ":" + _sec);
+            data.setsVolume(_use1 + _use2);
+            data.setsDuration(_time1 + _time2);
+            data.setsRoom("");
+            data.setsContent("");
+            dataModel.addRow(DataColumnsUtils.getListContent(data));
+        }catch(Exception eg){
+
+        }
+
     }
+
+    public String receive(){
+        String result = "";
+        try{
+            int count = 0;
+            while (count == 0) {
+                count = in.available();
+            }
+            byte[] buffer = new byte[count];  //还有四个字符/r/n
+            in.read(buffer);
+            result = new String(buffer);
+        } catch(Exception eg)
+        {
+            this.close();
+            eg.printStackTrace();
+        }
+        return result;
+
+        /*
+        byte[] buffer = null;
+        String result = "";
+        try {
+
+            int bufflenth = in.available();
+
+            if (in.available() > 0) {
+                System.out.println("x======" + bufflenth);
+                bufflenth = 128;
+                buffer= new byte[bufflenth];
+                in.read(buffer);
+            }
+            result = new String(buffer);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return result;
+
+         */
+    }
+/*
     public String receive(){
         byte[] buffer = new byte[128];
         int data;
@@ -207,8 +272,10 @@ public class CommonUtils implements SerialPortEventListener {
         try{
             int len = 0;
             while ( ( data = in.read()) > -1 ){
+                System.out.println("x=====" + len);
                 buffer[len++] = (byte) data;
             }
+
             byte[] copyValue = new byte[len];
             System.arraycopy(buffer,0,copyValue,0,len);
            // result = ByteArrayToString(copyValue);
@@ -220,7 +287,7 @@ public class CommonUtils implements SerialPortEventListener {
         }
         return result;
     }
-
+*/
 /*
     public String receive_source_bak(){
         byte[] buffer = new byte[128];

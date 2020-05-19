@@ -7,11 +7,68 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="988db6b0-5a41-4860-908e-612fa6e5e46a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/RXTXcomm.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/com_siyue_org_jdesktop_swingx_1_6_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/form/Setting.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/form/Setting.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/install/Install.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/install/Install.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utils/ClassLoaderUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utils/DateChooser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/utils/PublicParameter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/oxy3000_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/oxy3000_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/install.txt" beforeDir="false" afterPath="$PROJECT_DIR$/install.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/readme.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/img/main.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/img/main.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/img/main.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/img/main.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/OXY-30000C-Logo(TP).cdr" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/OXY30000原厂说明.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/chuankoushebeitiaoshi/Readme-说明.htm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/chuankoushebeitiaoshi/chuankoushebeitiaoshi/ConfigData.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/chuankoushebeitiaoshi/chuankoushebeitiaoshi/SendData.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/chuankoushebeitiaoshi/chuankoushebeitiaoshi/串口设备调试工具.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/exe4j_64b_jb51.rar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/exe4j_64b_jb51/exe4j_64/Keymaker.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/exe4j_64b_jb51/exe4j_64/exe4j_windows-x64_5_0_1.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/exe4j_64b_jb51/exe4j_64/jb51.net.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/exe4j_64b_jb51/exe4j_64/说明.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/exe4j_windows_5_0_1.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/sscom5.13.1.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/sscom51.ini" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/上位机与下位机软件通信协议(1).docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口设备调试.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x64.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x64/mfz-rxtx-2.2-20081207-win-x64/BuildProperties.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x64/mfz-rxtx-2.2-20081207-win-x64/Install.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x64/mfz-rxtx-2.2-20081207-win-x64/RXTXcomm.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x64/mfz-rxtx-2.2-20081207-win-x64/Readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x64/mfz-rxtx-2.2-20081207-win-x64/ReleaseNotes.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x64/mfz-rxtx-2.2-20081207-win-x64/rxtxParallel.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x64/mfz-rxtx-2.2-20081207-win-x64/rxtxSerial.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x86.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x86/mfz-rxtx-2.2-20081207-win-x86/BuildProperties.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x86/mfz-rxtx-2.2-20081207-win-x86/Install.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x86/mfz-rxtx-2.2-20081207-win-x86/RXTXcomm.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x86/mfz-rxtx-2.2-20081207-win-x86/Readme.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x86/mfz-rxtx-2.2-20081207-win-x86/ReleaseNotes.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x86/mfz-rxtx-2.2-20081207-win-x86/rxtxParallel.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/zhang-doc/串口读取架包/mfz-rxtx-2.2-20081207-win-x86/mfz-rxtx-2.2-20081207-win-x86/rxtxSerial.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Start.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Start.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/common/CommonUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/common/CommonUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pdf/PDFBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pdf/PDFBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/common/CommonUtilsOther.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/common/CommonUtilsOther.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/ToolUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ToolUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/common/CommonUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/common/CommonUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/common/CommonUtilsOther.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/common/CommonUtilsOther.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/pdf/PDFBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/pdf/PDFBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/utils/ToolUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/ToolUtils.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -21,71 +78,69 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+  </component>
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/utils/CommonMultipleSelect.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="21" column="33" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Start.form">
-          <provider selected="true" editor-type-id="ui-designer" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Start.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="131">
-              <caret line="330" column="29" selection-start-line="330" selection-start-column="29" selection-end-line="330" selection-end-column="29" />
+            <state relative-caret-position="365">
+              <caret line="266" column="36" lean-forward="true" selection-start-line="266" selection-start-column="36" selection-end-line="266" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#9465#9466#0" expanded="true" />
-                <element signature="e#9382#9394#0" expanded="true" />
+                <element signature="e#9931#9932#0" expanded="true" />
+                <element signature="e#9973#9974#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/common/CommonUtils.java">
+        <entry file="file://$PROJECT_DIR$/install.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="176">
-              <caret line="171" column="36" lean-forward="true" selection-start-line="171" selection-start-column="36" selection-end-line="171" selection-end-column="36" />
+            <state relative-caret-position="325">
+              <caret line="13" column="15" lean-forward="true" selection-start-line="13" selection-start-column="15" selection-end-line="13" selection-end-column="15" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/json/link.json">
+        <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
+            <state relative-caret-position="75">
+              <caret line="3" selection-start-line="3" selection-end-line="3" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pdf/PdfUtils.java">
+        <entry file="file://$PROJECT_DIR$/readme.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="56" column="16" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
+            <state relative-caret-position="300">
+              <caret line="12" column="10" selection-start-line="12" selection-start-column="10" selection-end-line="12" selection-end-column="10" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/pdf/PDFBuilder.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/utils/DataColumnsUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="172" column="39" selection-start-line="172" selection-start-column="39" selection-end-line="172" selection-end-column="39" />
+            <state relative-caret-position="234">
+              <caret line="21" column="38" lean-forward="true" selection-start-line="21" selection-start-column="38" selection-end-line="21" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/txt/install.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="50">
+              <caret line="2" column="15" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -101,36 +156,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>initDetailTable</find>
-      <find>ImageIcon</find>
-      <find>resource</find>
-      <find>hei</find>
-      <find>sys-font</find>
-      <find>font</find>
-      <find>initSystemFontStyle</find>
-      <find>dimen</find>
-      <find>logo</find>
-      <find>btnExport</find>
-      <find>Json</find>
-      <find>onCancel</find>
-      <find>Mu</find>
-      <find>getSelectCommonPort</find>
-      <find>removeRowForDetailTable</find>
-      <find>JsonRead</find>
-      <find>main</find>
-      <find>record</find>
-      <find>read</find>
+      <find>changeImage</find>
+      <find>setFong</find>
+      <find>panelTop</find>
+      <find>comm</find>
+      <find>byte[]</find>
+      <find>liber</find>
+      <find>lib</find>
+      <find>InputStream</find>
+      <find>recei</find>
       <find>receive</find>
       <find>prcessTableModelData</find>
+      <find>exp</find>
+      <find>start</find>
       <find>processRecordsData</find>
-      <find>readCom</find>
-      <find>currentPort</find>
-      <find>onCanc</find>
-      <find>threadRecord</find>
-      <find>commonUtils</find>
-      <find>List</find>
-      <find>getTableDataList</find>
-      <find>第</find>
+      <find>isOver</find>
+      <find>Parameter</find>
+      <find>y=</find>
+      <find>sysLoadLibraryForDLL</find>
+      <find>comboxStartHour</find>
+      <find>initComponentStyle</find>
+      <find>datePanel</find>
+      <find>datepicker</find>
+      <find>datepick</find>
+      <find>Setting</find>
+      <find>setSerialPortParams</find>
+      <find>device</find>
+      <find>-----</find>
+      <find>1==</find>
+      <find>run</find>
+      <find>main</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -147,13 +202,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/bean/DataEntity.java" />
-        <option value="$PROJECT_DIR$/install.txt" />
         <option value="$PROJECT_DIR$/resources/txt/install.txt" />
-        <option value="$PROJECT_DIR$/readme.txt" />
         <option value="$PROJECT_DIR$/readme.md" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/main/java/start/start.form" />
         <option value="$PROJECT_DIR$/src/main/java/start/start.java" />
         <option value="$PROJECT_DIR$/src/main/java/start/Start.java" />
@@ -162,17 +213,33 @@
         <option value="$PROJECT_DIR$/src/main/java/Start.form" />
         <option value="$PROJECT_DIR$/src/main/java/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/utils/CommonMultipleSelect.java" />
-        <option value="$PROJECT_DIR$/src/main/java/common/CommonUtils.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Start.java" />
         <option value="$PROJECT_DIR$/src/main/java/pdf/PDFBuilder.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/install/Install.java" />
+        <option value="$PROJECT_DIR$/src/main/java/utils/ToolUtils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/utils/DateChooser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/utils/PublicParameter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/form/Setting.java" />
+        <option value="$PROJECT_DIR$/src/main/java/form/Setting.form" />
+        <option value="$PROJECT_DIR$/src/main/java/common/CommonUtils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/common/CommonUtilsOther.java" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/readme.txt" />
+        <option value="$PROJECT_DIR$/src/main/java/utils/ClassLoaderUtils.java" />
+        <option value="$PROJECT_DIR$/src/test/java/Test.java" />
+        <option value="$PROJECT_DIR$/install.txt" />
+        <option value="$PROJECT_DIR$/src/main/java/Start.java" />
       </list>
     </option>
   </component>
+  <component name="JRebelWorkspace">
+    <option name="jrebelEnabledAutocompile" value="true" />
+  </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="67" />
-    <option name="y" value="43" />
-    <option name="width" value="431" />
-    <option name="height" value="279" />
+    <option name="x" value="3311" />
+    <option name="y" value="131" />
+    <option name="width" value="720" />
+    <option name="height" value="520" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -180,84 +247,77 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="oxy3000" type="b2602c69:ProjectViewProjectNode" />
+              <item name="oxy30000" type="b2602c69:ProjectViewProjectNode" />
               <item name="oxy3000" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="oxy3000" type="b2602c69:ProjectViewProjectNode" />
+              <item name="oxy30000" type="b2602c69:ProjectViewProjectNode" />
               <item name="oxy3000" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="oxy3000" type="b2602c69:ProjectViewProjectNode" />
-              <item name="oxy3000" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="json" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oxy3000" type="b2602c69:ProjectViewProjectNode" />
+              <item name="oxy30000" type="b2602c69:ProjectViewProjectNode" />
               <item name="oxy3000" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="oxy3000" type="b2602c69:ProjectViewProjectNode" />
+              <item name="oxy30000" type="b2602c69:ProjectViewProjectNode" />
               <item name="oxy3000" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="META-INF" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="oxy3000" type="b2602c69:ProjectViewProjectNode" />
+              <item name="oxy30000" type="b2602c69:ProjectViewProjectNode" />
               <item name="oxy3000" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="oxy30000" type="b2602c69:ProjectViewProjectNode" />
+              <item name="oxy3000" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="oxy3000" type="b2602c69:ProjectViewProjectNode" />
-              <item name="oxy3000" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="pdf" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oxy3000" type="b2602c69:ProjectViewProjectNode" />
-              <item name="oxy3000" type="462c0819:PsiDirectoryNode" />
-              <item name="target" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="oxy3000" type="b2602c69:ProjectViewProjectNode" />
+              <item name="oxy30000" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="oxy3000" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.STATE" value="right" />
     <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.WIDTH" value="147" />
+    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.STATE" value="left" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs/RXTXcomm.jar!/" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="project.structure.side.proportion" value="0.27126437" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="project.propCompiler" />
   </component>
   <component name="RebelAgentSelection">
-    <selection>jr</selection>
+    <selection>xr</selection>
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -281,41 +341,17 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Start (1)">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="oxy3000" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Start (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+  <component name="RunManager">
+    <configuration name="Start " type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="Start" />
       <module name="oxy3000" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Start" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="start.Start" />
-      <module name="oxy3000" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="start.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Start (1)" />
-        <item itemvalue="Application.Main" />
-        <item itemvalue="Application.Start" />
-        <item itemvalue="Application.Main" />
-        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Start " />
       </list>
     </recent_temporary>
   </component>
@@ -333,7 +369,11 @@
       <workItem from="1589725454388" duration="1201000" />
       <workItem from="1589728598426" duration="246000" />
       <workItem from="1589728851402" duration="6355000" />
-      <workItem from="1589760661920" duration="11357000" />
+      <workItem from="1589760661920" duration="23273000" />
+      <workItem from="1589793580368" duration="2629000" />
+      <workItem from="1589796291405" duration="19433000" />
+      <workItem from="1589851047509" duration="10249000" />
+      <workItem from="1589872388008" duration="3274000" />
     </task>
     <task id="LOCAL-00001" summary="项目提交">
       <created>1589685917240</created>
@@ -384,28 +424,35 @@
       <option name="project" value="LOCAL" />
       <updated>1589771313385</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="重构1">
+      <created>1589773691579</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1589773691579</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28174000" />
+    <option name="totallyTimeSpent" value="75675000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1295" height="704" extended-state="6" />
+    <frame x="2728" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12814274" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4988864" visible="true" weight="0.16328709" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
-      <window_info id="JRebel" order="3" side_tool="true" />
+      <window_info id="JRebel" order="3" sideWeight="0.5011136" side_tool="true" weight="0.21623932" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info id="Capture Tool" order="6" />
       <window_info id="Image Layers" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32894737" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4996215" visible="true" weight="0.15696649" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.58718574" visible="true" weight="0.1012931" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.20182094" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -414,9 +461,10 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Version Control" order="10" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
-      <window_info anchor="bottom" id="JRebel Executor" order="12" />
-      <window_info anchor="bottom" id="JRebel Console" order="13" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="14" weight="0.329806" />
+      <window_info anchor="bottom" id="JRebel Executor" order="12" sideWeight="0.76155716" weight="0.30511463" />
+      <window_info anchor="bottom" id="JRebel Console" order="13" sideWeight="0.41281426" side_tool="true" weight="0.340388" />
+      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.4971614" weight="0.32863188" />
+      <window_info anchor="bottom" id="Problems" order="15" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.07494322" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -427,6 +475,41 @@
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Theme Preview" order="8" />
     </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15247364" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="JRebel" order="3" side_tool="true" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Image Layers" order="7" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32894737" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.58718574" visible="true" weight="0.340388" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.4988645" weight="0.32894737" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5011355" side_tool="true" weight="0.32894737" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
+      <window_info anchor="bottom" id="JRebel Executor" order="12" sideWeight="0.76155716" weight="0.30511463" />
+      <window_info anchor="bottom" id="JRebel Console" order="13" sideWeight="0.41281426" side_tool="true" visible="true" weight="0.340388" />
+      <window_info anchor="bottom" id="Messages" order="14" sideWeight="0.4971614" weight="0.329806" />
+      <window_info anchor="bottom" id="Problems" order="15" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.07494322" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="3" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -437,7 +520,8 @@
     <MESSAGE value="删除jdk提供文件，改为远程地址" />
     <MESSAGE value="README.md生成" />
     <MESSAGE value="重构" />
-    <option name="LAST_COMMIT_MESSAGE" value="重构" />
+    <MESSAGE value="重构1" />
+    <option name="LAST_COMMIT_MESSAGE" value="重构1" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -445,64 +529,12 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/META-INF/MANIFEST.MF" />
-    <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/readme.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="11" column="25" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/utils/ToolUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="520">
-          <caret line="20" column="18" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/run.form" />
     <entry file="file://$PROJECT_DIR$/src/main/java/run.java" />
-    <entry file="file://$PROJECT_DIR$/install.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="12" column="39" lean-forward="true" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/txt/install.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="21" selection-start-line="21" selection-end-line="32" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="650">
           <caret line="25" column="14" selection-start-line="25" selection-start-column="14" selection-end-line="25" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="468">
-            <caret line="18" column="15" selection-start-line="18" selection-start-column="15" selection-end-line="18" selection-end-column="15" />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
@@ -522,20 +554,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="23" column="31" lean-forward="true" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/utils/CommonMultipleSelect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="21" column="33" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Main.java" />
     <entry file="file://$PROJECT_DIR$/resources/json/link.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
@@ -550,13 +569,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/common/CommonUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="171" column="36" lean-forward="true" selection-start-line="171" selection-start-column="36" selection-end-line="171" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_131/src.zip!/java/awt/List.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
@@ -564,32 +576,217 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Start.form">
-      <provider selected="true" editor-type-id="ui-designer" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Start.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/pdf/PDFBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="330" column="29" selection-start-line="330" selection-start-column="29" selection-end-line="330" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#9465#9466#0" expanded="true" />
-            <element signature="e#9382#9394#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="237">
+          <caret line="169" column="38" lean-forward="true" selection-start-line="169" selection-start-column="38" selection-end-line="169" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/pdf/PdfUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="56" column="16" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
+        <state relative-caret-position="216">
+          <caret line="43" column="21" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/pdf/PDFBuilder.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/install/Install.form">
+      <provider selected="true" editor-type-id="ui-designer" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/CommonMultipleSelect.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="172" column="39" selection-start-line="172" selection-start-column="39" selection-end-line="172" selection-end-column="39" />
+        <state relative-caret-position="494">
+          <caret line="21" column="33" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/commons-io/commons-io/2.2/commons-io-2.2.jar!/org/apache/commons/io/FileUtils.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/install/Install.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="778">
+          <caret line="52" column="34" lean-forward="true" selection-start-line="52" selection-start-column="34" selection-end-line="52" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/DateChooser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="1165" lean-forward="true" selection-start-line="1165" selection-end-line="1165" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4336#4487#0" expanded="true" />
+            <element signature="e#4486#4487#0" expanded="true" />
+            <element signature="e#19439#19466#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_131/src.zip!/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="1962" column="18" selection-start-line="1962" selection-start-column="18" selection-end-line="1962" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Start.form">
+      <provider selected="true" editor-type-id="ui-designer" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/PublicParameter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_131/src.zip!/java/lang/Class.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8125">
+          <caret line="392" column="13" selection-start-line="392" selection-start-column="13" selection-end-line="392" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/ToolUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3569">
+          <caret line="155" column="10" selection-start-line="155" selection-start-column="7" selection-end-line="155" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_131/src.zip!/javax/swing/JTextField.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="230" column="47" selection-start-line="230" selection-start-column="43" selection-end-line="230" selection-end-column="47" />
+          <folding>
+            <element signature="e#6436#6437#0" expanded="true" />
+            <element signature="e#6471#6472#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/com.siyue.org.jdesktop.swingx_1.6.4.jar!/org/jdesktop/swingx/JXDatePicker.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3800">
+          <caret line="97" column="29" lean-forward="true" selection-start-line="97" selection-start-column="29" selection-end-line="97" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/form/Setting.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="83" column="39" lean-forward="true" selection-start-line="83" selection-start-column="39" selection-end-line="83" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/form/Setting.form">
+      <provider selected="true" editor-type-id="ui-designer" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/ClassLoaderUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="18" column="34" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/RXTXcomm.jar!/gnu/io/CommPort.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="50" column="16" selection-start-line="50" selection-start-column="16" selection-end-line="50" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/txt/install.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="2" column="15" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="200">
+            <caret line="8" column="6" lean-forward="true" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/META-INF/MANIFEST.MF">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="12" column="10" selection-start-line="12" selection-start-column="10" selection-end-line="12" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/install.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="13" column="15" lean-forward="true" selection-start-line="13" selection-start-column="15" selection-end-line="13" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/common/CommonUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="34" column="18" selection-start-line="34" selection-start-column="18" selection-end-line="34" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/DataColumnsUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="21" column="38" lean-forward="true" selection-start-line="21" selection-start-column="38" selection-end-line="21" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="20" column="26" lean-forward="true" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Start.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="266" column="36" lean-forward="true" selection-start-line="266" selection-start-column="36" selection-end-line="266" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#9931#9932#0" expanded="true" />
+            <element signature="e#9973#9974#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -603,7 +800,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.27126437" />
                 <option value="0.5" />
               </list>
             </option>
@@ -616,7 +813,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.27126437" />
               </list>
             </option>
           </splitter-proportions>
@@ -650,7 +847,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.27126437" />
               </list>
             </option>
           </splitter-proportions>
@@ -670,11 +867,11 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>Maven: com.alibaba:fastjson:1.2.4</last-edited>
+          <last-edited>RXTXcomm</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.27126437" />
               </list>
             </option>
           </splitter-proportions>

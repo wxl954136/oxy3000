@@ -1,12 +1,11 @@
 import bean.DataEntity;
 import common.CommonUtils;
+import form.Setting;
 import pdf.PdfUtils;
 import sun.swing.table.DefaultTableCellHeaderRenderer;
-import utils.DataColumnsUtils;
-import utils.JsonRead;
+import utils.*;
 
 import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -14,10 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.*;
 import java.util.List;
 
 public class Start extends JFrame {
@@ -45,8 +41,10 @@ public class Start extends JFrame {
     public final static Color fontColor = new Color(173,206,47);
     String currentPort = "NONE";
     CommonUtils commonUtils;
-    //http://www.icosky.com/icon-search/图标合集
+
+    //http://www.icosky.com/icon-search/save图标合集选择自己喜欢的图标
     public Start() {
+
         setContentPane(contentPane);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -60,33 +58,31 @@ public class Start extends JFrame {
 
     public static void main(String[] args) {
         try {
+            sysLoadLibraryForDLL();
             String lookAndFeel = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
             UIManager.setLookAndFeel(lookAndFeel);
-            initSystemFontStyle();
+            ToolUtils.initSystemFontStyle();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         Start frame = new Start();
         frame.setIconImage(new ImageIcon("./resources/img/start.png").getImage());//设置图
         frame.setTitle(JsonRead.getInstance().getJsonTarget("title"));
-        frame.setSize(1220,705);
-        frame.setMinimumSize(new Dimension(800,650));
+        frame.setSize(860,600);
+        frame.setMinimumSize(new Dimension(680,480));
         frame.setLocationRelativeTo(null);//窗体居中显示
         frame.setVisible(true);
         frame.readCom();
     }
-    public static void initSystemFontStyle()
-    {
-        FontUIResource fontRes = new FontUIResource(new Font("微软雅黑",Font.PLAIN,16));
-        for (Enumeration<Object> keys = UIManager.getDefaults().keys(); keys.hasMoreElements();) {
-            Object key = keys.nextElement();
-            Object value = UIManager.get(key);
-            if (value instanceof FontUIResource) {
-                UIManager.put(key, fontRes);
-            }
+    public static void sysLoadLibraryForDLL(){
+        try{
+            ClassLoaderUtils.loadSerialDynamically();
+        }catch(Exception eg){
+            eg.printStackTrace();
         }
-
     }
+
     private  void initSystemStyle()
     {
         panelTop.setBackground(colorBackGround);
@@ -104,17 +100,17 @@ public class Start extends JFrame {
         scrollPanelData.setBackground(colorBackGround);
         logoImage.setText("");
         ImageIcon image = new ImageIcon("./resources/img/logo.jpg");
-
-        logoImage.setIcon( changeImage(image,0.5));
-       // panelTopCenter.setimage(new ImageIcon("./resources/img/main.jpg").getImage());//设置图
+        logoImage.setIcon( ToolUtils.changeImage(image,0.5));
         Dimension dim = new Dimension(this.getWidth(),60);
-        panelTop.setPreferredSize(dim);
+        //panelTop.setPreferredSize(dim);
+        panelTop.setSize(dim);
         panelTop.updateUI();
 
-        panelBottom.setPreferredSize(dim);
+        //panelBottom.setPreferredSize(dim);
+        panelBottom.setSize(dim);
         panelBottom.updateUI();
 
-        btnExport.setIcon( changeImage(new ImageIcon("./resources/img/export.png"),0.5));
+        btnExport.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/export.png"),0.5));
         btnExport.setText("");
         btnExport.setToolTipText("Export");
 
@@ -127,8 +123,13 @@ public class Start extends JFrame {
                 JOptionPane.showMessageDialog(null,"未正确采集数据或数据正在采集中，无法导出" ,"提示信息", 1);
             }
         });
-        btnSetting.setIcon( changeImage(new ImageIcon("./resources/img/settings.png"),0.5));
+        btnSetting.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/settings.png"),0.5));
         btnSetting.setText("");
+
+        btnSetting.addActionListener(e -> {
+                showSetting();
+        });
+
         btnExport.setToolTipText("Setting");
         btnExport.setBackground(colorBackGround);
         btnSetting.setBackground(colorBackGround);
@@ -137,20 +138,13 @@ public class Start extends JFrame {
         scrollPanelData.setBorder(null);
         tableData.setBorder(null);
 
-
         softwareVersionValue.setText(JsonRead.getInstance().getJsonTarget("version"));
         deviceVersionValue.setText("");
 
     }
 
 
-    public ImageIcon changeImage(ImageIcon image, double i) {//  i 为放缩的倍数
-        int width = (int) (image.getIconWidth() * i);
-        int height = (int) (image.getIconHeight() * i);
-        Image img = image.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT);//第三个值可以去查api是图片转化的方式
-        ImageIcon image2 = new ImageIcon(img);
-        return image2;
-    }
+
     public void initDetailTable() {
         Vector<Vector<Object>> rowDatas = new Vector<Vector<Object>>();
         dataModel = new DefaultTableModel(rowDatas, getTableColumnName()){
@@ -196,14 +190,10 @@ public class Start extends JFrame {
     }
     private void readCom()
     {
+        PublicParameter.isReadRecordOver = false;
         removeRowForDetailTable();
         ArrayList<Object> list= CommonUtils.getLocalHostPortNames();
-        /*
-        ArrayList<Object> list= new ArrayList<>();
-        list.add("COM1");
-        list.add("COM8");
-        list.add("COM9");
-*/
+
 
         if (list.size() <= 0)
         {
@@ -212,13 +202,33 @@ public class Start extends JFrame {
         }
         currentPort = "NONE";
         boolean isUsePort = false;
+        Collections.reverse(list); // 返过来，一般串口新插上去是最后一个，快速检测
         for (Object port:list){
             if (CommonUtils.portIsUsed(port.toString())){
-                currentPort = port.toString();
+                try {
+                    currentPort = port.toString();
+                    CommonUtils.commUtil = null;
+                    commonUtils = CommonUtils.getInstance(currentPort);
+                    String _sendContent = "at+deviceid=?";
+                    String _endChar = "\r\n";
+                    commonUtils.deviceId = null;
+                    commonUtils.send(_sendContent + _endChar);
+                    if (null == commonUtils.deviceId || "ERROR".equalsIgnoreCase(commonUtils.deviceId)){
+                        commonUtils.close();
+                        isUsePort = false;
+                        continue;
+                    }
+                    commonUtils.close();
+                }catch(Exception eg)
+                {
+                    isUsePort = false;
+                    continue;
+                }
                 isUsePort = true;
                 break;
             }
         }
+
         if (!isUsePort) {
             connectStatus.setText("Disconnected");
             return ;
@@ -231,14 +241,15 @@ public class Start extends JFrame {
             return ;
         }
  */
-        //获取DeviceId
-        CommonUtils.commUtil = null;
-        commonUtils = CommonUtils.getInstance(currentPort);
-        String _sendContent = "at+deviceid=?";
-        String _endChar = "\r\n";
-        commonUtils.send(_sendContent + _endChar);
-        deviceName.setText("Device Name " + commonUtils.deviceId.substring("at+deviceid=".length() ));
+
         try{
+            //获取DeviceId
+            CommonUtils.commUtil = null;
+            commonUtils = CommonUtils.getInstance(currentPort);
+            String _sendContent = "at+deviceid=?";
+            String _endChar = "\r\n";
+            commonUtils.send(_sendContent + _endChar);
+            deviceName.setText("Device Name " + commonUtils.deviceId.substring("at+deviceid=".length() ));
             // CommonUtils.commUtil = null;
             commonUtils = CommonUtils.getInstance(currentPort);
             commonUtils.dataModel = dataModel;
@@ -304,8 +315,24 @@ public class Start extends JFrame {
         return list;
 
     }
+    private void showSetting(){
+        Setting setting = new Setting();
+        setting.setIconImage(new ImageIcon("./resources/img/start.png").getImage());//设置图
+        setting.setTitle(JsonRead.getInstance().getJsonTarget("title"));
+        setting.setSize(300,200);
+       // setting.setMinimumSize(new Dimension(600,500));
+        setting.setLocationRelativeTo(null);//窗体居中显示
+        //setting.setResizable(false);
+        setting.setUndecorated(true);// 不绘制边框
+        setting.setVisible(true);
+    }
     private void exportPDF()
     {
+        if (!PublicParameter.isReadRecordOver ){
+            JOptionPane.showMessageDialog(this, "请稍等:数据正在采集，采集完后再进行导出", "提示信息", 1);
+            return ;
+            //在CommonUtils.java中监听更改数据
+        }
         JFileChooser jfc=new JFileChooser();
         //jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );
         jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);  //仅能选择目录
