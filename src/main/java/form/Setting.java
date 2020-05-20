@@ -5,6 +5,7 @@ package form;
 https://how2j.cn/k/gui/gui-datepicker/421.html#nowhere
 http://www.java2s.com/Code/Jar/s/Downloadswingxcore1651sourcesjar.htm
  */
+import bean.SettingField;
 import org.jdesktop.swingx.JXDatePicker;
 import utils.ToolUtils;
 
@@ -25,9 +26,11 @@ public class Setting extends JDialog {
     private JComboBox comboxEndHour;
     private JXDatePicker datepicker;
     private JPanel datePanel;
+    private SettingField settingField;
 
 
-    public Setting() {
+    public Setting(SettingField settingField) {
+        this.settingField = settingField;
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -43,13 +46,11 @@ public class Setting extends JDialog {
                 onCancel();
             }
         });
-
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
          */
         contentPane.setBorder(BorderFactory.createEtchedBorder() );
 
@@ -104,11 +105,14 @@ public class Setting extends JDialog {
     }
     private void onOK() {
         // add your code here
+        settingField.setAnswer(true);
+        settingField.setDeviceName(txtName.getText());
+        settingField.setDeviceDate(new SimpleDateFormat("yyyy-MM-dd").format(datepicker.getDate()));
         dispose();
     }
 
     private void onCancel() {
-        // add your code here if necessary
+        settingField.setAnswer(false);
         dispose();
     }
 

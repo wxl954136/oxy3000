@@ -1,4 +1,5 @@
 import bean.DataEntity;
+import bean.SettingField;
 import common.CommonUtils;
 import form.Setting;
 import pdf.PdfUtils;
@@ -47,7 +48,7 @@ public class Start extends JFrame {
     public final static Color fontColor = new Color(173,206,47);
     String currentPort = "NONE";
     CommonUtils commonUtils;
-
+    SettingField settingField = new SettingField();
     public Start() {
         setContentPane(contentPane);
         addWindowListener(new WindowAdapter() {
@@ -182,8 +183,6 @@ public class Start extends JFrame {
     }
     private synchronized void readCom()
     {
-
-
         PublicParameter.isReadRecordOver = false;
         removeRowForDetailTable();
         ArrayList<Object> list= CommonUtils.getLocalHostPortNames();
@@ -297,7 +296,7 @@ public class Start extends JFrame {
 
     }
     private void showSetting(){
-        Setting setting = new Setting();
+        Setting setting = new Setting(settingField);
         setting.setIconImage(new ImageIcon("./resources/img/start.png").getImage());//设置图
         setting.setTitle(JsonRead.getInstance().getJsonTarget("title"));
         setting.setSize(300,200);
@@ -306,6 +305,10 @@ public class Start extends JFrame {
         //setting.setResizable(false);
         setting.setUndecorated(true);// 不绘制边框
         setting.setVisible(true);
+        if (settingField.getAnswer()){
+            //deviceDate.setText(settingField.getDeviceDate());
+            //返回日期的取值
+        }
         
     }
     private void exportPDF()

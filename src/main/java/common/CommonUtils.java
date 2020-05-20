@@ -139,6 +139,7 @@ public   class CommonUtils implements SerialPortEventListener {
                     String result = receive();
                     if (result.length() == 0 ) return ;
                     //处理数据采集at+record=?/r/n
+
                     if (sendMessag.indexOf("at+record") >=0){
                         processRecordsData(result);
                     }
@@ -160,27 +161,29 @@ public   class CommonUtils implements SerialPortEventListener {
     }
 
     public void processRecordsData(String result){
-
         if (result.indexOf("at+record=begin") >=0)
         {
             return ;
         }
+
         //为什么这里会截断显示，设备有问题
-       // System.out.println("xyz============" + result.replaceAll("jhjhjk","").replace("\n",""));
         if (result.indexOf("at+record=end") >=0  || result.indexOf("ord=end") >= 0){
             //Error 0x5 at ..\rxtx\src\termios.c(892)
             //|| result.indexOf("=end") >= 0
+            //应该这个设备有问题点，就是最后一行数据读取时，会把at+record=end放在最后一行数据上
             PublicParameter.isReadRecordOver = true;
-            return ;
+           // return ;
         }
-        if ( result.indexOf("at+record=")<0) prcessTableModelData(result);
+        prcessTableModelData(result);
+      //  if ( result.indexOf("at+record=")<0) prcessTableModelData(result);
     }
 
     public void prcessTableModelData(String receive){
         try{
             receive = receive.replaceAll("\r","");
             receive = receive.replaceAll("\n","");
-            if (receive.length() <  15) return ;
+
+            if (receive.length() <  20) return ;
             String _year = receive.substring(0,4);  //年年年年
             String _month = receive.substring(5,7);  //月月
             String _day = receive.substring(7,9);  //日日
