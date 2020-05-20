@@ -65,10 +65,14 @@ public class Setting extends JDialog {
         //panelTop.setPreferredSize(dim);
         settingPanel.setSize(dim);
         settingPanel.updateUI();
-        buttonOK.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/save.png"),0.4));
+        buttonOK.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/save.png"),0.3));
         buttonOK.setText("Save");
+        buttonOK.setPreferredSize(new Dimension(80, 30));
+
         buttonOK.setBorder(null);
-        buttonCancel.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/cancel.png"),0.4));
+
+        buttonCancel.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/cancel.png"),0.2));
+        buttonCancel.setPreferredSize(new Dimension(80, 30));
         buttonCancel.setText("Cancel");
         buttonCancel.setBorder(null);
 
