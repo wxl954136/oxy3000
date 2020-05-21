@@ -39,9 +39,10 @@
 - 2.2 数据解析https://www.cnblogs.com/jinghuyue/p/10226848.html- 1.3 在配置窗口中配置"Main Class"，这儿选择一个入口java类（有main方法），完成后，点击OK，OK按钮。到这儿就完成了“Project Structure”的设置了。
 。
 - 2.3 串口读取注意事项（注意是jdk下面的jre，不要放错了），开发者选项
-    - 2.3.1 Copy RXTXcomm.jar ---> <JAVA_HOME>\jre\lib\ext
-    - 2.3.2 Copy rxtxSerial.dll ---> <JAVA_HOME>\jre\bin
-    - 2.3.3 Copy rxtxParallel.dll ---> <JAVA_HOME>\jre\bin
+    - ** 2.3.1 Copy RXTXcomm.jar ---> <JAVA_HOME>\jre\lib\ext
+    - ** 2.3.2 Copy rxtxSerial.dll ---> <JAVA_HOME>\jre\bin
+    - ** 2.3.3 Copy rxtxParallel.dll ---> <JAVA_HOME>\jre\bin
+    - 2.3.4 现不用复制相关文件，改为动态依赖sysLoadLibraryForDLL() 
     - config 自定义权限实现、redis配置、swagger配置
     - exception 项目统一异常的处理
     - utils 系统通用工具类
