@@ -6,6 +6,7 @@ import utils.PublicParameter;
 import utils.ToolUtils;
 
 import javax.swing.*;
+import javax.tools.Tool;
 
 public class Config extends JDialog {
     private JPanel contentPane;
@@ -148,8 +149,9 @@ public class Config extends JDialog {
     //设定喷雾速率
     private void onSdpwsl(){
         String debugOrder = "debug:" + JsonRead.getInstance().getJsonTarget("sdpwsl","order");
+        debugOrder= ToolUtils.getFormatSendOrder(debugOrder,txtSdpwsl.getText().trim());
         System.out.println("a1==========看法嗎：" + debugOrder);
-        //serialPortSend(debugOrder);
+        serialPortSend(debugOrder);
 
     }
     //查询 日期
@@ -221,6 +223,15 @@ public class Config extends JDialog {
         if (sendMessage.equalsIgnoreCase( JsonRead.getInstance().getJsonTarget("cxpwsl","order")))
         {
             config.txtCxpwsl.setText(result);
+        }
+
+        String sdpwsl = JsonRead.getInstance().getJsonTarget("sdpwsl","order");
+        sdpwsl = ToolUtils.getFormatSendOrder(sdpwsl,config.txtSdpwsl.getText().trim());
+//        这里判断 条件，要取到值
+        System.out.println("1===" + sendMessage + "===" + sdpwsl);
+        if (sendMessage.equalsIgnoreCase( sdpwsl))
+        {
+            config.txtSdpwsl.setText(result);
         }
         if (sendMessage.equalsIgnoreCase( JsonRead.getInstance().getJsonTarget("cxrq","order")))
         {
