@@ -131,6 +131,10 @@ public class ToolUtils {
         return image2;
     }
 
+    public static String getFormatMsg(String message){
+        message += "\r\n";
+        return message;
+    }
 
 
 }

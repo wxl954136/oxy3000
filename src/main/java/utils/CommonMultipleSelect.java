@@ -34,6 +34,7 @@ public class CommonMultipleSelect {
             );
             return inputContent;
         }
+        //封装
 
         return "NONE";
     }

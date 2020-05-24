@@ -1,11 +1,12 @@
 package bean;
 
 public class SettingField {
-   private String deviceName;
-   private String deviceDate;
-   private String deviceHourStart;
-   private String deviceHourEnd;
-   private Boolean answer;
+    private String currentPort; //当前端口
+    private String deviceName;
+    private String deviceDate;
+    private String deviceHourStart;
+    private String deviceHourEnd;
+    private Boolean answer;
 
     public String getDeviceName() {
         return deviceName;
@@ -46,5 +47,13 @@ public class SettingField {
 
     public void setAnswer(Boolean answer) {
         this.answer = answer;
+    }
+
+    public String getCurrentPort() {
+        return currentPort;
+    }
+
+    public void setCurrentPort(String currentPort) {
+        this.currentPort = currentPort;
     }
 }

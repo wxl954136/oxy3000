@@ -29,7 +29,6 @@ public   class CommonUtils implements SerialPortEventListener {
     private static OutputStream out;
     public static CommonUtils commUtil;
 
-
     public DefaultTableModel dataModel;
     public String sendMessag;
     public String deviceId;
@@ -137,6 +136,7 @@ public   class CommonUtils implements SerialPortEventListener {
                 try{
                     //"不能加线程等待，否则会丢失数据-------------"
                     String result = receive();
+                    System.out.println("lukeWang: 收取信息:" + result);
                     if (result.length() == 0 ) return ;
                     //处理数据采集at+record=?/r/n
 

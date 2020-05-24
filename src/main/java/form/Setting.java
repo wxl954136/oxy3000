@@ -7,6 +7,7 @@ http://www.java2s.com/Code/Jar/s/Downloadswingxcore1651sourcesjar.htm
  */
 import bean.SettingField;
 import org.jdesktop.swingx.JXDatePicker;
+import utils.PublicParameter;
 import utils.ToolUtils;
 
 import javax.swing.*;
@@ -27,7 +28,6 @@ public class Setting extends JDialog {
     private JXDatePicker datepicker;
     private JPanel datePanel;
     private SettingField settingField;
-
 
     public Setting(SettingField settingField) {
         this.settingField = settingField;
@@ -66,15 +66,13 @@ public class Setting extends JDialog {
         buttonOK.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/save.png"),0.3));
         buttonOK.setText("Save");
         buttonOK.setPreferredSize(new Dimension(80, 30));
-
         buttonOK.setBorder(null);
-
         buttonCancel.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/cancel.png"),0.2));
         buttonCancel.setPreferredSize(new Dimension(80, 30));
         buttonCancel.setText("Cancel");
         buttonCancel.setBorder(null);
-
-
+        comboxStartHour.addItem("");
+        comboxEndHour.addItem("");
         for (int i = 1 ; i <=12; i++)
         {
             String item = (i < 10? "0"+i : String.valueOf(i));
@@ -110,7 +108,10 @@ public class Setting extends JDialog {
         settingField.setAnswer(true);
         settingField.setDeviceName(txtName.getText());
         settingField.setDeviceDate(new SimpleDateFormat("yyyy-MM-dd").format(datepicker.getDate()));
-        dispose();
+        settingField.setDeviceHourStart(comboxStartHour.getSelectedItem().toString());
+        settingField.setDeviceHourEnd(comboxEndHour.getSelectedItem().toString());
+        PublicParameter.commonUtils.send(ToolUtils.getFormatMsg("at+switch=?"));
+       // dispose();
     }
 
     private void onCancel() {

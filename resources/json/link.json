@@ -4,6 +4,6 @@
   "port": "",
   "rate": "19200",
   "pdf-font": "simhei.ttf",
-  "sys-font": "simhei.ttf",
+  "sys-font": "simhei.ttf"
 
 }
