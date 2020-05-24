@@ -1,7 +1,8 @@
+package form;
+
 import bean.DataEntity;
 import bean.SettingField;
 import common.CommonUtils;
-import form.Setting;
 import pdf.PdfUtils;
 import sun.swing.table.DefaultTableCellHeaderRenderer;
 import utils.*;
@@ -26,9 +27,9 @@ import java.util.List;
 public class Start extends JFrame {
     private JPanel contentPane;
     private JPanel panelTop;
-    private JTable tableData;
-    private DefaultTableModel dataModel;
-    private JScrollPane scrollPanelData;
+    public JTable tableData;
+    public DefaultTableModel dataModel;
+    public JScrollPane scrollPanelData;
     private JPanel panelBottom;
     private JPanel panelTopLeft;
     private JPanel panelTopCenter;
@@ -49,6 +50,15 @@ public class Start extends JFrame {
     String currentPort = "NONE";
 //    CommonUtils commonUtils;
     SettingField settingField = new SettingField();
+
+    public static Start start;
+    public static Start getInstance(){
+        if(start==null){
+            start = new Start();
+        }
+        return start;
+    }
+
     public Start() {
         setContentPane(contentPane);
         addWindowListener(new WindowAdapter() {
@@ -59,7 +69,7 @@ public class Start extends JFrame {
         initSystemStyle();
         initDetailTable();
     }
-
+/*
     public static void main(String[] args) {
         try {
             sysLoadLibraryForDLL();
@@ -78,17 +88,12 @@ public class Start extends JFrame {
         frame.setLocationRelativeTo(null);//窗体居中显示
         frame.setVisible(true);
         frame.readCom();
-       // System.out.println("c====" + ToolUtils.getSendInfo("cccc"));
 
 
     }
-    public static void sysLoadLibraryForDLL(){
-        try{
-            ClassLoaderUtils.loadSerialDynamically();
-        }catch(Exception eg){
-            eg.printStackTrace();
-        }
-    }
+
+ */
+
     private  void initSystemStyle()
     {
         connectStatus.setText("Disconnected");
@@ -128,7 +133,10 @@ public class Start extends JFrame {
         btnSetting.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/settings.png"),0.5));
         btnSetting.setText("");
         btnSetting.addActionListener(e -> {
-                showSetting();
+                String debug = JsonRead.getInstance().getJsonTarget("debug");
+                if (debug.equalsIgnoreCase("yes")) showConfig();
+                else showSetting();
+
         });
         btnExport.setToolTipText("Setting");
         btnExport.setBackground(colorBackGround);
@@ -184,9 +192,10 @@ public class Start extends JFrame {
         this.setBackground(colorBackGround);
         //table.getColumnModel().getColumn(0).setPreferredWidth(40); 设置列宽
     }
-    private synchronized void readCom()
+    public synchronized void readCom()
     {
         PublicParameter.isReadRecordOver = false;
+        PublicParameter.currentPort = "NONE";
         removeRowForDetailTable();
         ArrayList<Object> list= CommonUtils.getLocalHostPortNames();
         if (list.size() <= 0)
@@ -195,6 +204,7 @@ public class Start extends JFrame {
             return ;
         }
         currentPort = "NONE";
+
         boolean isUsePort = false;
         Collections.reverse(list); // 返过来，一般串口新插上去是最后一个，快速检测
         for (Object port:list){
@@ -204,7 +214,8 @@ public class Start extends JFrame {
                     CommonUtils.commUtil = null;
                     PublicParameter.commonUtils = CommonUtils.getInstance(currentPort);
                     PublicParameter.commonUtils.deviceId = null;
-                    PublicParameter.commonUtils.send(ToolUtils.getFormatMsg("at+deviceid=?"));
+                    String sendMsg =  ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbxlh","order")); //查询设备序列号
+                    PublicParameter.commonUtils.send(sendMsg);
                     if (null == PublicParameter.commonUtils.deviceId || "ERROR".equalsIgnoreCase(PublicParameter.commonUtils.deviceId)){
                         PublicParameter.commonUtils.close();
                         isUsePort = false;
@@ -228,13 +239,16 @@ public class Start extends JFrame {
         try{
             //获取DeviceId
             CommonUtils.commUtil = null;
+            PublicParameter.currentPort = currentPort;
             PublicParameter.commonUtils = CommonUtils.getInstance(currentPort);
-            PublicParameter.commonUtils.send(ToolUtils.getFormatMsg("at+deviceid=?"));
+            String sendMsg =  ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbxlh","order")); //查询设备序列号
+            PublicParameter.commonUtils.send(sendMsg);
             deviceName.setText("Device Name " + PublicParameter.commonUtils.deviceId.substring("at+deviceid=".length() ));
             //CommonUtils.commUtil = null;
             PublicParameter.commonUtils = CommonUtils.getInstance(currentPort);
-            PublicParameter.commonUtils.dataModel = dataModel;
-            PublicParameter.commonUtils.send(ToolUtils.getFormatMsg("at+record=?"));
+
+            sendMsg =  ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbsyjl","order")); //查询 设备使用记录
+            PublicParameter.commonUtils.send(sendMsg);
         }catch(Exception e)
         {
             String className = e.getClass().toString();
@@ -291,6 +305,18 @@ public class Start extends JFrame {
         }
         return list;
     }
+
+    private void  showConfig()
+    {
+        Config config  = Config.getInstance();
+        config.initComponentValue();
+        config.setIconImage(new ImageIcon("./resources/img/start.png").getImage());//设置图
+        config.setTitle(JsonRead.getInstance().getJsonTarget("title"));
+        config.setSize(800,600);
+        config.setResizable(false);
+        config.setLocationRelativeTo(null);//窗体居中显示
+        config.setVisible(true);
+    }
     private void showSetting(){
         if (currentPort.equalsIgnoreCase("NONE")){
             JOptionPane.showMessageDialog(null,"本机无有效的串口" ,"提示信息", 1);
@@ -298,7 +324,7 @@ public class Start extends JFrame {
             return ;
         }
         settingField.setCurrentPort(currentPort);
-        Setting setting = new Setting(settingField);
+        Setting setting = Setting.getInstance(settingField);
         setting.setIconImage(new ImageIcon("./resources/img/start.png").getImage());//设置图
         setting.setTitle(JsonRead.getInstance().getJsonTarget("title"));
         setting.setSize(300,200);
@@ -308,10 +334,7 @@ public class Start extends JFrame {
         setting.setUndecorated(true);// 不绘制边框
         setting.setVisible(true);
         if (settingField.getAnswer()){
-            System.out.println("1---------" + settingField.getDeviceName());
-            System.out.println("2---------" + settingField.getDeviceDate());
-            System.out.println("3---------" + settingField.getDeviceHourStart());
-            System.out.println("4---------" + settingField.getDeviceHourEnd());
+
             //deviceDate.setText(settingField.getDeviceDate());
             //返回日期的取值
         }

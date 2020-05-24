@@ -34,6 +34,20 @@ public class JsonRead {
         JSONObject object = JSONObject.parseObject(jsonSource);
         return object.get(target).toString();
     }
+    //当有两级时
+    public String getJsonTarget(String target1,String target2) {
+        String jsonSource = readJsonFile(jsonFile);
+        JSONObject object = JSONObject.parseObject(jsonSource);
+        String result1 = object.get(target1).toString();
+        JSONObject object2 = JSONObject.parseObject(result1);
+        String result2 = object2.get(target2).toString();
+        return result2;
+    }
+    //从字符中取
+    public String getStrJson(String jsonSource) {
+        JSONObject object = JSONObject.parseObject(jsonSource);
+        return object.get(jsonSource).toString();
+    }
 
     public JSONObject getCommonJSONObject() {
         String jsonSource = readJsonFile(jsonFile);

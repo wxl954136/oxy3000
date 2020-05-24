@@ -28,7 +28,13 @@ public class Setting extends JDialog {
     private JXDatePicker datepicker;
     private JPanel datePanel;
     private SettingField settingField;
-
+    public static Setting setting;
+    public static Setting getInstance(SettingField settingField){
+        if(setting==null){
+            setting = new Setting(settingField);
+        }
+        return setting;
+    }
     public Setting(SettingField settingField) {
         this.settingField = settingField;
         setContentPane(contentPane);

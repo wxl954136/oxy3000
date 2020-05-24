@@ -1,12 +1,15 @@
 package common;
 
 import bean.DataEntity;
+import form.Config;
+import form.Start;
 import gnu.io.*;
 import utils.DataColumnsUtils;
 import utils.PublicParameter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,7 +32,7 @@ public   class CommonUtils implements SerialPortEventListener {
     private static OutputStream out;
     public static CommonUtils commUtil;
 
-    public DefaultTableModel dataModel;
+//    public DefaultTableModel dataModel;
     public String sendMessag;
     public String deviceId;
     private CommonUtils(){}
@@ -45,6 +48,7 @@ public   class CommonUtils implements SerialPortEventListener {
     }
 
     public static boolean portIsUsed(String portName){
+
         boolean status = false;
         try {
 
@@ -115,6 +119,7 @@ public   class CommonUtils implements SerialPortEventListener {
         try {
 
             sendMessag = message;
+            message = message.replaceAll("debug:",""); //区别是从调试窗口进来的
             if (out == null || in == null ) return ;
             out.write(message.getBytes());
             Thread.sleep(1000);
@@ -138,6 +143,11 @@ public   class CommonUtils implements SerialPortEventListener {
                     String result = receive();
                     System.out.println("lukeWang: 收取信息:" + result);
                     if (result.length() == 0 ) return ;
+
+                    if(sendMessag.indexOf("debug:") >=0){
+                        showCollectValue(sendMessag,result);
+                        return ;
+                    }
                     //处理数据采集at+record=?/r/n
 
                     if (sendMessag.indexOf("at+record") >=0){
@@ -158,6 +168,12 @@ public   class CommonUtils implements SerialPortEventListener {
                 }
                 break;
         }
+    }
+    //和Config.java窗体文件关联
+    public void showCollectValue(String sendMessag,String result){
+        sendMessag = sendMessag.replace("debug:","");
+        sendMessag = sendMessag.replace("\r\n","");
+        Config.showCollectValue(sendMessag,result);
     }
 
     public void processRecordsData(String result){
@@ -182,7 +198,6 @@ public   class CommonUtils implements SerialPortEventListener {
         try{
             receive = receive.replaceAll("\r","");
             receive = receive.replaceAll("\n","");
-
             if (receive.length() <  20) return ;
             String _year = receive.substring(0,4);  //年年年年
             String _month = receive.substring(5,7);  //月月
@@ -201,7 +216,10 @@ public   class CommonUtils implements SerialPortEventListener {
             data.setsDuration(_time1 + _time2);
             data.setsRoom("");
             data.setsContent("");
-            dataModel.addRow(DataColumnsUtils.getListContent(data));
+            Start.getInstance().dataModel.addRow(DataColumnsUtils.getListContent(data));
+            Start.getInstance().dataModel.fireTableDataChanged();
+            int maxHeight = Start.getInstance().scrollPanelData.getVerticalScrollBar().getMaximum();
+            Start.getInstance().scrollPanelData.getViewport().setViewPosition(new Point(0,maxHeight));
         }catch(Exception eg){
 
         }
