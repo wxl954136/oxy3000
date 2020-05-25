@@ -50,7 +50,8 @@ public class Start extends JFrame {
     String currentPort = "NONE";
 //    CommonUtils commonUtils;
     SettingField settingField = new SettingField();
-
+    public String resultDeviceName = "",resultDeviceId = "" ,
+                  resultDeviceDate = "",resultDeviceVersion = "";
     public static Start start;
     public static Start getInstance(){
         if(start==null){
@@ -133,6 +134,17 @@ public class Start extends JFrame {
         btnSetting.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/settings.png"),0.5));
         btnSetting.setText("");
         btnSetting.addActionListener(e -> {
+            /*
+            测试代码
+                if (true) {
+                    FileUtil.setTxtFileData(Start.getInstance().getTableDataList());
+                    return ;
+                }
+             */
+                if (!PublicParameter.isReadRecordOver ){
+                    JOptionPane.showMessageDialog(this, "数据正在处理，请等待数据处理完毕!", "提示信息", 1);
+                    return ;
+                }
                 String debug = JsonRead.getInstance().getJsonTarget("debug");
                 if (debug.equalsIgnoreCase("yes")) showConfig();
                 else showSetting();
@@ -206,17 +218,19 @@ public class Start extends JFrame {
         currentPort = "NONE";
 
         boolean isUsePort = false;
-        Collections.reverse(list); // 返过来，一般串口新插上去是最后一个，快速检测
+        Collections.reverse(list); // 反过来，一般串口新插上去是最后一个，快速检测
         for (Object port:list){
             if (CommonUtils.portIsUsed(port.toString())){
                 try {
                     currentPort = port.toString();
                     CommonUtils.commUtil = null;
                     PublicParameter.commonUtils = CommonUtils.getInstance(currentPort);
-                    PublicParameter.commonUtils.deviceId = null;
-                    String sendMsg =  ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbxlh","order")); //查询设备序列号
-                    PublicParameter.commonUtils.send(sendMsg);
-                    if (null == PublicParameter.commonUtils.deviceId || "ERROR".equalsIgnoreCase(PublicParameter.commonUtils.deviceId)){
+                    resultDeviceId = null;
+                    String sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbxlh","order")); //查询设备序列号
+                    //PublicParameter.commonUtils.send(sendMsg);
+                    this.serialPortSend(sendMsg);
+                    Thread.sleep(1000);
+                    if (null == resultDeviceId|| "ERROR".equalsIgnoreCase(resultDeviceId)){
                         PublicParameter.commonUtils.close();
                         isUsePort = false;
                         continue;
@@ -240,15 +254,40 @@ public class Start extends JFrame {
             //获取DeviceId
             CommonUtils.commUtil = null;
             PublicParameter.currentPort = currentPort;
-            PublicParameter.commonUtils = CommonUtils.getInstance(currentPort);
-            String sendMsg =  ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbxlh","order")); //查询设备序列号
-            PublicParameter.commonUtils.send(sendMsg);
-            deviceName.setText("Device Name " + PublicParameter.commonUtils.deviceId.substring("at+deviceid=".length() ));
-            //CommonUtils.commUtil = null;
-            PublicParameter.commonUtils = CommonUtils.getInstance(currentPort);
+            String sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbmc","order")); //查询设备序列号
 
-            sendMsg =  ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbsyjl","order")); //查询 设备使用记录
-            PublicParameter.commonUtils.send(sendMsg);
+            serialPortSend(sendMsg);
+            Thread.sleep(500);
+            if (resultDeviceName.indexOf("at+name")>=0 && resultDeviceName.indexOf("ERROR") < 0){
+                deviceName.setText("Device Name " + resultDeviceName.substring("at+name=".length() ));
+            }else
+            {
+                deviceName.setText("Device Name " );
+            }
+            //查询日期
+            sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxrq","order")); //查询 设备使用记录
+            serialPortSend(sendMsg);
+            Thread.sleep(500);
+            if (resultDeviceDate.indexOf("at+date")>=0 && resultDeviceDate.indexOf("ERROR") < 0){
+                deviceDate.setText("Device Date " + resultDeviceDate.substring("at+date=".length() ));
+            }else
+            {
+                deviceDate.setText("Device Date " );
+            }
+            sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxgjbb","order")); //查询 设备使用记录
+            serialPortSend(sendMsg);
+            Thread.sleep(500);
+            if (resultDeviceVersion.indexOf("at+date")>=0 && resultDeviceVersion.indexOf("ERROR") < 0){
+                deviceVersion.setText("Device Version " + resultDeviceVersion.substring("at+firmware=".length() ));
+            }else
+            {
+                deviceVersion.setText("Device Version " );
+            }
+            //CommonUtils.commUtil = null;
+            //PublicParameter.commonUtils = CommonUtils.getInstance(currentPort);
+            sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbsyjl","order")); //查询 设备使用记录
+            serialPortSend(sendMsg);
+
         }catch(Exception e)
         {
             String className = e.getClass().toString();
@@ -260,12 +299,16 @@ public class Start extends JFrame {
             }
         }
     }
+    public void serialPortSend(String sendMsg){
+        PublicParameter.commonUtils = CommonUtils.getInstance(PublicParameter.currentPort);
+        PublicParameter.commonUtils.send(ToolUtils.getFormatMsg(sendMsg));
+    }
     private void removeRowForDetailTable()
     {
         dataModel.setRowCount( 0 );
     }
 
-    private List<DataEntity> getTableDataList(){
+    public List<DataEntity> getTableDataList(){
         List<DataEntity> list = new ArrayList<DataEntity>();
         for (int row = 0 ; row< dataModel.getRowCount(); row++){
             DataEntity value = new DataEntity();
@@ -305,7 +348,37 @@ public class Start extends JFrame {
         }
         return list;
     }
+    public void prcessTableModelData(String receive){
+        try{
+            receive = receive.replaceAll("\r","");
+            receive = receive.replaceAll("\n","");
+            if (receive.length() <  20) return ;
+            String _year = receive.substring(0,4);  //年年年年
+            String _month = receive.substring(5,7);  //月月
+            String _day = receive.substring(7,9);  //日日
+            String _hour = receive.substring(10,12);  //时时
+            String _sec = receive.substring(12,14);  //分分
+            String _use1 = receive.substring(15,17);  //用量1
+            String _use2 = receive.substring(17,19);  //用量2
+            String _time1 = receive.substring(20,22); //持续时间1
+            String _time2 = receive.substring(22,24); //持续时间2
+            DataEntity data = new DataEntity();
+            data.setsTreatent("");
+            data.setsDate(_day + "/" + _month + "/" + _year);
+            data.setsTime(_hour + ":" + _sec);
+            data.setsVolume(_use1 + _use2);
+            data.setsDuration(_time1 + _time2);
+            data.setsRoom("");
+            data.setsContent("");
+            dataModel.addRow(DataColumnsUtils.getListContent(data));
+            dataModel.fireTableDataChanged();
+            int maxHeight = scrollPanelData.getVerticalScrollBar().getMaximum();
+            scrollPanelData.getViewport().setViewPosition(new Point(0,maxHeight));
+        }catch(Exception eg){
 
+        }
+
+    }
     private void  showConfig()
     {
         Config config  = Config.getInstance();
@@ -320,7 +393,6 @@ public class Start extends JFrame {
     private void showSetting(){
         if (currentPort.equalsIgnoreCase("NONE")){
             JOptionPane.showMessageDialog(null,"本机无有效的串口" ,"提示信息", 1);
-
             return ;
         }
         settingField.setCurrentPort(currentPort);
@@ -332,6 +404,7 @@ public class Start extends JFrame {
         setting.setLocationRelativeTo(null);//窗体居中显示
         //setting.setResizable(false);
         setting.setUndecorated(true);// 不绘制边框
+        setting.initComponentValue();
         setting.setVisible(true);
         if (settingField.getAnswer()){
 

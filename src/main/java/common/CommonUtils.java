@@ -1,19 +1,21 @@
 package common;
 
-import bean.DataEntity;
 import form.Config;
+import form.Setting;
 import form.Start;
-import gnu.io.*;
-import utils.DataColumnsUtils;
+import gnu.io.CommPortIdentifier;
+import gnu.io.SerialPort;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
+import utils.FileUtil;
 import utils.PublicParameter;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 /**
  * @author: lukeWang
@@ -34,7 +36,7 @@ public   class CommonUtils implements SerialPortEventListener {
 
 //    public DefaultTableModel dataModel;
     public String sendMessag;
-    public String deviceId;
+//    public String deviceId;
     private CommonUtils(){}
 
     public static CommonUtils getInstance(String portName){
@@ -119,7 +121,10 @@ public   class CommonUtils implements SerialPortEventListener {
         try {
 
             sendMessag = message;
+            message = message.replaceAll("start:",""); //区别是从开始窗口start窗口进来的
             message = message.replaceAll("debug:",""); //区别是从调试窗口进来的
+            message = message.replaceAll("setting:",""); //区别是从设置窗口进来的
+            System.out.println("k2====" + message);
             if (out == null || in == null ) return ;
             out.write(message.getBytes());
             Thread.sleep(1000);
@@ -148,20 +153,46 @@ public   class CommonUtils implements SerialPortEventListener {
                         showCollectValue(sendMessag,result);
                         return ;
                     }
-                    //处理数据采集at+record=?/r/n
-
-                    if (sendMessag.indexOf("at+record") >=0){
-                        processRecordsData(result);
+                    if(sendMessag.indexOf("setting:") >=0){
+                        showSettingValue(sendMessag,result);
+                        return ;
                     }
-                    if (sendMessag.indexOf("at+deviceid") >=0){
-                        if (result.indexOf("at+deviceid") >=0) {
-                            deviceId = result;
+                    //处理数据采集at+record=?/r/n
+                    if (sendMessag.indexOf("start:") >=0)
+                    {
+                        if (sendMessag.indexOf("at+record") >=0){
+                            processRecordsData(result);
+                        }
+                        if (sendMessag.indexOf("at+name") >= 0 && result.indexOf("at+name") >= 0) {
+                            Start.getInstance().resultDeviceName = result;
                             //表示连接正确，但是设备有问题，返回ERROR
-                            if (result.indexOf("=error")>=0){
-                                deviceId = "ERROR";
+                            if (result.indexOf("=error") >= 0) {
+                                Start.getInstance().resultDeviceName = "ERROR";
+                            }
+                        }
+                        if (sendMessag.indexOf("at+date") >= 0 && result.indexOf("at+date") >= 0) {
+                            Start.getInstance().resultDeviceDate = result;
+                            //表示连接正确，但是设备有问题，返回ERROR
+                            if (result.indexOf("=error") >= 0) {
+                                Start.getInstance().resultDeviceDate = "ERROR";
+                            }
+                        }
+                        if (sendMessag.indexOf("at+deviceid") >= 0 && result.indexOf("at+deviceid") >= 0) {
+                            Start.getInstance().resultDeviceId = result;
+                            //表示连接正确，但是设备有问题，返回ERROR
+                            if (result.indexOf("=error") >= 0) {
+                                Start.getInstance().resultDeviceId = "ERROR";
+                            }
+                        }
+                        if (sendMessag.indexOf("at+firmware") >= 0 && result.indexOf("at+firmware") >= 0) {
+                            Start.getInstance().resultDeviceVersion = result;
+                            //表示连接正确，但是设备有问题，返回ERROR
+                            if (result.indexOf("=error") >= 0) {
+                                Start.getInstance().resultDeviceVersion = "ERROR";
                             }
                         }
                     }
+
                 }catch(Exception e){
                     e.printStackTrace();
                     this.close();
@@ -175,56 +206,36 @@ public   class CommonUtils implements SerialPortEventListener {
         sendMessag = sendMessag.replace("\r\n","");
         Config.showCollectValue(sendMessag,result);
     }
-
+    //和Config.java窗体文件关联
+    public void showSettingValue(String sendMessag,String result){
+        sendMessag = sendMessag.replace("setting:","");
+        sendMessag = sendMessag.replace("\r\n","");
+        Setting.showSettingValue(sendMessag,result);
+    }
     public void processRecordsData(String result){
         if (result.indexOf("at+record=begin") >=0)
         {
             return ;
         }
-
+        if (result.indexOf("error") >=0)
+        {
+            PublicParameter.isReadRecordOver = true; //如果返回有错误，也当做读取完毕
+            return ;
+        }
         //为什么这里会截断显示，设备有问题
         if (result.indexOf("at+record=end") >=0  || result.indexOf("ord=end") >= 0){
             //Error 0x5 at ..\rxtx\src\termios.c(892)
             //|| result.indexOf("=end") >= 0
             //应该这个设备有问题点，就是最后一行数据读取时，会把at+record=end放在最后一行数据上
             PublicParameter.isReadRecordOver = true;
-           // return ;
+            //写txt文件
+            FileUtil.setTxtFileData(Start.getInstance().getTableDataList());
+            return ;
         }
-        prcessTableModelData(result);
-      //  if ( result.indexOf("at+record=")<0) prcessTableModelData(result);
+        Start.getInstance().prcessTableModelData(result);
     }
 
-    public void prcessTableModelData(String receive){
-        try{
-            receive = receive.replaceAll("\r","");
-            receive = receive.replaceAll("\n","");
-            if (receive.length() <  20) return ;
-            String _year = receive.substring(0,4);  //年年年年
-            String _month = receive.substring(5,7);  //月月
-            String _day = receive.substring(7,9);  //日日
-            String _hour = receive.substring(10,12);  //时时
-            String _sec = receive.substring(12,14);  //分分
-            String _use1 = receive.substring(15,17);  //用量1
-            String _use2 = receive.substring(17,19);  //用量2
-            String _time1 = receive.substring(20,22); //持续时间1
-            String _time2 = receive.substring(22,24); //持续时间2
-            DataEntity data = new DataEntity();
-            data.setsTreatent("");
-            data.setsDate(_day + "/" + _month + "/" + _year);
-            data.setsTime(_hour + ":" + _sec);
-            data.setsVolume(_use1 + _use2);
-            data.setsDuration(_time1 + _time2);
-            data.setsRoom("");
-            data.setsContent("");
-            Start.getInstance().dataModel.addRow(DataColumnsUtils.getListContent(data));
-            Start.getInstance().dataModel.fireTableDataChanged();
-            int maxHeight = Start.getInstance().scrollPanelData.getVerticalScrollBar().getMaximum();
-            Start.getInstance().scrollPanelData.getViewport().setViewPosition(new Point(0,maxHeight));
-        }catch(Exception eg){
 
-        }
-
-    }
 
     public  String receive(){
         String result = "";

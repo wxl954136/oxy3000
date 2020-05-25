@@ -4,9 +4,19 @@ public class SettingField {
     private String currentPort; //当前端口
     private String deviceName;
     private String deviceDate;
-    private String deviceHourStart;
-    private String deviceHourEnd;
+    private String deviceHour;
+    private String deviceMinute;
+    private String deviceSecond = "30";
+    private String atTime;
     private Boolean answer;
+
+    public String getCurrentPort() {
+        return currentPort;
+    }
+
+    public void setCurrentPort(String currentPort) {
+        this.currentPort = currentPort;
+    }
 
     public String getDeviceName() {
         return deviceName;
@@ -24,22 +34,21 @@ public class SettingField {
         this.deviceDate = deviceDate;
     }
 
-    public String getDeviceHourStart() {
-        return deviceHourStart;
+    public String getDeviceHour() {
+        return deviceHour;
     }
 
-    public void setDeviceHourStart(String deviceHourStart) {
-        this.deviceHourStart = deviceHourStart;
+    public void setDeviceHour(String deviceHour) {
+        this.deviceHour = deviceHour;
     }
 
-    public String getDeviceHourEnd() {
-        return deviceHourEnd;
+    public String getDeviceMinute() {
+        return deviceMinute;
     }
 
-    public void setDeviceHourEnd(String deviceHourEnd) {
-        this.deviceHourEnd = deviceHourEnd;
+    public void setDeviceMinute(String deviceMinute) {
+        this.deviceMinute = deviceMinute;
     }
-
 
     public Boolean getAnswer() {
         return answer;
@@ -49,11 +58,12 @@ public class SettingField {
         this.answer = answer;
     }
 
-    public String getCurrentPort() {
-        return currentPort;
+    public String getAtTime() {
+        return this.getDeviceHour()+this.getDeviceMinute()+deviceSecond;
     }
 
-    public void setCurrentPort(String currentPort) {
-        this.currentPort = currentPort;
+    public void setAtTime(String atTime) {
+
+        this.atTime = atTime;
     }
 }

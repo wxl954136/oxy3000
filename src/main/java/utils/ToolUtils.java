@@ -135,14 +135,15 @@ public class ToolUtils {
         message += "\r\n";
         return message;
     }
-    public static String getFormatSendOrder(String order,String value){
-//        String order= "debug:at+speed=#{speed}";
-        int key_start = order.indexOf("+") + 1;
-        int key_end = order.indexOf("=#");
-        String key = order.substring(key_start,key_end).trim();
-        String replaceStr = "#\\{" + key + "}";
-        String result = order.replaceAll(replaceStr,value);
-        return result;
+    public static String getSendOrderKey(String source ){
+//        source = "at+time=#time";
+        String key = "NONE";
+        int start =  source.indexOf("#");
+        if (start >= 0)
+        {
+            key = source.substring(start);
+        }
+        return key;
     }
 
 
