@@ -27,5 +27,5 @@
   "sdys": {"remark":"设定延时","order":"at+delay=#delay","success": "at+delay=ok","error": "at+delay=error" },
   "cxsbxlh": {"remark":"查询设备序列号","order":"at+deviceid=?","success": "at+deviceid=#deviceid","error": "at+deviceid=error" },
   "sdsbxlh": {"remark":"设定设备序列号","order":"at+deviceid=#deviceid","success": "at+deviceid=ok","error": "at+deviceid=error" },
-  "cxsbsyjl": {"remark":"设定设备序列号","order":"at+record=?","success": "#list","error": "at+record=error" }
+  "cxsbsyjl": {"remark":"设定设备使用记录","order":"at+record=?","success": "#list","error": "at+record=error" }
 }

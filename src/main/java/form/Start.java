@@ -255,11 +255,11 @@ public class Start extends JFrame {
             CommonUtils.commUtil = null;
             PublicParameter.currentPort = currentPort;
             String sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbmc","order")); //查询设备序列号
-
             serialPortSend(sendMsg);
             Thread.sleep(500);
-            if (resultDeviceName.indexOf("at+name")>=0 && resultDeviceName.indexOf("ERROR") < 0){
-                deviceName.setText("Device Name " + resultDeviceName.substring("at+name=".length() ));
+            String cxsbmcOrderName = ToolUtils.getOrderName("cxsbmc");
+            if (resultDeviceName.indexOf(cxsbmcOrderName)>=0 && resultDeviceName.indexOf("ERROR") < 0){
+                deviceName.setText("Device Name " + resultDeviceName.substring((cxsbmcOrderName+"=").length() ));
             }else
             {
                 deviceName.setText("Device Name " );
@@ -268,8 +268,9 @@ public class Start extends JFrame {
             sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxrq","order")); //查询 设备使用记录
             serialPortSend(sendMsg);
             Thread.sleep(500);
-            if (resultDeviceDate.indexOf("at+date")>=0 && resultDeviceDate.indexOf("ERROR") < 0){
-                deviceDate.setText("Device Date " + resultDeviceDate.substring("at+date=".length() ));
+            String cxrqOrderName = ToolUtils.getOrderName("cxrq");
+            if (resultDeviceDate.indexOf(cxrqOrderName)>=0 && resultDeviceDate.indexOf("ERROR") < 0){
+                deviceDate.setText("Device Date " + resultDeviceDate.substring((cxrqOrderName+"=").length() ));
             }else
             {
                 deviceDate.setText("Device Date " );
@@ -277,8 +278,9 @@ public class Start extends JFrame {
             sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxgjbb","order")); //查询 设备使用记录
             serialPortSend(sendMsg);
             Thread.sleep(500);
-            if (resultDeviceVersion.indexOf("at+date")>=0 && resultDeviceVersion.indexOf("ERROR") < 0){
-                deviceVersion.setText("Device Version " + resultDeviceVersion.substring("at+firmware=".length() ));
+            String cxgjbbOrderName = ToolUtils.getOrderName("cxgjbb");
+            if (resultDeviceVersion.indexOf(cxgjbbOrderName)>=0 && resultDeviceVersion.indexOf("ERROR") < 0){
+                deviceVersion.setText("Device Version " + resultDeviceVersion.substring((cxgjbbOrderName + "=").length() ));
             }else
             {
                 deviceVersion.setText("Device Version " );

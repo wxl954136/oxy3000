@@ -1,15 +1,19 @@
 package utils;
 
 
+import bean.DataEntity;
+import com.sun.deploy.util.StringUtils;
+
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Enumeration;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.List;
+
 public class ToolUtils {
-    public static final String txtHelpFilePath = "./resources/txt/install.txt";
+    public static final String txtHelpFilePath = "./resources/txt/readme.txt";
     private static ToolUtils toolUtils;
     private ToolUtils() {
     }
@@ -135,6 +139,18 @@ public class ToolUtils {
         message += "\r\n";
         return message;
     }
+
+    /**
+     *
+     * @param message 传入的字符可能有\r\n,替换掉
+     * @return
+     */
+    public static String getPurStr(String message){
+        if (isEmpty(message)) message = "";
+        message = message.replaceAll("\r","");
+        message = message.replaceAll("\n","");
+        return message;
+    }
     public static String getSendOrderKey(String source ){
 //        source = "at+time=#time";
         String key = "NONE";
@@ -145,8 +161,78 @@ public class ToolUtils {
         }
         return key;
     }
+    public static String getCurrentDate(String format)
+    {
+        if (isEmpty(format)) format = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(new Date());
+    }
+    public static boolean isEmpty(String obj){
+        if (obj == null) return true;
+        if ("" == obj) return true;
+        return false;
+    }
+    public static String nullFormat(String obj)
+    {
+        String result = "";
+        if (obj == null)  result = "";
+        result = obj ;
+        return result;
+    }
 
+    public static Map<String,String> mapOrderName = new HashMap<>();
+    public static String getOrderName(String target)
+    {
+        if (mapOrderName.containsKey(target)){
+            return mapOrderName.get(target);
+        }
+        String orderName = nullFormat(JsonRead.getInstance().getJsonTarget(target,"order"));
+        String result = "****";
+        int loc =  orderName.indexOf("=");
+        if (loc >= 0) {
+            result = orderName.substring(0,loc);
+            mapOrderName.put(target,result);
+        }
+        return result;
+    }
 
+    public static DataEntity array2Entity(String value)
+    {
+        if (ToolUtils.isEmpty(value)) return null;
+        String[] array = value.split("\\|");
+        DataEntity dataEntity = new DataEntity();
+        for (int index = 0 ; index < array.length ; index++){
+            switch(index)
+            {
+                case DataColumnsUtils.COL_TREATENT:
+                    dataEntity.setsTreatent(array[index]);
+                    break;
+                case DataColumnsUtils.COL_DATE:
+                    dataEntity.setsDate(array[index]);
+                    break;
+                case DataColumnsUtils.COL_TIME:
+                    dataEntity.setsTime(array[index]);
+                    break;
+                case DataColumnsUtils.COL_VOLUME:
+                    dataEntity.setsVolume(array[index]);
+                    break;
+                case DataColumnsUtils.COL_DURATION:
+                    dataEntity.setsDuration(array[index]);
+                    break;
+                case DataColumnsUtils.COL_OPERATORNAME:
+                    dataEntity.setsOperatorName(array[index]);
+                    break;
+                case DataColumnsUtils.COL_ROOM:
+                    dataEntity.setsRoom(array[index]);
+                    break;
+                case DataColumnsUtils.COL_CONTENT:
+                    dataEntity.setsContent(array[index]);
+                    break;
+            }
+        }
+
+        return dataEntity;
+    }
 }
 
 /*
