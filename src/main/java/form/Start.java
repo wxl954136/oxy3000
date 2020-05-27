@@ -2,6 +2,7 @@ package form;
 
 import bean.DataEntity;
 import bean.SettingField;
+import com.alibaba.fastjson.JSONObject;
 import common.CommonUtils;
 import pdf.PdfUtils;
 import sun.swing.table.DefaultTableCellHeaderRenderer;
@@ -125,6 +126,10 @@ public class Start extends JFrame {
         btnQuery.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/search.png"),0.5));
         btnQuery.setToolTipText("Search");
         btnQuery.addActionListener(e -> {
+            if (!PublicParameter.isReadRecordOver ){
+                JOptionPane.showMessageDialog(this, "数据正在处理，请等待数据处理完毕!", "提示信息", 1);
+                return ;
+            }
             searchHistory();
         });
 
@@ -422,11 +427,23 @@ public class Start extends JFrame {
     }
     private void searchHistory()
     {
+        History history = History.getInstance();
+        history.setIconImage(new ImageIcon("./resources/img/start.png").getImage());//设置图
+        history.setTitle(JsonRead.getInstance().getJsonTarget("title"));
+        history.setSize(300,130);
+        history.setLocationRelativeTo(null);//窗体居中显示
+        history.setUndecorated(true);// 不绘制边框
+        history.initComponentValue();
+        history.setVisible(true);
+        if (!history.answer) {
+            return ;
+        }
         String fileFullPath=ToolUtils.getUserDir() + "\\resources\\txt\\history"  ;
         File dirs = new File( fileFullPath);
         File files[] = dirs.listFiles();
         //按查询条件生成需要的文件 ,查询规则待定义
-        String searchFileName = "REC-222110228318-20200527095321.json";
+//        String searchFileName = "REC-222110228318-20200527095321.json";
+        String searchFileName  = history.searchFileName;
         boolean isFound =false;
         for(File file:files){
             if (file.isFile()){
@@ -438,21 +455,28 @@ public class Start extends JFrame {
         }
         if (!isFound) return ;
         String fileName = fileFullPath + "\\" + searchFileName;
+        String jsonFileContent = JsonRead.getInstance().readJsonFile(fileName);
+        JSONObject object = JSONObject.parseObject(jsonFileContent);
+        String sDevicename =  object.get("devicename").toString();
+        String sDevicedate = object.get("devicedate").toString();
+        String sDeviceversion = object.get("deviceversion").toString();
+        deviceName.setText("Device Name " + sDevicename);
+        deviceDate.setText("Device Date " + sDevicedate);
+        deviceVersion.setText("Device Version " + sDeviceversion);
+
         List<DataEntity>  list =JsonRead.getJsonRecordFileToEntity(fileName);
-
         removeRowForDetailTable();
-
-
         for(DataEntity data : list)
         {
             dataModel.addRow(DataColumnsUtils.getListContent(data));
             dataModel.fireTableDataChanged();
         }
-        //保存保存在哪里
+        //保存保存在哪里呢，要告诉我
 
 
 
     }
+
     private void exportPDF()
     {
         if (!PublicParameter.isReadRecordOver || dataModel.getRowCount() <=0 ){
@@ -491,7 +515,6 @@ public class Start extends JFrame {
 
 
     private void onCancel() {
-
 
         if (CommonUtils.commUtil != null) {
             CommonUtils.commUtil.close();

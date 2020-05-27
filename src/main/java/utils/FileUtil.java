@@ -5,9 +5,7 @@ import form.Start;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class FileUtil {
 
@@ -63,6 +61,11 @@ public class FileUtil {
         deviceid = deviceid.indexOf("=") >=0?deviceid.substring(deviceid.indexOf("=") +1):"";
         result = result + JsonRead.getGenJsonTag("deviceid",deviceid,",");
 
+
+        String fileName = "REC-" + deviceid + "#" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".json";
+        result = result + JsonRead.getGenJsonTag("filename",fileName,",");
+
+
         String devicename =  ToolUtils.getPurStr(Start.getInstance().resultDeviceName);
         devicename = devicename.indexOf("=") >=0?devicename.substring(devicename.indexOf("=") +1):"";
         result = result + JsonRead.getGenJsonTag("devicename", devicename,",");
@@ -83,13 +86,13 @@ public class FileUtil {
         result = result + JsonRead.getGenJsonEnd();
 
         try{
-            String fileName = "REC-" + deviceid + "-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".json";
             File createFile = getCreateJsonFile(fileName);
             writeJsonFile(result,createFile);
             if(listData.size() >0)
             {
                 //勇子通知暂时不删除
-                //deleteExportTxtFile(createFile.getName());
+                //同一天只保存最新一次的即可
+                deleteExportJsonFile(createFile.getName());
             }
         }catch(Exception eg){
             eg.printStackTrace();
@@ -116,7 +119,9 @@ public class FileUtil {
         }
         return flag;
     }
-    public static List<DataEntity> readTxtFile(String fileName)
+
+    /*
+    public static List<DataEntity> readJsonFile(String fileName)
     {
         List<DataEntity> resultList = new ArrayList<>();
         fileName=ToolUtils.getUserDir() + "\\resources\\txt\\history\\" + fileName;
@@ -127,11 +132,8 @@ public class FileUtil {
             BufferedReader br = new BufferedReader(new FileReader(file));//构造一个BufferedReader类来读取文件
             String str = null;
             while((str = br.readLine())!=null){//使用readLine方法，一次读一行
-//                result.append(System.lineSeparator()+str);
                 resultList.add(ToolUtils.array2Entity(str));
-                //System.out.println(x.split("\\|").length);
             }
-//            System.out.println(result);
             br.close();
         }catch(Exception e){
             e.printStackTrace();
@@ -139,17 +141,87 @@ public class FileUtil {
         }
         return resultList;
     }
-
-    public static void deleteExportTxtFile(String retainFile )
+     */
+    public static List<String> getHistoryFiles()
     {
+        List<String> list = new ArrayList<>();
+        String fileFullPath=ToolUtils.getUserDir() + "\\resources\\txt\\history"  ;
+        File dirs = new File( fileFullPath);
+        File files[] = dirs.listFiles();
+        for(File file:files){
+            if (file.isFile()){
+                list.add(file.getName());
+            }
+        }
+        return list;
+    }
+
+    public static String getSearchFile(String deviceid,String date)
+    {
+        String fileTemp ="REC-" + deviceid.trim()+ "#" + date.replaceAll("-","");
+        List<String> listFiles = getHistoryFiles();
+        String result = "";
+        for(String fileName : listFiles){
+            if (fileName.indexOf(fileTemp) >= 0){
+                result = fileName ;
+                break;
+            }
+        }
+        return result;
+    }
+    public static void deleteExportJsonFile(String retainFile )
+    {
+        //fileIndex.同一设备同一天一天只能存在一份,以最后一次的为准
+        int loc = retainFile.indexOf("#");
+        if(loc < 0 ) return ;
+        String fileIndex = retainFile.substring(0,loc+1) +retainFile.substring(loc +1,loc+9);
         String fileFullPath=ToolUtils.getUserDir() + "\\resources\\txt\\history"  ;
         File dirs = new File( fileFullPath);
         File files[] = dirs.listFiles();
         for(File file:files){
             if (file.isFile()){
                 if (file.getName().equalsIgnoreCase(retainFile)) continue;
-                file.delete();
+                if (file.getName().lastIndexOf(fileIndex) >=0)
+                {
+                    file.delete();
+                }
+
             }
         }
     }
+
+
+    /**
+     * 获取history目录下的所有文件，并解析成deviceid与日期
+     * Map<String,List<String>> key:deviceid  list<String>每个deviceId有几个日期的
+     * @return
+     */
+    public static Map<String,List<String>> getRecordHistory()
+    {
+        Map<String,List<String>> map = new HashMap();
+        List<String> files = FileUtil.getHistoryFiles();
+        for(String file: files){
+            if (file.indexOf("REC") <0) continue;
+            file = file.replaceAll("REC-","");
+            int loc = file.indexOf("#");
+            String deviceid = file.substring(0,loc);
+            String date = file.substring(loc+1,loc + 9);
+            String year = date.substring(0,4);
+            String month = date.substring(4,6);
+            String day = date.substring(6);
+            //符合日期格式则在下拉框中给出日期格式
+            if (date.length() == 8 ) date = year + "-" + month + "-" + day;
+            if (map.containsKey(deviceid))
+            {
+                ((List<String>)map.get(deviceid)).add(day);
+            }else
+            {
+                List<String>  listDate = new ArrayList<>();
+                listDate.add(date);
+                map.put(deviceid,listDate);
+            }
+        }
+        return map;
+    }
+
 }
