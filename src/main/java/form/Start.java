@@ -442,16 +442,13 @@ public class Start extends JFrame {
 
         removeRowForDetailTable();
 
-        System.out.println("x=========");
-        int i = 0 ;
+
         for(DataEntity data : list)
         {
             dataModel.addRow(DataColumnsUtils.getListContent(data));
             dataModel.fireTableDataChanged();
         }
         //保存保存在哪里
-
-
 
 
 
