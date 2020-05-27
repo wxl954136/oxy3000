@@ -3,7 +3,6 @@ package utils;
 import bean.DataEntity;
 import form.Start;
 
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class FileUtil {
             if (!dirs.exists()) {
                 dirs.mkdirs();// 能创建多级目录
             }
-            String fileFullName =  fileFullPath + "\\" +  fileName;
+            String fileFullName =  fileFullPath + "\\"  + fileName;
             File file = new File(fileFullName);
             if (!file.exists()){
                 file.createNewFile();
@@ -84,7 +83,7 @@ public class FileUtil {
         result = result + JsonRead.getGenJsonEnd();
 
         try{
-            String fileName = deviceid + "-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".json";
+            String fileName = "REC-" + deviceid + "-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".json";
             File createFile = getCreateJsonFile(fileName);
             writeJsonFile(result,createFile);
             if(listData.size() >0)
@@ -152,6 +151,5 @@ public class FileUtil {
                 file.delete();
             }
         }
-
     }
 }

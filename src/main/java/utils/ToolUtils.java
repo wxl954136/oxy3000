@@ -233,6 +233,19 @@ public class ToolUtils {
 
         return dataEntity;
     }
+    //获取一个排序集合
+    public static Map getSortMap()
+    {
+        Map<String, Object> map = new TreeMap<String, Object>(
+                new Comparator<String>() {
+                    @Override
+                    public int compare(String obj1, String obj2) {
+                        // 降序排序key
+                        return obj2.compareTo(obj1);
+                    }
+                });
+        return map;
+    }
 }
 
 /*

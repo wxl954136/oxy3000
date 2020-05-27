@@ -45,6 +45,7 @@ public class Start extends JFrame {
     private JButton btnSetting;
     private JLabel softwareVersionValue;
     private JLabel deviceVersionValue;
+    private JButton btnQuery;
     public final static Color colorBackGround = new Color(47,63,80);
     public final static Color fontColor = new Color(173,206,47);
     String currentPort = "NONE";
@@ -120,16 +121,18 @@ public class Start extends JFrame {
         panelTop.updateUI();
         panelBottom.setSize(dim);
         panelBottom.updateUI();
+        btnQuery.setText("");
+        btnQuery.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/search.png"),0.5));
+        btnQuery.setToolTipText("Search");
+        btnQuery.addActionListener(e -> {
+            searchHistory();
+        });
+
         btnExport.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/export.png"),0.5));
         btnExport.setText("");
         btnExport.setToolTipText("Export");
         btnExport.addActionListener(e -> {
-            if (true){
-                exportPDF();
-            }else
-            {
-                JOptionPane.showMessageDialog(null,"未正确采集数据或数据正在采集中，无法导出" ,"提示信息", 1);
-            }
+             exportPDF();
         });
         btnSetting.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/settings.png"),0.5));
         btnSetting.setText("");
@@ -150,10 +153,12 @@ public class Start extends JFrame {
                 else showSetting();
 
         });
+        btnQuery.setBackground(colorBackGround);
+        btnQuery.setBorder(null);
         btnExport.setToolTipText("Setting");
         btnExport.setBackground(colorBackGround);
-        btnSetting.setBackground(colorBackGround);
         btnExport.setBorder(null);
+        btnSetting.setBackground(colorBackGround);
         btnSetting.setBorder(null);
         scrollPanelData.setBorder(null);
         tableData.setBorder(null);
@@ -414,6 +419,42 @@ public class Start extends JFrame {
             //返回日期的取值
         }
         
+    }
+    private void searchHistory()
+    {
+        String fileFullPath=ToolUtils.getUserDir() + "\\resources\\txt\\history"  ;
+        File dirs = new File( fileFullPath);
+        File files[] = dirs.listFiles();
+        //按查询条件生成需要的文件 ,查询规则待定义
+        String searchFileName = "REC-222110228318-20200527095321.json";
+        boolean isFound =false;
+        for(File file:files){
+            if (file.isFile()){
+                if (file.getName().equalsIgnoreCase(searchFileName)){
+                    isFound = true;
+                    break;
+                }
+            }
+        }
+        if (!isFound) return ;
+        String fileName = fileFullPath + "\\" + searchFileName;
+        List<DataEntity>  list =JsonRead.getJsonRecordFileToEntity(fileName);
+
+        removeRowForDetailTable();
+
+        System.out.println("x=========");
+        int i = 0 ;
+        for(DataEntity data : list)
+        {
+            dataModel.addRow(DataColumnsUtils.getListContent(data));
+            dataModel.fireTableDataChanged();
+        }
+        //保存保存在哪里
+
+
+
+
+
     }
     private void exportPDF()
     {

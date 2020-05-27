@@ -125,9 +125,10 @@ public class JsonRead {
 /*
 解析json文件后放入table中，还没有做 lukeWang
 prcessTableModelData 注意start.java中参照
+
  */
     public static List<DataEntity> getJsonRecordFileToEntity(String filename){
-        filename = ToolUtils.getUserDir() + "\\resources\\txt\\history\\" + filename;
+//        filename = ToolUtils.getUserDir() + "\\resources\\txt\\history\\" + filename;
         String readJson = JsonRead.getInstance().readJsonFile(filename);
         JSONObject object = JSONObject.parseObject(readJson);
         JSONArray jarr=JSONArray.parseArray(object.get("data").toString());
