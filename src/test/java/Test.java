@@ -14,14 +14,16 @@ import java.util.*;
 public class Test {
 
     public static void main(String[] args) {
-        String date = "20190102";
-        System.out.println(date.length());
-        String year = date.substring(0,4);
-        String month = date.substring(4,6);
-        String day = date.substring(6);
-        System.out.println(year);
-        System.out.println(month);
-        System.out.println(day);
+        System.out.println("x=======");
+        long begin = System.currentTimeMillis();
+        new Thread(new Runnable() {
+            public void run() {
+                try{Thread.sleep(5000);
+                }catch(Exception eg){}
+
+            }
+        }).start();
+        System.out.println("y=======");
         /*
         Map<String,List<String>> map = new HashMap();
         List<String> files = FileUtil.getHistoryFiles();

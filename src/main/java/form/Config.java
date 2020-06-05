@@ -103,6 +103,7 @@ public class Config extends JDialog {
         txtSdsbxlh.setText("");
     }
     public void serialPortSend(String sendMsg){
+        waitExecute();
         PublicParameter.commonUtils = CommonUtils.getInstance(PublicParameter.currentPort);
         PublicParameter.commonUtils.send(ToolUtils.getFormatMsg(sendMsg));
     }
@@ -228,7 +229,13 @@ public class Config extends JDialog {
         String debugOrder = "debug:" + JsonRead.getInstance().getJsonTarget("cxsbsyjl","order");
         serialPortSend(debugOrder);
     }
+    private void waitExecute()
+    {
+        try{
+            Thread.sleep(400);
+        }catch(Exception e){}
 
+    }
     public static void showCollectValue(String sendMessage,String result){
         if (sendMessage.equalsIgnoreCase( JsonRead.getInstance().getJsonTarget("fwsb","order")))
         {

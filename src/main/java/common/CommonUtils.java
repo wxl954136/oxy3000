@@ -145,12 +145,38 @@ public   class CommonUtils implements SerialPortEventListener {
     }
 
     public   void serialEvent(SerialPortEvent event) {
+        String message = "";
         switch (event.getEventType()){
+
+/*
+            case SerialPortEvent.BI: //通讯中断
+                message = "Error: BI";
+            case SerialPortEvent.OE: //溢位错误
+                message = "Error: OE";
+            case SerialPortEvent.FE: //帧错误
+                message = "Error: FE";
+            case SerialPortEvent.PE: //奇偶校验错误
+                message = "Error: PE";
+            case SerialPortEvent.CD: //载波检测
+                message = "Error: CD";
+            case SerialPortEvent.CTS: //清除发送
+                message = "Error: CTS";
+            case SerialPortEvent.DSR: //数据设备准备好
+                message = "Error: DSR";
+            case SerialPortEvent.RI: //响铃侦测
+                message = "Error: RI";
+            case SerialPortEvent.OUTPUT_BUFFER_EMPTY: //输出缓冲区已清空
+                message = "Error: OUTPUT_BUFFER_EMPTY";
+                System.out.println(message);
+                break;
+
+*/
             case SerialPortEvent.DATA_AVAILABLE:
                 //receive();
                 try{
                     //"不能加线程等待，否则会丢失数据-------------"
                     String result = receive();
+                    System.out.println("指令:" + sendMessag + "   接收数据内容:" + result);
 //                    System.out.println("lukeWang: 收取信息:" + result);
                     if (result.length() == 0 ) return ;
 
@@ -225,7 +251,12 @@ public   class CommonUtils implements SerialPortEventListener {
     public void processRecordsData(String result){
         String cxsbsyjlOrderName = ToolUtils.getOrderName("cxsbsyjl");
         //at+record
-        if (result.indexOf(cxsbsyjlOrderName + "=begin") >=0)
+        if (result.indexOf(cxsbsyjlOrderName + "=begin") >=0 ||
+                result.indexOf("=begin") >=0  ||
+                result.indexOf("begin") >=0 ||
+                result.indexOf("gin") >=0 ||
+                result.indexOf("in") >=0
+        )
         {
             return ;
         }
@@ -235,13 +266,24 @@ public   class CommonUtils implements SerialPortEventListener {
             return ;
         }
         //为什么这里会截断显示，设备有问题
-        if (result.indexOf(cxsbsyjlOrderName + "=end") >=0  || result.indexOf("ord=end") >= 0){
+        if (result.indexOf(cxsbsyjlOrderName + "=end") >=0  ||
+                result.indexOf("ord=end") >= 0 ||
+                result.indexOf("=end") >=0 ||
+                result.indexOf("=en") >=0 ||
+                result.indexOf("nd") >=0
+        ) {
             //Error 0x5 at ..\rxtx\src\termios.c(892)
             //|| result.indexOf("=end") >= 0
             //应该这个设备有问题点，就是最后一行数据读取时，会把at+record=end放在最后一行数据上
             PublicParameter.isReadRecordOver = true;
             //写txt文件
-            FileUtil.setJsonFileData(Start.getInstance().getTableDataList());
+            try {
+                FileUtil.setJsonFileData(Start.getInstance().getTableDataList());
+            } catch (Exception e) {
+
+            }finally {
+                PublicParameter.isReadRecordOver = true;
+            }
             return ;
         }
         Start.getInstance().prcessTableModelData(result);

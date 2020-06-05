@@ -177,7 +177,21 @@ public class Start extends JFrame {
         dataModel = new DefaultTableModel(rowDatas, getTableColumnName()){
             public boolean isCellEditable(int row, int column)
             {
-                return false;
+                boolean result = false;
+                switch(column)
+                {
+                    case  DataColumnsUtils.COL_OPERATORNAME:
+                        result =  true;
+                        break;
+                    case DataColumnsUtils.COL_ROOM:
+                        result =  true;
+                        break;
+                    case DataColumnsUtils.COL_CONTENT:
+                        result =  true;
+                        break;
+
+                }
+                return result;
             }
         };
         tableData.setModel(dataModel);
@@ -290,15 +304,24 @@ public class Start extends JFrame {
             Thread.sleep(500);
             String cxgjbbOrderName = ToolUtils.getOrderName("cxgjbb");
             if (resultDeviceVersion.indexOf(cxgjbbOrderName)>=0 && resultDeviceVersion.indexOf("ERROR") < 0){
-                deviceVersion.setText("Device Version " + resultDeviceVersion.substring((cxgjbbOrderName + "=").length() ));
+                deviceVersionValue.setText(resultDeviceVersion.substring((cxgjbbOrderName + "=").length() ));
             }else
             {
-                deviceVersion.setText("Device Version " );
+                deviceVersionValue.setText("1.0.1");
             }
             //CommonUtils.commUtil = null;
             //PublicParameter.commonUtils = CommonUtils.getInstance(currentPort);
             sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbsyjl","order")); //查询 设备使用记录
             serialPortSend(sendMsg);
+
+            new Thread(new Runnable() {
+                public void run() {
+                    try{Thread.sleep(4000);}catch(Exception eg){}
+                    //万一没取到数据，5秒钟后可进行其它操作
+                    if (dataModel.getRowCount() == 0 )  PublicParameter.isReadRecordOver = true;
+                }
+            }).start();
+
 
         }catch(Exception e)
         {
@@ -419,7 +442,6 @@ public class Start extends JFrame {
         setting.initComponentValue();
         setting.setVisible(true);
         if (settingField.getAnswer()){
-
             //deviceDate.setText(settingField.getDeviceDate());
             //返回日期的取值
         }
@@ -462,7 +484,8 @@ public class Start extends JFrame {
         String sDeviceversion = object.get("deviceversion").toString();
         deviceName.setText("Device Name " + sDevicename);
         deviceDate.setText("Device Date " + sDevicedate);
-        deviceVersion.setText("Device Version " + sDeviceversion);
+//        deviceVersion.setText("Device Version " + sDeviceversion);
+        deviceVersionValue.setText(sDeviceversion);
 
         List<DataEntity>  list =JsonRead.getJsonRecordFileToEntity(fileName);
         removeRowForDetailTable();
@@ -479,7 +502,8 @@ public class Start extends JFrame {
 
     private void exportPDF()
     {
-        if (!PublicParameter.isReadRecordOver || dataModel.getRowCount() <=0 ){
+        //|| dataModel.getRowCount() <=0
+        if (!PublicParameter.isReadRecordOver  ){
             JOptionPane.showMessageDialog(this, "数据正在采集或无数据时，不可导出数据", "提示信息", 1);
             return ;
         }
@@ -506,10 +530,10 @@ public class Start extends JFrame {
         fileFullName = fileFullName.replace("\\\\","\\"); //，当选择根目录的时候，可能会有异常,不替换windows下适配
         try{
             PdfUtils.createHardwarePDF(fileFullName,getTableDataList());
+            JOptionPane.showMessageDialog(this, "数据导出成功", "提示信息", 1);
         }catch(Exception e){
             e.printStackTrace();
         }
-
     }
 
 
