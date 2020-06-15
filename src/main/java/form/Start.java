@@ -167,7 +167,7 @@ public class Start extends JFrame {
         softwareVersionValue.setText(JsonRead.getInstance().getJsonTarget("version"));
         deviceVersionValue.setText("");
         tabbedPane1.setTitleAt(0,"Records");
-        tabbedPane1.setTitleAt(1,"History Records");
+        tabbedPane1.setTitleAt(1,"Local Records");
         tabbedPane1.setSelectedIndex(0);
         initComboBoxDeviceId();
         initHistoryTable();
@@ -487,8 +487,10 @@ public class Start extends JFrame {
             int maxHeight = scrollPanelData.getVerticalScrollBar().getMaximum();
             scrollPanelData.getViewport().setViewPosition(new Point(0,maxHeight));
         }catch(Exception eg){
-            System.out.println("x=在这里吗====" + eg.getMessage());
+
         }
+
+
 
     }
     private void  showConfig()
@@ -555,7 +557,7 @@ public class Start extends JFrame {
             }
         }
         this.tabbedPane1.setSelectedIndex(1);
-        JOptionPane.showMessageDialog(this, "数据加载完成", "提示信息", 1);
+        JOptionPane.showMessageDialog(this, "Data load over", "Information", 1);
         /*
         if (!isFound) return ;
         String fileName = fileFullPath + "\\" + searchFileName;

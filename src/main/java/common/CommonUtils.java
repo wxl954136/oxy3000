@@ -176,7 +176,7 @@ public   class CommonUtils implements SerialPortEventListener {
                     //"不能加线程等待，否则会丢失数据-------------"
                     String result = receive();
 
-                    System.out.println("1-指令:" + sendMessag + "   接收数据内容:" + result);
+//                    System.out.println("1-指令:" + sendMessag + "   接收数据内容:" + result);
                     if (result.length() == 0 ) return ;
 
                     if(sendMessag.indexOf("debug:") >=0){

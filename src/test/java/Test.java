@@ -32,7 +32,9 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        System.out.println(Test.getMD5Str("中国人"));
+        //System.out.println(Test.getMD5Str("中国人"));
+        String x = "at+deviceid=20023423424";
+        System.out.println(x.replaceAll("at\\+deviceid=",""));
         /*
         Map<String,List<String>> map = new HashMap();
         List<String> files = FileUtil.getHistoryFiles();

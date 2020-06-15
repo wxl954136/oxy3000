@@ -92,8 +92,9 @@ public class PdfUtils {
         //img.setWidthPercentage(90);
         */
         //firstRowContent.addCell(img);
-        firstRowContent.addCell(mircoSoftFont("created on :" + sdf.format(new Date()) +"\n" +
-                        Start.getInstance().deviceName.getText() ,
+        String deviceId = Start.getInstance().resultDeviceId.replaceAll("at\\+deviceid=","");
+        firstRowContent.addCell(mircoSoftFont("Created on :" + sdf.format(new Date()) +"\n" +
+                        "Device id :" + deviceId ,
                 size8font, 15, false, true,false));
 //        firstRowContent.addCell(mircoSoftFont(Start.getInstance().deviceName.getText() , size12font, 30, true, true,false));
         firstRowContent.addCell(mircoSoftFont("读取数据列表" , size12font, 30, true, true,false));

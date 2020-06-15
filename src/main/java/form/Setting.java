@@ -116,7 +116,7 @@ public class Setting extends JDialog {
         String sdsbmcOrder = "setting:" + JsonRead.getInstance().getJsonTarget("sdsbmc","order");
         String sdsbmcKey =  ToolUtils.getSendOrderKey(sdsbmcOrder);
         sdsbmcOrder = sdsbmcOrder.replaceAll(sdsbmcKey ,settingField.getDeviceName());
-        mapOrder.put(JsonRead.getInstance().getJsonTarget("sdrq","order"),sdsbmcOrder.replaceAll("setting:",""));
+        mapOrder.put(JsonRead.getInstance().getJsonTarget("sdsbmc","order"),sdsbmcOrder.replaceAll("setting:",""));
         serialPortSend(sdsbmcOrder);
         try {
             Thread.sleep(1000);
@@ -172,19 +172,19 @@ public class Setting extends JDialog {
         for (Map.Entry<String, String> map : setting.mapResult.entrySet()) {
             if (map.getKey().equalsIgnoreCase("sdsbmc"))
             {
-                result +=  "设备名称:更新" + (map.getValue().equalsIgnoreCase("success")?"成功":"失败") + "\n";
+                result +=  "Device name:" + (map.getValue().equalsIgnoreCase("success")?"update success":"update failed") + "\n";
             }
             if (map.getKey().equalsIgnoreCase("sdrq"))
             {
-                result += "日期:更新" + (map.getValue().equalsIgnoreCase("success")?"成功":"失败") + "\n";
+                result += "Device date:" + (map.getValue().equalsIgnoreCase("success")?"update success":"update failed") + "\n";
             }
             if (map.getKey().equalsIgnoreCase("sdsj"))
             {
-                result += "时间:更新" + (map.getValue().equalsIgnoreCase("success")?"成功":"失败") + "\n";
+                result += "Device time:" + (map.getValue().equalsIgnoreCase("success")?"update success":"update failed") + "\n";
             }
         }
 
-        JOptionPane.showMessageDialog(this,result ,"提示信息", 1);
+        JOptionPane.showMessageDialog(this,result ,"Information", 1);
     }
     private void onCancel() {
         settingField.setAnswer(false);
