@@ -265,7 +265,7 @@ public   class CommonUtils implements SerialPortEventListener {
             PublicParameter.isReadRecordOver = true; //如果返回有错误，也当做读取完毕
             return ;
         }
-        System.out.println("x2============整理结果========= ====" + result);
+
         Start.getInstance().prcessTableModelData(result);
         //为什么这里会截断显示，设备有问题
         if (result.indexOf(cxsbsyjlOrderName + "=end") >=0  ||
