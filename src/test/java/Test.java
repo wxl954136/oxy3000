@@ -6,24 +6,33 @@ import utils.FileUtil;
 import utils.JsonRead;
 import utils.ToolUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 //对象模型
 public class Test {
+    public static String getMD5Str(String str) {
+        byte[] digest = null;
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("md5");
+            digest  = md5.digest(str.getBytes("utf-8"));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        //16是表示转换为16进制数
+        String md5Str = new BigInteger(1, digest).toString(16);
+        return md5Str;
+    }
 
     public static void main(String[] args) {
-        System.out.println("x=======");
-        long begin = System.currentTimeMillis();
-        new Thread(new Runnable() {
-            public void run() {
-                try{Thread.sleep(5000);
-                }catch(Exception eg){}
-
-            }
-        }).start();
-        System.out.println("y=======");
+        System.out.println(Test.getMD5Str("中国人"));
         /*
         Map<String,List<String>> map = new HashMap();
         List<String> files = FileUtil.getHistoryFiles();

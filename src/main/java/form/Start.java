@@ -12,8 +12,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -35,7 +34,7 @@ public class Start extends JFrame {
     private JPanel panelTopLeft;
     private JPanel panelTopCenter;
     private JPanel panelTopRight;
-    private JLabel deviceName;
+    public JLabel deviceName;
     private JLabel deviceDate;
     private JLabel softwareVersion;
     private JLabel deviceVersion;
@@ -47,6 +46,12 @@ public class Start extends JFrame {
     private JLabel softwareVersionValue;
     private JLabel deviceVersionValue;
     private JButton btnQuery;
+    private JComboBox comboBoxDeviceId;
+    private JLabel labelDeviceID;
+    private JTabbedPane tabbedPane1;
+    private JTable tableHistory;
+    private JScrollPane scrollPanelHIstory;
+    public DefaultTableModel dataModelHistory;
     public final static Color colorBackGround = new Color(47,63,80);
     public final static Color fontColor = new Color(173,206,47);
     String currentPort = "NONE";
@@ -70,32 +75,12 @@ public class Start extends JFrame {
             }
         });
         initSystemStyle();
-        initDetailTable();
-    }
-/*
-    public static void main(String[] args) {
-        try {
-            sysLoadLibraryForDLL();
-            String lookAndFeel = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
-            UIManager.setLookAndFeel(lookAndFeel);
-            ToolUtils.initSystemFontStyle();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Start frame = new Start();
-        frame.setIconImage(new ImageIcon("./resources/img/start.png").getImage());//设置图
-        frame.setTitle(JsonRead.getInstance().getJsonTarget("title"));
-        frame.setSize(860,600);
-        frame.setMinimumSize(new Dimension(680,480));
-        frame.setLocationRelativeTo(null);//窗体居中显示
-        frame.setVisible(true);
-        frame.readCom();
-
-
+        initTableDataModel();
+        initDetailTable(this.tableData);
+        initDetailTable(this.tableHistory);
+        initDetailTableStyle();
     }
 
- */
 
     private  void initSystemStyle()
     {
@@ -105,6 +90,9 @@ public class Start extends JFrame {
         panelTopCenter.setBackground(colorBackGround);
         panelTopRight.setBackground(colorBackGround);
         deviceName.setForeground(fontColor);
+        labelDeviceID.setForeground(fontColor);
+        tabbedPane1.setBackground(colorBackGround);
+        tabbedPane1.setForeground(fontColor);
         deviceDate.setForeground(fontColor);
         softwareVersion.setForeground(fontColor);
         deviceVersion.setForeground(fontColor);
@@ -118,7 +106,10 @@ public class Start extends JFrame {
         logoImage.setIcon( ToolUtils.changeImage(image,0.5));
         Dimension dim = new Dimension(this.getWidth(),60);
         //panelTop.setPreferredSize(dim);
-        panelTop.setSize(dim);
+        panelTop.setPreferredSize(new Dimension(this.getWidth(),30));
+        //panelTopLeft.setSize(dim);
+        //panelTopLeft.setPreferredSize(new Dimension(this.getWidth(),60));
+
         panelTop.updateUI();
         panelBottom.setSize(dim);
         panelBottom.updateUI();
@@ -126,7 +117,7 @@ public class Start extends JFrame {
         btnQuery.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/search.png"),0.5));
         btnQuery.setToolTipText("Search");
         btnQuery.addActionListener(e -> {
-            if (!PublicParameter.isReadRecordOver ){
+            if (!PublicParameter.isReadRecordOver && !PublicParameter.currentPort.equalsIgnoreCase("NONE")){
                 JOptionPane.showMessageDialog(this, "数据正在处理，请等待数据处理完毕!", "提示信息", 1);
                 return ;
             }
@@ -150,6 +141,11 @@ public class Start extends JFrame {
                 }
              */
                 if (!PublicParameter.isReadRecordOver ){
+                    if (PublicParameter.currentPort.equalsIgnoreCase("NONE"))
+                    {
+                        JOptionPane.showMessageDialog(this, "串口信息连接异常!", "提示信息", 1);
+                        return ;
+                    }
                     JOptionPane.showMessageDialog(this, "数据正在处理，请等待数据处理完毕!", "提示信息", 1);
                     return ;
                 }
@@ -166,13 +162,50 @@ public class Start extends JFrame {
         btnSetting.setBackground(colorBackGround);
         btnSetting.setBorder(null);
         scrollPanelData.setBorder(null);
+        tabbedPane1.setBorder(null);
         tableData.setBorder(null);
         softwareVersionValue.setText(JsonRead.getInstance().getJsonTarget("version"));
         deviceVersionValue.setText("");
+        tabbedPane1.setTitleAt(0,"Records");
+        tabbedPane1.setTitleAt(1,"History Records");
+        tabbedPane1.setSelectedIndex(0);
+        initComboBoxDeviceId();
+        initHistoryTable();
+        this.addComponentListener(new ComponentAdapter(){
+            @Override
+            public void componentResized(ComponentEvent e){
+               // setTablePanelSize();
+                initFrameLayoutSize();
+            }});
     }
 
+    public void initFrameLayoutSize()
+    {
 
-    public void initDetailTable() {
+        /*
+        panelTop.setSize(new Dimension(this.getWidth(),60));
+        panelTopLeft.setSize(new Dimension(this.getWidth(),60));
+//        deviceName
+//                deviceDate
+        panelTopCenter.setSize(new Dimension(this.getWidth(),60));
+        panelTopRight.setSize(new Dimension(this.getWidth(),60));
+        panelBottom.setSize(new Dimension(this.getWidth(),60));
+*/
+
+    }
+
+    public void initComboBoxDeviceId() {
+        comboBoxDeviceId.addItem("Select Device Id");
+
+        Map map = FileUtil.getRecordHistory();
+        for(Object key:map.keySet()){
+            comboBoxDeviceId.addItem(key.toString());
+        }
+
+    }
+
+    public void initTableDataModel()
+    {
         Vector<Vector<Object>> rowDatas = new Vector<Vector<Object>>();
         dataModel = new DefaultTableModel(rowDatas, getTableColumnName()){
             public boolean isCellEditable(int row, int column)
@@ -195,13 +228,39 @@ public class Start extends JFrame {
             }
         };
         tableData.setModel(dataModel);
+
+
+        Vector<Vector<Object>> rowDatasHistory = new Vector<Vector<Object>>();
+        dataModelHistory = new DefaultTableModel(rowDatasHistory, getTableColumnName()){
+            public boolean isCellEditable(int row, int column)
+            {
+                boolean result = false;
+                switch(column)
+                {
+                    case  DataColumnsUtils.COL_OPERATORNAME:
+                        result =  false;
+                        break;
+                    case DataColumnsUtils.COL_ROOM:
+                        result =  false;
+                        break;
+                    case DataColumnsUtils.COL_CONTENT:
+                        result =  false;
+                        break;
+                }
+                return result;
+            }
+        };
+        tableHistory.setModel(dataModelHistory);
+
+    }
+    public void initDetailTable(JTable table) {
         DefaultTableCellRenderer cr = new DefaultTableCellRenderer();
         cr.setHorizontalAlignment(JLabel.CENTER);
-        tableData.setDefaultRenderer(Object.class, cr);
+        table.setDefaultRenderer(Object.class, cr);
         DefaultTableCellHeaderRenderer hr = new DefaultTableCellHeaderRenderer();
         hr.setHorizontalAlignment(JLabel.CENTER);
-        tableData.getTableHeader().setDefaultRenderer(hr);
-        initDetailTableStyle(tableData);
+        table.getTableHeader().setDefaultRenderer(hr);
+
     }
     private Vector<String> getTableColumnName(){
         Vector<String> columnNames = new Vector<String>();
@@ -215,21 +274,37 @@ public class Start extends JFrame {
         columnNames.add("Content");
         return columnNames;
     }
-    private void initDetailTableStyle(JTable table)
+    private void initDetailTableStyle()
     {
-        table.setRowHeight(30);
-        table.setForeground(Color.BLACK);
-        table.setFont(new Font(null, Font.PLAIN, 14));
-        table.setSelectionForeground(Color.DARK_GRAY);
-        table.setSelectionBackground(Color.LIGHT_GRAY);
-        table.setGridColor(Color.GRAY);
-        table.getTableHeader().setBackground(fontColor);
+        tableData.setRowHeight(30);
+        tableData.setForeground(Color.BLACK);
+        tableData.setFont(new Font(null, Font.PLAIN, 14));
+        tableData.setSelectionForeground(Color.DARK_GRAY);
+        tableData.setSelectionBackground(Color.LIGHT_GRAY);
+        tableData.setGridColor(Color.GRAY);
+        tableData.getTableHeader().setBackground(fontColor);
         scrollPanelData.setBackground(colorBackGround);
+
+        tableHistory.setRowHeight(30);
+        tableHistory.setForeground(Color.BLACK);
+        tableHistory.setFont(new Font(null, Font.PLAIN, 14));
+        tableHistory.setSelectionForeground(Color.DARK_GRAY);
+        tableHistory.setSelectionBackground(Color.LIGHT_GRAY);
+        tableHistory.setGridColor(Color.GRAY);
+        tableHistory.getTableHeader().setBackground(fontColor);
+        this.scrollPanelHIstory.setBackground(colorBackGround);
         this.setBackground(colorBackGround);
+        this.setResizable(false);
         //table.getColumnModel().getColumn(0).setPreferredWidth(40); 设置列宽
     }
+    public void initHistoryTable()
+    {
+
+    }
+
     public synchronized void readCom()
     {
+
         PublicParameter.isReadRecordOver = false;
         PublicParameter.currentPort = "NONE";
         removeRowForDetailTable();
@@ -240,7 +315,6 @@ public class Start extends JFrame {
             return ;
         }
         currentPort = "NONE";
-
         boolean isUsePort = false;
         Collections.reverse(list); // 反过来，一般串口新插上去是最后一个，快速检测
         for (Object port:list){
@@ -280,28 +354,28 @@ public class Start extends JFrame {
             PublicParameter.currentPort = currentPort;
             String sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbmc","order")); //查询设备序列号
             serialPortSend(sendMsg);
-            Thread.sleep(500);
+            Thread.sleep(400);
             String cxsbmcOrderName = ToolUtils.getOrderName("cxsbmc");
             if (resultDeviceName.indexOf(cxsbmcOrderName)>=0 && resultDeviceName.indexOf("ERROR") < 0){
                 deviceName.setText("Device Name " + resultDeviceName.substring((cxsbmcOrderName+"=").length() ));
             }else
             {
-                deviceName.setText("Device Name " );
+                deviceName.setText("Device Name " + "OXY-30000" );
             }
             //查询日期
             sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxrq","order")); //查询 设备使用记录
             serialPortSend(sendMsg);
-            Thread.sleep(500);
+            Thread.sleep(400);
             String cxrqOrderName = ToolUtils.getOrderName("cxrq");
             if (resultDeviceDate.indexOf(cxrqOrderName)>=0 && resultDeviceDate.indexOf("ERROR") < 0){
-                deviceDate.setText("Device Date " + resultDeviceDate.substring((cxrqOrderName+"=").length() ));
+                deviceDate.setText("Device Date  " + resultDeviceDate.substring((cxrqOrderName+"=").length() ));
             }else
             {
-                deviceDate.setText("Device Date " );
+                deviceDate.setText("Device Date  " );
             }
             sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxgjbb","order")); //查询 设备使用记录
             serialPortSend(sendMsg);
-            Thread.sleep(500);
+            Thread.sleep(400);
             String cxgjbbOrderName = ToolUtils.getOrderName("cxgjbb");
             if (resultDeviceVersion.indexOf(cxgjbbOrderName)>=0 && resultDeviceVersion.indexOf("ERROR") < 0){
                 deviceVersionValue.setText(resultDeviceVersion.substring((cxgjbbOrderName + "=").length() ));
@@ -309,6 +383,7 @@ public class Start extends JFrame {
             {
                 deviceVersionValue.setText("1.0.1");
             }
+            Thread.sleep(400);
             //CommonUtils.commUtil = null;
             //PublicParameter.commonUtils = CommonUtils.getInstance(currentPort);
             sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbsyjl","order")); //查询 设备使用记录
@@ -318,7 +393,7 @@ public class Start extends JFrame {
                 public void run() {
                     try{Thread.sleep(4000);}catch(Exception eg){}
                     //万一没取到数据，5秒钟后可进行其它操作
-                    if (dataModel.getRowCount() == 0 )  PublicParameter.isReadRecordOver = true;
+                    if (dataModel != null && dataModel.getRowCount() == 0 )  PublicParameter.isReadRecordOver = true;
                 }
             }).start();
 
@@ -340,7 +415,7 @@ public class Start extends JFrame {
     }
     private void removeRowForDetailTable()
     {
-        dataModel.setRowCount( 0 );
+       if (dataModel != null) dataModel.setRowCount( 0 );
     }
 
     public List<DataEntity> getTableDataList(){
@@ -385,6 +460,7 @@ public class Start extends JFrame {
     }
     public void prcessTableModelData(String receive){
         try{
+
             receive = receive.replaceAll("\r","");
             receive = receive.replaceAll("\n","");
             if (receive.length() <  20) return ;
@@ -406,11 +482,12 @@ public class Start extends JFrame {
             data.setsRoom("");
             data.setsContent("");
             dataModel.addRow(DataColumnsUtils.getListContent(data));
+
             dataModel.fireTableDataChanged();
             int maxHeight = scrollPanelData.getVerticalScrollBar().getMaximum();
             scrollPanelData.getViewport().setViewPosition(new Point(0,maxHeight));
         }catch(Exception eg){
-
+            System.out.println("x=在这里吗====" + eg.getMessage());
         }
 
     }
@@ -447,6 +524,65 @@ public class Start extends JFrame {
         }
         
     }
+    private void searchHistory()
+    {
+        String selectDeviceIdFile = comboBoxDeviceId.getSelectedItem().toString();
+
+        String fileFullPath=ToolUtils.getUserDir() + "\\resources\\txt\\history"  ;
+        File dirs = new File( fileFullPath);
+        File files[] = dirs.listFiles();
+        //按查询条件生成需要的文件 ,查询规则待定义
+//        String searchFileName = "REC-222110228318-20200527095321.json";
+        String searchFileName  = selectDeviceIdFile + "#"; //一定要加#，否则可能日期与设备id重复
+        List<String> fileList = new ArrayList<>();
+        for(File file:files){
+            if (file.isFile()){
+                if (file.getName().indexOf(searchFileName)>=0)
+                {
+                    fileList.add(file.toString());
+                }
+            }
+        }
+        if (fileList.size() <= 0) return ;
+        dataModelHistory.setRowCount( 0 );
+        for(String file : fileList)
+        {
+            List<DataEntity>  list =JsonRead.getJsonRecordFileToEntity(file);
+            for(DataEntity data : list)
+            {
+                dataModelHistory.addRow(DataColumnsUtils.getListContent(data));
+                dataModelHistory.fireTableDataChanged();
+            }
+        }
+        this.tabbedPane1.setSelectedIndex(1);
+        JOptionPane.showMessageDialog(this, "数据加载完成", "提示信息", 1);
+        /*
+        if (!isFound) return ;
+        String fileName = fileFullPath + "\\" + searchFileName;
+        String jsonFileContent = JsonRead.getInstance().readJsonFile(fileName);
+        JSONObject object = JSONObject.parseObject(jsonFileContent);
+        String sDevicename =  object.get("devicename").toString();
+        String sDevicedate = object.get("devicedate").toString();
+        String sDeviceversion = object.get("deviceversion").toString();
+        deviceName.setText("Device Name " + sDevicename);
+        deviceDate.setText("Device Date " + sDevicedate);
+//        deviceVersion.setText("Device Version " + sDeviceversion);
+        deviceVersionValue.setText(sDeviceversion);
+
+        List<DataEntity>  list =JsonRead.getJsonRecordFileToEntity(fileName);
+        removeRowForDetailTable();
+        for(DataEntity data : list)
+        {
+            dataModel.addRow(DataColumnsUtils.getListContent(data));
+            dataModel.fireTableDataChanged();
+        }
+
+         */
+    }
+
+    /**
+     *  去掉对话框
+
     private void searchHistory()
     {
         History history = History.getInstance();
@@ -499,11 +635,16 @@ public class Start extends JFrame {
 
 
     }
-
+     */
     private void exportPDF()
     {
         //|| dataModel.getRowCount() <=0
         if (!PublicParameter.isReadRecordOver  ){
+            if (PublicParameter.currentPort.equalsIgnoreCase("NONE"))
+            {
+                JOptionPane.showMessageDialog(this, "串口信息连接异常!", "提示信息", 1);
+                return ;
+            }
             JOptionPane.showMessageDialog(this, "数据正在采集或无数据时，不可导出数据", "提示信息", 1);
             return ;
         }

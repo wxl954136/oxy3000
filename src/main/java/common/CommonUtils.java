@@ -172,12 +172,11 @@ public   class CommonUtils implements SerialPortEventListener {
 
 */
             case SerialPortEvent.DATA_AVAILABLE:
-                //receive();
                 try{
                     //"不能加线程等待，否则会丢失数据-------------"
                     String result = receive();
-                    System.out.println("指令:" + sendMessag + "   接收数据内容:" + result);
-//                    System.out.println("lukeWang: 收取信息:" + result);
+
+                    System.out.println("1-指令:" + sendMessag + "   接收数据内容:" + result);
                     if (result.length() == 0 ) return ;
 
                     if(sendMessag.indexOf("debug:") >=0){
@@ -260,11 +259,14 @@ public   class CommonUtils implements SerialPortEventListener {
         {
             return ;
         }
+
         if (result.indexOf("error") >=0)
         {
             PublicParameter.isReadRecordOver = true; //如果返回有错误，也当做读取完毕
             return ;
         }
+        System.out.println("x2============整理结果========= ====" + result);
+        Start.getInstance().prcessTableModelData(result);
         //为什么这里会截断显示，设备有问题
         if (result.indexOf(cxsbsyjlOrderName + "=end") >=0  ||
                 result.indexOf("ord=end") >= 0 ||
@@ -278,15 +280,16 @@ public   class CommonUtils implements SerialPortEventListener {
             PublicParameter.isReadRecordOver = true;
             //写txt文件
             try {
-                FileUtil.setJsonFileData(Start.getInstance().getTableDataList());
+                if (Start.getInstance().getTableDataList().size() > 0) {
+                    FileUtil.setJsonFileData(Start.getInstance().getTableDataList());
+                }
             } catch (Exception e) {
 
             }finally {
                 PublicParameter.isReadRecordOver = true;
             }
-            return ;
+            //return ;
         }
-        Start.getInstance().prcessTableModelData(result);
     }
 
 
@@ -297,7 +300,9 @@ public   class CommonUtils implements SerialPortEventListener {
 
             int count = 0;
             while (count == 0) {
+                Thread.sleep(40);
                 count = in.available();
+
             }
             byte[] buffer = new byte[count];  //还有四个字符/r/n
 

@@ -3,6 +3,7 @@ package pdf;
 import bean.DataEntity;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import form.Start;
 import utils.DataColumnsUtils;
 import utils.JsonRead;
 
@@ -91,7 +92,10 @@ public class PdfUtils {
         //img.setWidthPercentage(90);
         */
         //firstRowContent.addCell(img);
-        firstRowContent.addCell(mircoSoftFont("created on :" + sdf.format(new Date()), size12font, 30, false, true,false));
+        firstRowContent.addCell(mircoSoftFont("created on :" + sdf.format(new Date()) +"\n" +
+                        Start.getInstance().deviceName.getText() ,
+                size8font, 15, false, true,false));
+//        firstRowContent.addCell(mircoSoftFont(Start.getInstance().deviceName.getText() , size12font, 30, true, true,false));
         firstRowContent.addCell(mircoSoftFont("读取数据列表" , size12font, 30, true, true,false));
         Image img = Image.getInstance("./resources/img/logo.jpg");
         img.scalePercent(30); //依照比例缩放
@@ -103,18 +107,20 @@ public class PdfUtils {
         imgCell.setFixedHeight(20);
 
         firstRowContent.addCell(imgCell);
-        //imgCell.setBorderColor();
-
-
-
 
         document.add(firstRowContent);
+//        PdfPTable secondRowContent = new PdfPTable(1);
+
+
+
+
+        //        deviceName
 
         int tableWidth[] = new int[]{50,50,50,50,50,80,50,50};
         //添加表头
         PdfPTable tableContent = new PdfPTable(8);
 
-        tableContent.setWidthPercentage(90);
+        tableContent.setWidthPercentage(90);  //表格的宽度，百分比缩放
         tableContent.setWidths(tableWidth);
         //tableContent.setTotalWidth(new float[]{0.3f, 0.2f, 0.2f,0.2f,0.2f,0.4f,0.4f,0.4f});
         tableContent.addCell(mircoSoftFont(" Treatent", size12font, 20, true, true, true));

@@ -247,6 +247,12 @@ public class Config extends JDialog {
             System.out.println("打开设备成功:" + result);
             return;
         }
+        //1.0.1版本漏掉了
+        if (sendMessage.equalsIgnoreCase( JsonRead.getInstance().getJsonTarget("cxgjbb","order")))
+        {
+            config.txtCxgjbb.setText(result);
+            return;
+        }
         if (sendMessage.equalsIgnoreCase( JsonRead.getInstance().getJsonTarget("cxsbmc","order")))
         {
             config.txtCxsbmc.setText(result);

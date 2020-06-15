@@ -90,9 +90,8 @@ public class FileUtil {
             writeJsonFile(result,createFile);
             if(listData.size() >0)
             {
-                //勇子通知暂时不删除
-                //同一天只保存最新一次的即可
-                deleteExportJsonFile(createFile.getName());
+                //每天都保存，重复记录就直接显示，不管它
+                //deleteExportJsonFile(createFile.getName());
             }
         }catch(Exception eg){
             eg.printStackTrace();
@@ -198,7 +197,8 @@ public class FileUtil {
      */
     public static Map<String,List<String>> getRecordHistory()
     {
-        Map<String,List<String>> map = new HashMap();
+        TreeMap map = new TreeMap(Comparator.naturalOrder());  //升序
+
         List<String> files = FileUtil.getHistoryFiles();
         for(String file: files){
             if (file.indexOf("REC") <0) continue;
