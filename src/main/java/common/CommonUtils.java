@@ -280,8 +280,8 @@ public   class CommonUtils implements SerialPortEventListener {
             PublicParameter.isReadRecordOver = true;
             //写txt文件
             try {
-                if (Start.getInstance().getTableDataList().size() > 0) {
-                    FileUtil.setJsonFileData(Start.getInstance().getTableDataList());
+                if (Start.getInstance().getTableDataList(Start.getInstance().dataModel).size() > 0) {
+                    FileUtil.setJsonFileData(Start.getInstance().getTableDataList(Start.getInstance().dataModel));
                 }
             } catch (Exception e) {
 

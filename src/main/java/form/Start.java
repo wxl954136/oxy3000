@@ -46,9 +46,9 @@ public class Start extends JFrame {
     private JLabel softwareVersionValue;
     private JLabel deviceVersionValue;
     private JButton btnQuery;
-    private JComboBox comboBoxDeviceId;
+    public JComboBox comboBoxDeviceId;
     private JLabel labelDeviceID;
-    private JTabbedPane tabbedPane1;
+    public JTabbedPane tabbedPane1;
     private JTable tableHistory;
     private JScrollPane scrollPanelHIstory;
     public DefaultTableModel dataModelHistory;
@@ -418,13 +418,13 @@ public class Start extends JFrame {
        if (dataModel != null) dataModel.setRowCount( 0 );
     }
 
-    public List<DataEntity> getTableDataList(){
+    public List<DataEntity> getTableDataList(DefaultTableModel selectDataModel){
         List<DataEntity> list = new ArrayList<DataEntity>();
-        for (int row = 0 ; row< dataModel.getRowCount(); row++){
+        for (int row = 0 ; row< selectDataModel.getRowCount(); row++){
             DataEntity value = new DataEntity();
-            for (int col = 0 ; col <dataModel.getColumnCount() ; col ++ )
+            for (int col = 0 ; col <selectDataModel.getColumnCount() ; col ++ )
             {
-                String val = dataModel.getValueAt(row,col) == null?"":dataModel.getValueAt(row,col).toString();
+                String val = selectDataModel.getValueAt(row,col) == null?"":selectDataModel.getValueAt(row,col).toString();
                 switch(col)
                 {
                     case DataColumnsUtils.COL_TREATENT :
@@ -535,7 +535,7 @@ public class Start extends JFrame {
         File files[] = dirs.listFiles();
         //按查询条件生成需要的文件 ,查询规则待定义
 //        String searchFileName = "REC-222110228318-20200527095321.json";
-        String searchFileName  = selectDeviceIdFile + "#"; //一定要加#，否则可能日期与设备id重复
+        String searchFileName  = selectDeviceIdFile ;//+ "#"; //一定要加#，否则可能日期与设备id重复
         List<String> fileList = new ArrayList<>();
         for(File file:files){
             if (file.isFile()){
@@ -672,7 +672,18 @@ public class Start extends JFrame {
         String fileFullName = file.getAbsolutePath() + "\\" + sdf.format(currentDate) + ".pdf";
         fileFullName = fileFullName.replace("\\\\","\\"); //，当选择根目录的时候，可能会有异常,不替换windows下适配
         try{
-            PdfUtils.createHardwarePDF(fileFullName,getTableDataList());
+            if (this.tabbedPane1.getSelectedIndex() == 0)
+            {
+                PdfUtils.createHardwarePDF(fileFullName,getTableDataList(this.dataModel));
+            }else
+            {
+
+//                String fileFullPath=ToolUtils.getUserDir() + "\\resources\\txt\\history\\"  ;
+//                String  jsonFile = fileFullPath + this.comboBoxDeviceId.getSelectedItem().toString() + ".json";
+//                this.
+                PdfUtils.createHardwarePDF(fileFullName,getTableDataList(this.dataModelHistory));
+            }
+
             JOptionPane.showMessageDialog(this, "数据导出成功", "提示信息", 1);
         }catch(Exception e){
             e.printStackTrace();

@@ -62,7 +62,7 @@ public class FileUtil {
         result = result + JsonRead.getGenJsonTag("deviceid",deviceid,",");
 
 
-        String fileName = "REC-" + deviceid + "#" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".json";
+        String fileName = "REC-" + deviceid + ".json";//+ "#" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".json";
         result = result + JsonRead.getGenJsonTag("filename",fileName,",");
 
 
@@ -91,7 +91,7 @@ public class FileUtil {
             if(listData.size() >0)
             {
                 //每天都保存，重复记录就直接显示，不管它
-                //deleteExportJsonFile(createFile.getName());
+                deleteExportJsonFile(createFile.getName());
             }
         }catch(Exception eg){
             eg.printStackTrace();
@@ -203,6 +203,8 @@ public class FileUtil {
         for(String file: files){
             if (file.indexOf("REC") <0) continue;
             file = file.replaceAll("REC-","");
+            String deviceid = file.replaceAll(".json","");
+            /*
             int loc = file.indexOf("#");
             String deviceid = file.substring(0,loc);
             String date = file.substring(loc+1,loc + 9);
@@ -211,13 +213,14 @@ public class FileUtil {
             String day = date.substring(6);
             //符合日期格式则在下拉框中给出日期格式
             if (date.length() == 8 ) date = year + "-" + month + "-" + day;
+            */
             if (map.containsKey(deviceid))
             {
-                ((List<String>)map.get(deviceid)).add(day);
+                ((List<String>)map.get(deviceid)).add(deviceid);
             }else
             {
                 List<String>  listDate = new ArrayList<>();
-                listDate.add(date);
+                listDate.add(deviceid);
                 map.put(deviceid,listDate);
             }
         }

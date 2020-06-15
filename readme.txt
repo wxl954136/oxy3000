@@ -13,7 +13,7 @@
         5.2 win32位和win64位操作系统均可使用run.bat启动
 二、系统内问操作说明
     1.系统记录最后一次正确提取的数据记录.
-        路径:./resource/txt/history/yyyymmddhhmmss.txt(以时间戳为文件记录)
+        路径:./resource/txt/history/设备id号.json
     2.系统配置文件解析:
         路径./resource/json/link.json
         参数说明:

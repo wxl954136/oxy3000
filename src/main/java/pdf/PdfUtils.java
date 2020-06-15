@@ -93,8 +93,13 @@ public class PdfUtils {
         */
         //firstRowContent.addCell(img);
         String deviceId = Start.getInstance().resultDeviceId.replaceAll("at\\+deviceid=","");
+        String rDeviceId = deviceId;
+        if (Start.getInstance().tabbedPane1.getSelectedIndex() == 1)
+        {
+            rDeviceId = Start.getInstance().comboBoxDeviceId.getSelectedItem().toString();
+        }
         firstRowContent.addCell(mircoSoftFont("Created on :" + sdf.format(new Date()) +"\n" +
-                        "Device id :" + deviceId ,
+                        "Device id :" + rDeviceId ,
                 size8font, 15, false, true,false));
 //        firstRowContent.addCell(mircoSoftFont(Start.getInstance().deviceName.getText() , size12font, 30, true, true,false));
         firstRowContent.addCell(mircoSoftFont("读取数据列表" , size12font, 30, true, true,false));
