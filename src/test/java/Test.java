@@ -16,117 +16,16 @@ import java.util.*;
 
 //对象模型
 public class Test {
-    public static String getMD5Str(String str) {
-        byte[] digest = null;
-        try {
-            MessageDigest md5 = MessageDigest.getInstance("md5");
-            digest  = md5.digest(str.getBytes("utf-8"));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        //16是表示转换为16进制数
-        String md5Str = new BigInteger(1, digest).toString(16);
-        return md5Str;
-    }
+
 
     public static void main(String[] args) {
-        //System.out.println(Test.getMD5Str("中国人"));
-        String x = "at+deviceid=20023423424";
-        System.out.println(x.replaceAll("at\\+deviceid=",""));
-        /*
-        Map<String,List<String>> map = new HashMap();
-        List<String> files = FileUtil.getHistoryFiles();
-        for(String file: files){
-            if (file.indexOf("REC") <0) continue;
-            file = file.replaceAll("REC-","");
-            int loc = file.indexOf("#");
-            String deviceid = file.substring(0,loc);
-            String date = file.substring(loc+1,loc + 9);
-
-            if (map.containsKey(deviceid))
-            {
-                ((List<String>)map.get(deviceid)).add(date);
-            }else
-            {
-                List<String>  listDate = new ArrayList<>();
-                listDate.add(date);
-                map.put(deviceid,listDate);
-            }
-        }
-
-        for(String key:map.keySet()){
-            System.out.println("key="+key+"  value= " +map.get(key).toString());
-        }
-
-         */
-        /*
-        String fileKey = "REC-222110228318#20200527144139.json";
-
-        int loc = fileKey.indexOf("#");
-        String fileIndex = fileKey.substring(0,loc+1) +fileKey.substring(loc +1,loc+9);
-        System.out.println(fileIndex);
-*/
-        /*
-        Map map = ToolUtils.getSortMap();
-        map.put("1111","aaaaa");
-
-        map.put("3333","ccccc");
-        map.put("44444","bbbbb");
-        map.put("2222","2222");
-        Iterator<String> iterator = map.keySet().iterator();
-        while(iterator.hasNext()){
-            String key = iterator.next();
-            System.out.println(key + "===" + map.get(key));
-
-
-        }
-
-
-         */
-        /*
-        List<DataEntity>  list =JsonRead.getJsonRecordFileToEntity("ttt.json");
-        for(DataEntity data:list)
+        String x = "1.3.12";
+        if(x.indexOf("1.3.") >=0)
         {
-            System.out.println("x===="  + data.getsDate() + "=**==" + data.getsTime() + "=::==" + data.getsVolume());
+            System.out.println( x.substring("1.3.".length()));
         }
 
-         */
-/*
-        String filename = ToolUtils.getUserDir() + "\\resources\\txt\\history\\" + "ttt.json";
-        String readJson = JsonRead.getInstance().readJsonFile(filename);
-        JSONObject object = JSONObject.parseObject(readJson);
-        JSONArray jarr=JSONArray.parseArray(object.get("data").toString());
-        List<DataEntity> listData = new ArrayList<>();
-        for (Iterator iterator = jarr.iterator(); iterator.hasNext();) {
-            JSONObject value=(JSONObject)iterator.next();
-            DataEntity data = new DataEntity();
-            data.setsTreatent(value.get("treatment").toString());
-            data.setsDate(value.get("date").toString());
-            data.setsTime(value.get("treatment").toString());
-            data.setsVolume(value.get("time").toString());
-            data.setsDuration(value.get("duration").toString());
-            data.setsOperatorName(value.get("operatorname").toString());
-            data.setsRoom(value.get("room").toString());
-            data.setsContent(value.get("content").toString());
-            listData.add(data);
-        }
-        System.out.println(object.get("data"));
 
- */
-/*
-        String deviceid = "at+deviceid=222110228316";
-        System.out.println("x====" + ToolUtils.getOrderName("sdsbxlh"));
-        int loc = deviceid.indexOf( ToolUtils.getOrderName("sdsbxlh") + "=");
-        System.out.println("g===");
-        System.out.println("c-=====" + ToolUtils.getOrderName("cxsbxlh"));
-        System.out.println("c1-=====" + deviceid);
-       // String k  = deviceid.replaceAll(ToolUtils.getOrderName("cxsbxlh"),"");
-        String k = deviceid.replaceAll("at+deviceid","");
-        System.out.println("g====" + k);
-
- */
 /*
         //创建json文件开始
         String result = "" ;

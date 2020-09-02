@@ -212,8 +212,8 @@ public class CommonUtilsOther  implements SerialPortEventListener{
 
         try {
             while((hasRead=inputStream.read(rbuff)) > 0) {
-                System.out.println("read2************************");
-                System.out.print(new String(rbuff, 0, hasRead));
+//                System.out.println("read2************************");
+//                System.out.print(new String(rbuff, 0, hasRead));
                 break;
             }
         } catch (IOException e) {

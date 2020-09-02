@@ -1,3 +1,4 @@
+import form.Login;
 import form.Start;
 import utils.ClassLoaderUtils;
 import utils.JsonRead;
@@ -24,7 +25,20 @@ public class Run {
         frame.setMinimumSize(new Dimension(680,480));
         frame.setLocationRelativeTo(null);//窗体居中显示
         frame.setVisible(true);
-        frame.readCom();
+        if (Run.loginFormShow())
+        {
+            frame.readCom();
+        }
+    }
+    public static boolean loginFormShow()
+    {
+        boolean result = false;
+        Login login = Login.getInstance();
+        if (login.getAnswer() != null && login.getAnswer()  )
+        {
+            result = true ;
+        }
+        return result;
     }
     public static void sysLoadLibraryForDLL(){
         try{

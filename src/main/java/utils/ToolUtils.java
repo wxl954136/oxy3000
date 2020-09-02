@@ -246,6 +246,35 @@ public class ToolUtils {
                 });
         return map;
     }
+    /**
+     * 1.3.12版本增加新功能，低版本不可使用
+     *     at+firmware=1.3.12
+     *     1.3.12以前的版本不支持
+     * @param version
+     * @return
+     */
+    public static boolean izVersionSupport(String version)
+    {
+        if (version.indexOf("1.0.") >=0 ||
+            version.indexOf("1.1.") >=0    ||
+            version.indexOf("1.2.") >=0){
+            return false;
+        }
+        if (version.indexOf("1.3.") >=0)
+        {
+            String ver = version.substring("1.3.".length());
+            try{
+                if (Integer.parseInt(ver) <12)
+                {
+                    return  false;
+                }
+            }catch(Exception eg) {
+                return true;
+            }
+        }
+        return true;
+    }
+
 }
 
 /*

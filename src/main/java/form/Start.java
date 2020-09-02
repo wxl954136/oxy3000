@@ -1,6 +1,7 @@
 package form;
 
 import bean.DataEntity;
+import bean.PublicValue;
 import bean.SettingField;
 import com.alibaba.fastjson.JSONObject;
 import common.CommonUtils;
@@ -68,6 +69,8 @@ public class Start extends JFrame {
     }
 
     public Start() {
+
+
         setContentPane(contentPane);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -79,6 +82,7 @@ public class Start extends JFrame {
         initDetailTable(this.tableData);
         initDetailTable(this.tableHistory);
         initDetailTableStyle();
+
     }
 
 
@@ -373,15 +377,19 @@ public class Start extends JFrame {
             {
                 deviceDate.setText("Device Date  " );
             }
+
             sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxgjbb","order")); //查询 设备使用记录
             serialPortSend(sendMsg);
             Thread.sleep(400);
             String cxgjbbOrderName = ToolUtils.getOrderName("cxgjbb");
             if (resultDeviceVersion.indexOf(cxgjbbOrderName)>=0 && resultDeviceVersion.indexOf("ERROR") < 0){
+
                 deviceVersionValue.setText(resultDeviceVersion.substring((cxgjbbOrderName + "=").length() ));
+                PublicValue.FIRMWARE =deviceVersionValue.getText().trim();
             }else
             {
                 deviceVersionValue.setText("1.0.1");
+                PublicValue.FIRMWARE = "1.0.1";
             }
             Thread.sleep(400);
             //CommonUtils.commUtil = null;

@@ -1,5 +1,6 @@
 package form;
 
+import bean.PublicValue;
 import common.CommonUtils;
 import utils.JsonRead;
 import utils.PublicParameter;
@@ -47,6 +48,14 @@ public class Config extends JDialog {
     private JScrollPane scrollPaneCxsbsyjl;
     private JButton btnCxsbmc;
     private JTextField txtCxsbmc;
+    private JButton btnScjl;
+    private JTextField txtScjl;
+    private JButton btnHfscjl;
+    private JTextField txtHfscjl;
+    private JButton btnXgjl;
+    private JButton btnHqjlzsl;
+    private JTextField txtXgjl;
+    private JTextField txtHqjlzsl;
     public Map<String,String>  mapOrder = new HashMap<>();
     public static Config config;
 
@@ -81,9 +90,14 @@ public class Config extends JDialog {
         btnCxsbxlh.addActionListener(e -> onCxsbxlh());
         btnSdsbxlh.addActionListener(e -> onSdsbxlh());
         btnCxsbsyjl.addActionListener(e -> onCxsbsyjl());
-
+        /**
+         * 1.3.12新增功能
+         */
+        btnScjl.addActionListener(e -> onScjl());
+        btnHfscjl.addActionListener(e -> onHfscjl());
+        btnXgjl.addActionListener(e -> onXgjl());
+        btnHqjlzsl.addActionListener(e -> onHqjlzsl());
     }
-
     public void initComponentValue()
     {
         txtCxsbmc.setText("");
@@ -101,6 +115,10 @@ public class Config extends JDialog {
         txtSdys.setText("");
         txtCxsbxlh.setText("");
         txtSdsbxlh.setText("");
+        txtScjl.setText("");
+        txtHfscjl.setText("");
+        txtXgjl.setText("");
+        txtHqjlzsl.setText("");
     }
     public void serialPortSend(String sendMsg){
         waitExecute();
@@ -236,6 +254,65 @@ public class Config extends JDialog {
         }catch(Exception e){}
 
     }
+    private void onScjl()
+    {
+
+        if (!ToolUtils.izVersionSupport(PublicValue.FIRMWARE)){
+            JOptionPane.showMessageDialog(null,
+                    "固件低于1.3.12以下版本不支持该功能(" +PublicValue.FIRMWARE + ")"
+                    ,"提示信息", 1);
+            return ;
+        }
+        String debugOrder = "debug:" + JsonRead.getInstance().getJsonTarget("scjl","order");
+        String key =  ToolUtils.getSendOrderKey(debugOrder);
+        debugOrder = debugOrder.replaceAll(key ,txtScjl.getText().trim());
+        mapOrder.put(JsonRead.getInstance().getJsonTarget("scjl","order"),debugOrder.replaceAll("debug:",""));
+        serialPortSend(debugOrder);
+    }
+
+    private void onHfscjl()
+    {
+        if (!ToolUtils.izVersionSupport(PublicValue.FIRMWARE)){
+            JOptionPane.showMessageDialog(null,
+                    "固件低于1.3.12以下版本不支持该功能(" +PublicValue.FIRMWARE + ")"
+                    ,"提示信息", 1);
+            return ;
+        }
+        String debugOrder = "debug:" + JsonRead.getInstance().getJsonTarget("hfscjl","order");
+        String key =  ToolUtils.getSendOrderKey(debugOrder);
+        debugOrder = debugOrder.replaceAll(key ,txtHfscjl.getText().trim());
+        mapOrder.put(JsonRead.getInstance().getJsonTarget("hfscjl","order"),debugOrder.replaceAll("debug:",""));
+        serialPortSend(debugOrder);
+    }
+    private void onXgjl()
+    {
+        if (!ToolUtils.izVersionSupport(PublicValue.FIRMWARE)){
+            JOptionPane.showMessageDialog(null,
+                    "固件低于1.3.12以下版本不支持该功能(" +PublicValue.FIRMWARE + ")"
+                    ,"提示信息", 1);
+            return ;
+        }
+        String debugOrder = "debug:" + JsonRead.getInstance().getJsonTarget("xgjl","order");
+        String key =  ToolUtils.getSendOrderKey(debugOrder);
+        debugOrder = debugOrder.replaceAll(key ,txtXgjl.getText().trim());
+        mapOrder.put(JsonRead.getInstance().getJsonTarget("xgjl","order"),debugOrder.replaceAll("debug:",""));
+        serialPortSend(debugOrder);
+    }
+
+
+
+    private void onHqjlzsl()
+    {
+        if (!ToolUtils.izVersionSupport(PublicValue.FIRMWARE)){
+            JOptionPane.showMessageDialog(null,
+                    "固件低于1.3.12以下版本不支持该功能(" +PublicValue.FIRMWARE + ")"
+                    ,"提示信息", 1);
+            return ;
+        }
+        String debugOrder = "debug:" + JsonRead.getInstance().getJsonTarget("hqjlzsl","order");
+        serialPortSend(debugOrder);
+    }
+
     public static void showCollectValue(String sendMessage,String result){
         if (sendMessage.equalsIgnoreCase( JsonRead.getInstance().getJsonTarget("fwsb","order")))
         {
@@ -330,6 +407,32 @@ public class Config extends JDialog {
             String text = config.txtCxsbsyjl.getText()  ;
             config.txtCxsbsyjl.setText(text + result );
             config.txtCxsbsyjl.setCaretPosition(config.txtCxsbsyjl.getDocument().getLength());
+            return;
+        }
+        /**
+         * 1.3.12版本以后增加
+         */
+        String scjl = config.mapOrder.get(JsonRead.getInstance().getJsonTarget("scjl","order"));
+        if (sendMessage.equalsIgnoreCase( scjl))
+        {
+            config.txtScjl.setText(result);
+            return;
+        }
+        String hfscjl = config.mapOrder.get(JsonRead.getInstance().getJsonTarget("hfscjl","order"));
+        if (sendMessage.equalsIgnoreCase( hfscjl))
+        {
+            config.txtHfscjl.setText(result);
+            return;
+        }
+        String xgjl = config.mapOrder.get(JsonRead.getInstance().getJsonTarget("xgjl","order"));
+        if (sendMessage.equalsIgnoreCase( xgjl))
+        {
+            config.txtXgjl.setText(result);
+            return;
+        }
+        if (sendMessage.equalsIgnoreCase( JsonRead.getInstance().getJsonTarget("hqjlzsl","order")))
+        {
+            config.txtHqjlzsl.setText(result);
             return;
         }
     }
