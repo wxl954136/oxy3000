@@ -1,10 +1,11 @@
 package utils;
 
 import bean.DataEntity;
+import bean.RememberEntity;
+import bean.UserEntity;
 import form.Start;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class FileUtil {
@@ -32,7 +33,26 @@ public class FileUtil {
         }
         return resultFile;
     }
-
+    public static File getCreateJsonResourceFile(String fileName)
+    {
+        File resultFile = null;
+        String fileFullPath=ToolUtils.getUserDir() + "\\resources\\json"  ;
+        try{
+            File dirs = new File( fileFullPath);
+            if (!dirs.exists()) {
+                dirs.mkdirs();// 能创建多级目录
+            }
+            String fileFullName =  fileFullPath + "\\"  + fileName;
+            File file = new File(fileFullName);
+            if (!file.exists()){
+                file.createNewFile();
+            }
+            resultFile = file;
+        }catch(Exception e){
+            resultFile = null;
+        }
+        return resultFile;
+    }
     public static void setJsonFileData(List<DataEntity> listData){
         String content = "";
         if (listData.size() <=0 ) return ;
@@ -119,28 +139,57 @@ public class FileUtil {
         return flag;
     }
 
-    /*
-    public static List<DataEntity> readJsonFile(String fileName)
+    public static void setJsonFileRememberData(RememberEntity data)
     {
-        List<DataEntity> resultList = new ArrayList<>();
-        fileName=ToolUtils.getUserDir() + "\\resources\\txt\\history\\" + fileName;
-        File file = new File(fileName);
-        if (!file.exists()) return null;
-//        StringBuilder result = new StringBuilder();
+        if (data.remember.trim().length() <=0 ) return ;
+        String result = "";
+        result = result + JsonRead.getGenJsonStart();
+        //增加单一元素----开始
+        result = result + JsonRead.getGenJsonTag("remember", data.remember.trim(),",");
+        result = result + JsonRead.getGenJsonTag("times", data.times.trim(),"");
+        String fileName = "login.json";
+        //增加单一元素----结束
+        result = result + JsonRead.getGenJsonEnd();
         try{
-            BufferedReader br = new BufferedReader(new FileReader(file));//构造一个BufferedReader类来读取文件
-            String str = null;
-            while((str = br.readLine())!=null){//使用readLine方法，一次读一行
-                resultList.add(ToolUtils.array2Entity(str));
-            }
-            br.close();
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
+            File createFile = getCreateJsonResourceFile(fileName);
+            writeJsonFile(result,createFile);
+        }catch(Exception eg){
+            eg.printStackTrace();
         }
-        return resultList;
     }
-     */
+    public static void setJsonFileUserData(List<UserEntity> listData){
+        String content = "";
+        if (listData.size() <=0 ) return ;
+        String records = "";
+        for (int index = 0 ; index<listData.size() ;index++ ){
+            UserEntity data = listData.get(index);
+            records = JsonRead.getStr2JsonUserEntity((index==listData.size()-1)?"":",");
+            records = records.replaceAll("#user#",data.getUser());
+            records = records.replaceAll("#pwd#",data.getPwd());
+            records = records.replaceAll("#level#",data.getLevel());
+            content +=  records;
+        }
+        String result = "";
+        result = result + JsonRead.getGenJsonStart();
+        String fileName = "user.json";
+        result = result + JsonRead.getGenJsonArrayBegin("users");
+        result = result + content;
+        result = result + JsonRead.getGenJsonArrayEnd();
+        result = result + JsonRead.getGenJsonEnd();
+        try{
+            File createFile = getCreateJsonResourceFile(fileName);
+            writeJsonFile(result,createFile);
+            if(listData.size() >0)
+            {
+                //wxl modi
+                //每天都保存，重复记录就直接显示，不管它
+               // deleteExportJsonFile(createFile.getName());
+            }
+        }catch(Exception eg){
+            eg.printStackTrace();
+        }
+    }
+
     public static List<String> getHistoryFiles()
     {
         List<String> list = new ArrayList<>();

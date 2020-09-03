@@ -288,7 +288,7 @@ public   class CommonUtils implements SerialPortEventListener {
             }finally {
                 PublicParameter.isReadRecordOver = true;
             }
-            //return ;
+
         }
     }
 
@@ -307,18 +307,14 @@ public   class CommonUtils implements SerialPortEventListener {
             byte[] buffer = new byte[count];  //还有四个字符/r/n
 
             in.read(buffer);
-
             result = new String(buffer);
-
         } catch(Exception eg)
         {
             this.close();
             eg.printStackTrace();
         }finally {
-
         }
         return result;
-
         /*
         byte[] buffer = null;
         String result = "";
@@ -338,7 +334,6 @@ public   class CommonUtils implements SerialPortEventListener {
             e.printStackTrace();
         }
         return result;
-
          */
     }
 /*
@@ -384,8 +379,6 @@ public   class CommonUtils implements SerialPortEventListener {
         }
         return result;
     }
-
-
  */
     public  void close(){
         try {

@@ -3,7 +3,6 @@ package form;
 import bean.DataEntity;
 import bean.PublicValue;
 import bean.SettingField;
-import com.alibaba.fastjson.JSONObject;
 import common.CommonUtils;
 import pdf.PdfUtils;
 import sun.swing.table.DefaultTableCellHeaderRenderer;
@@ -13,11 +12,14 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * http://www.icosky.com/icon-search/save图标合集选择自己喜欢的图标
@@ -52,6 +54,7 @@ public class Start extends JFrame {
     public JTabbedPane tabbedPane1;
     private JTable tableHistory;
     private JScrollPane scrollPanelHIstory;
+    private JButton btnUsers;
     public DefaultTableModel dataModelHistory;
     public final static Color colorBackGround = new Color(47,63,80);
     public final static Color fontColor = new Color(173,206,47);
@@ -117,6 +120,12 @@ public class Start extends JFrame {
         panelTop.updateUI();
         panelBottom.setSize(dim);
         panelBottom.updateUI();
+        btnUsers.setText("");
+        btnUsers.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/user.png"),0.5));
+        btnUsers.setToolTipText("User");
+        btnUsers.addActionListener(e -> {
+            showUsers();
+        });
         btnQuery.setText("");
         btnQuery.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/search.png"),0.5));
         btnQuery.setToolTipText("Search");
@@ -137,13 +146,6 @@ public class Start extends JFrame {
         btnSetting.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/settings.png"),0.5));
         btnSetting.setText("");
         btnSetting.addActionListener(e -> {
-            /*
-            测试代码
-                if (true) {
-                    FileUtil.setTxtFileData(Start.getInstance().getTableDataList());
-                    return ;
-                }
-             */
                 if (!PublicParameter.isReadRecordOver ){
                     if (PublicParameter.currentPort.equalsIgnoreCase("NONE"))
                     {
@@ -158,6 +160,8 @@ public class Start extends JFrame {
                 else showSetting();
 
         });
+        btnUsers.setBackground(colorBackGround);
+        btnUsers.setBorder(null);
         btnQuery.setBackground(colorBackGround);
         btnQuery.setBorder(null);
         btnExport.setToolTipText("Setting");
@@ -186,15 +190,7 @@ public class Start extends JFrame {
     public void initFrameLayoutSize()
     {
 
-        /*
-        panelTop.setSize(new Dimension(this.getWidth(),60));
-        panelTopLeft.setSize(new Dimension(this.getWidth(),60));
-//        deviceName
-//                deviceDate
-        panelTopCenter.setSize(new Dimension(this.getWidth(),60));
-        panelTopRight.setSize(new Dimension(this.getWidth(),60));
-        panelBottom.setSize(new Dimension(this.getWidth(),60));
-*/
+
 
     }
 
@@ -210,21 +206,21 @@ public class Start extends JFrame {
 
     public void initTableDataModel()
     {
+
         Vector<Vector<Object>> rowDatas = new Vector<Vector<Object>>();
-        dataModel = new DefaultTableModel(rowDatas, getTableColumnName()){
-            public boolean isCellEditable(int row, int column)
-            {
+
+        dataModel = new DefaultTableModel(rowDatas, getTableColumnName()) {
+            public boolean isCellEditable(int row, int column) {
                 boolean result = false;
-                switch(column)
-                {
-                    case  DataColumnsUtils.COL_OPERATORNAME:
-                        result =  true;
+                switch (column) {
+                    case DataColumnsUtils.COL_OPERATORNAME:
+                        result = true;
                         break;
                     case DataColumnsUtils.COL_ROOM:
-                        result =  true;
+                        result = true;
                         break;
                     case DataColumnsUtils.COL_CONTENT:
-                        result =  true;
+                        result = true;
                         break;
 
                 }
@@ -268,6 +264,7 @@ public class Start extends JFrame {
     }
     private Vector<String> getTableColumnName(){
         Vector<String> columnNames = new Vector<String>();
+        columnNames.add("");
         columnNames.add("Treatent");
         columnNames.add("Date");
         columnNames.add("Time");
@@ -288,6 +285,7 @@ public class Start extends JFrame {
         tableData.setGridColor(Color.GRAY);
         tableData.getTableHeader().setBackground(fontColor);
         scrollPanelData.setBackground(colorBackGround);
+        tableData.getColumnModel().getColumn(DataColumnsUtils.COL_ID).setPreferredWidth(20); //设置列宽
 
         tableHistory.setRowHeight(30);
         tableHistory.setForeground(Color.BLACK);
@@ -296,10 +294,12 @@ public class Start extends JFrame {
         tableHistory.setSelectionBackground(Color.LIGHT_GRAY);
         tableHistory.setGridColor(Color.GRAY);
         tableHistory.getTableHeader().setBackground(fontColor);
+        tableHistory.getColumnModel().getColumn(DataColumnsUtils.COL_ID).setPreferredWidth(20); //设置列宽
+
         this.scrollPanelHIstory.setBackground(colorBackGround);
         this.setBackground(colorBackGround);
         this.setResizable(false);
-        //table.getColumnModel().getColumn(0).setPreferredWidth(40); 设置列宽
+
     }
     public void initHistoryTable()
     {
@@ -435,6 +435,9 @@ public class Start extends JFrame {
                 String val = selectDataModel.getValueAt(row,col) == null?"":selectDataModel.getValueAt(row,col).toString();
                 switch(col)
                 {
+                    case DataColumnsUtils.COL_ID :
+                        value.setsId(val);
+                        break;
                     case DataColumnsUtils.COL_TREATENT :
                         value.setsTreatent(val);
                         break;
@@ -468,7 +471,6 @@ public class Start extends JFrame {
     }
     public void prcessTableModelData(String receive){
         try{
-
             receive = receive.replaceAll("\r","");
             receive = receive.replaceAll("\n","");
             if (receive.length() <  20) return ;
@@ -482,6 +484,7 @@ public class Start extends JFrame {
             String _time1 = receive.substring(20,22); //持续时间1
             String _time2 = receive.substring(22,24); //持续时间2
             DataEntity data = new DataEntity();
+            data.setsId(String.valueOf(dataModel.getRowCount()+1));
             data.setsTreatent("");
             data.setsDate(_day + "/" + _month + "/" + _year);
             data.setsTime(_hour + ":" + _sec);
@@ -490,7 +493,6 @@ public class Start extends JFrame {
             data.setsRoom("");
             data.setsContent("");
             dataModel.addRow(DataColumnsUtils.getListContent(data));
-
             dataModel.fireTableDataChanged();
             int maxHeight = scrollPanelData.getVerticalScrollBar().getMaximum();
             scrollPanelData.getViewport().setViewPosition(new Point(0,maxHeight));
@@ -534,6 +536,19 @@ public class Start extends JFrame {
         }
         
     }
+    private void showUsers()
+    {
+        if (User.getInstance() !=null)
+        {
+            User.user = null;
+        }
+        User user = User.getInstance();
+        if (!user.isVisible()){
+            user.setVisible(true);
+        }
+
+
+    }
     private void searchHistory()
     {
         String selectDeviceIdFile = comboBoxDeviceId.getSelectedItem().toString();
@@ -560,34 +575,14 @@ public class Start extends JFrame {
             List<DataEntity>  list =JsonRead.getJsonRecordFileToEntity(file);
             for(DataEntity data : list)
             {
+                data.setsId(String.valueOf(dataModelHistory.getRowCount() + 1));
                 dataModelHistory.addRow(DataColumnsUtils.getListContent(data));
                 dataModelHistory.fireTableDataChanged();
             }
         }
         this.tabbedPane1.setSelectedIndex(1);
         JOptionPane.showMessageDialog(this, "Data load over", "Information", 1);
-        /*
-        if (!isFound) return ;
-        String fileName = fileFullPath + "\\" + searchFileName;
-        String jsonFileContent = JsonRead.getInstance().readJsonFile(fileName);
-        JSONObject object = JSONObject.parseObject(jsonFileContent);
-        String sDevicename =  object.get("devicename").toString();
-        String sDevicedate = object.get("devicedate").toString();
-        String sDeviceversion = object.get("deviceversion").toString();
-        deviceName.setText("Device Name " + sDevicename);
-        deviceDate.setText("Device Date " + sDevicedate);
-//        deviceVersion.setText("Device Version " + sDeviceversion);
-        deviceVersionValue.setText(sDeviceversion);
 
-        List<DataEntity>  list =JsonRead.getJsonRecordFileToEntity(fileName);
-        removeRowForDetailTable();
-        for(DataEntity data : list)
-        {
-            dataModel.addRow(DataColumnsUtils.getListContent(data));
-            dataModel.fireTableDataChanged();
-        }
-
-         */
     }
 
     /**

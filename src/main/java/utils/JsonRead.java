@@ -2,6 +2,7 @@ package utils;
 
 
 import bean.DataEntity;
+import bean.UserEntity;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
@@ -16,6 +17,8 @@ import java.util.List;
 public class JsonRead {
 
     public static final String jsonFile = "./resources/json/link.json";
+    public static final String jsonUserFile = "./resources/json/user.json";
+    public static final String jsonLoginFile = "./resources/json/login.json";
     private static JsonRead jsonRead;
 
     private JsonRead() {
@@ -38,6 +41,21 @@ public class JsonRead {
         String jsonSource = readJsonFile(jsonFile);
         JSONObject object = JSONObject.parseObject(jsonSource);
         return object.get(target).toString();
+    }
+
+    /*
+
+    读取用户使用
+     */
+    public String getJsonContentTarget(String jsonFileName,String target) {
+        String jsonSource = readJsonFile(jsonFileName);
+        JSONObject object = JSONObject.parseObject(jsonSource);
+        return object.get(target).toString();
+    }
+    public Object getJsonObject(String jsonFileName) {
+        String jsonSource = readJsonFile(jsonFileName);
+        JSONObject object = JSONObject.parseObject(jsonSource);
+        return object;
     }
     //当有两级时
     public String getJsonTarget(String target1,String target2) {
@@ -106,6 +124,9 @@ public class JsonRead {
     {
         return "\t]\n";
     }
+
+
+
     public static String getStr2JsonEntity(String end)
     {
         String result = "";
@@ -122,6 +143,21 @@ public class JsonRead {
         result += "\t\t} " + end + "\n" ;
         return result;
     }
+
+
+    public static String getStr2JsonUserEntity(String end)
+    {
+        String result = "";
+        result = result + "\t\t{" + "\n";
+        result += "\t\t\t\"" + "user" + "\"" + ":" + "\"#user#\"" + ",";
+        result += ("\"" + "pwd" + "\"" + ":" + "\"#pwd#\"" + ",");
+        result += ("\"" + "level" + "\"" + ":" + "\"#level#\"" );
+        result += "\n";
+        result += "\t\t} " + end + "\n" ;
+        return result;
+    }
+
+
 /*
 解析json文件后放入table中，还没有做 lukeWang
 prcessTableModelData 注意start.java中参照
@@ -149,4 +185,24 @@ prcessTableModelData 注意start.java中参照
         return listData;
     }
 
+
+    /**
+     *
+     * 处理用户的专用json函数
+     */
+    public static List<UserEntity> getJsonRecordFileToUserEntity(String filename){
+        String readJson = JsonRead.getInstance().readJsonFile(filename);
+        JSONObject object = JSONObject.parseObject(readJson);
+        JSONArray jarr=JSONArray.parseArray(object.get("users").toString());
+        List<UserEntity> listData = new ArrayList<>();
+        for (Iterator iterator = jarr.iterator(); iterator.hasNext();) {
+            JSONObject value=(JSONObject)iterator.next();
+            UserEntity data = new UserEntity();
+            data.setUser(value.get("user").toString());
+            data.setPwd(value.get("pwd").toString());
+            data.setLevel(value.get("level").toString());
+            listData.add(data);
+        }
+        return listData;
+    }
 }
