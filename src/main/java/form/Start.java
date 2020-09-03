@@ -264,7 +264,7 @@ public class Start extends JFrame {
     }
     private Vector<String> getTableColumnName(){
         Vector<String> columnNames = new Vector<String>();
-        columnNames.add("");
+//        columnNames.add("");
         columnNames.add("Treatent");
         columnNames.add("Date");
         columnNames.add("Time");
@@ -285,7 +285,7 @@ public class Start extends JFrame {
         tableData.setGridColor(Color.GRAY);
         tableData.getTableHeader().setBackground(fontColor);
         scrollPanelData.setBackground(colorBackGround);
-        tableData.getColumnModel().getColumn(DataColumnsUtils.COL_ID).setPreferredWidth(20); //设置列宽
+//        tableData.getColumnModel().getColumn(DataColumnsUtils.COL_ID).setPreferredWidth(20); //设置列宽
 
         tableHistory.setRowHeight(30);
         tableHistory.setForeground(Color.BLACK);
@@ -294,7 +294,7 @@ public class Start extends JFrame {
         tableHistory.setSelectionBackground(Color.LIGHT_GRAY);
         tableHistory.setGridColor(Color.GRAY);
         tableHistory.getTableHeader().setBackground(fontColor);
-        tableHistory.getColumnModel().getColumn(DataColumnsUtils.COL_ID).setPreferredWidth(20); //设置列宽
+//        tableHistory.getColumnModel().getColumn(DataColumnsUtils.COL_ID).setPreferredWidth(20); //设置列宽
 
         this.scrollPanelHIstory.setBackground(colorBackGround);
         this.setBackground(colorBackGround);
@@ -435,9 +435,9 @@ public class Start extends JFrame {
                 String val = selectDataModel.getValueAt(row,col) == null?"":selectDataModel.getValueAt(row,col).toString();
                 switch(col)
                 {
-                    case DataColumnsUtils.COL_ID :
-                        value.setsId(val);
-                        break;
+//                    case DataColumnsUtils.COL_ID :
+//                        value.setsId(val);
+//                        break;
                     case DataColumnsUtils.COL_TREATENT :
                         value.setsTreatent(val);
                         break;
@@ -484,8 +484,8 @@ public class Start extends JFrame {
             String _time1 = receive.substring(20,22); //持续时间1
             String _time2 = receive.substring(22,24); //持续时间2
             DataEntity data = new DataEntity();
-            data.setsId(String.valueOf(dataModel.getRowCount()+1));
-            data.setsTreatent("");
+//            data.setsId(String.valueOf(dataModel.getRowCount()+1));
+            data.setsTreatent(String.valueOf(dataModel.getRowCount()+1));
             data.setsDate(_day + "/" + _month + "/" + _year);
             data.setsTime(_hour + ":" + _sec);
             data.setsVolume(_use1 + _use2);
@@ -575,7 +575,7 @@ public class Start extends JFrame {
             List<DataEntity>  list =JsonRead.getJsonRecordFileToEntity(file);
             for(DataEntity data : list)
             {
-                data.setsId(String.valueOf(dataModelHistory.getRowCount() + 1));
+                data.setsTreatent(String.valueOf(dataModelHistory.getRowCount() + 1));
                 dataModelHistory.addRow(DataColumnsUtils.getListContent(data));
                 dataModelHistory.fireTableDataChanged();
             }

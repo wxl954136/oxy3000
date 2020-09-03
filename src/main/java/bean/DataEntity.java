@@ -4,7 +4,7 @@ public class DataEntity {
 
 
 
-    private String sId;
+//    private String sId;
     private String sTreatent;
     private String sDate;
     private String sTime;
@@ -26,13 +26,13 @@ public class DataEntity {
         this.sRoom = sRoom;
         this.sContent = sContent;
     }
-    public String getsId() {
-        return sId;
-    }
-
-    public void setsId(String sId) {
-        this.sId = sId;
-    }
+//    public String getsId() {
+//        return sId;
+//    }
+//
+//    public void setsId(String sId) {
+//        this.sId = sId;
+//    }
     public String getsTreatent() {
         return sTreatent;
     }

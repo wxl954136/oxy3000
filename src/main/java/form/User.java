@@ -90,24 +90,27 @@ public class User  extends JDialog{
         contents += "Low: check data ,seel userlist,but not include password,change own password \n";
         this.txtNotes.setText(contents);
     }
+
     public void initTableDataModel()
     {
         Vector<Vector<Object>> rowDatas = new Vector<Vector<Object>>();
         dataModelUser = new DefaultTableModel(rowDatas, getTableColumnName()) {
-            /*
+
             @Override
             public void setValueAt(Object cell, int row, int column) {
-                if (column == UserColumnsUtils.COL_PWD)
+                if (column == UserColumnsUtils.COL_USER)
                 {
-                    Vector<Object> data = rowDatas.get(row);
-//                    System.out.println(cell.toString());
+                    if (isRepeatUser(row,cell.toString()))
+                    {
+                        cell = "";
+                    }
                     super.setValueAt(cell,row,column);
                     return ;
                 }
                 super.setValueAt(cell,row,column);
             }
 
-             */
+
 
             public boolean isCellEditable(int row, int column) {
                 boolean result = false;
@@ -125,7 +128,6 @@ public class User  extends JDialog{
                         if (rowUser.equalsIgnoreCase("admin")) {
                             result = false;
                         }
-
                         break;
                     case UserColumnsUtils.COL_PWD:
                         if (rowUser.equalsIgnoreCase("admin") && !currentUser.equalsIgnoreCase("admin"))
@@ -156,6 +158,33 @@ public class User  extends JDialog{
             }
         };
         tableUser.setModel(dataModelUser);
+    }
+    public boolean isRepeatUser(int row,String name)
+    {
+        boolean result = false;
+        for(int i = 0 ; i < dataModelUser.getRowCount() ; i++)
+        {
+            if (i== row) continue;
+            String _name = dataModelUser.getValueAt(i,UserColumnsUtils.COL_USER).toString();
+            if (_name.equalsIgnoreCase(name))
+            {
+                result = true;
+                break;
+            }
+        }
+        if (result)
+        {
+            Object []option= {"ok"};
+            JOptionPane.showOptionDialog(this,
+                    "Duplicate name!",
+                    "Warning",
+                    JOptionPane.YES_OPTION,
+                    JOptionPane.WARNING_MESSAGE,
+                    null,option,//按钮的标题
+                    option[0]);
+        }
+
+        return  result;
     }
     private Vector<String> getTableColumnName(){
         Vector<String> columnNames = new Vector<String>();
