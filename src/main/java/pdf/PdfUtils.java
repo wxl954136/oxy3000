@@ -16,7 +16,7 @@ import java.util.Date;
 
 public class PdfUtils {
 
-    private static final int TBL_COLUMNS_LEN = 8 ;
+    private static final int TBL_COLUMNS_LEN = 9 ;
 
     /**
      *
@@ -144,9 +144,11 @@ public class PdfUtils {
         for(int i = 0 ; i < datas.size() ; i++){
             for (int col = 0; col < TBL_COLUMNS_LEN; col++) {
                 DataEntity value = datas.get(i);
+                //导出时添加序列号
+//                value.setsTreatent(String.valueOf(i+1));
                 switch (col) {
                     case DataColumnsUtils.COL_TREATENT:
-                        tableContent.addCell(mircoSoftFont(value.getsTreatent(), size8font, 20, true, true, false));
+                        tableContent.addCell(mircoSoftFont(value.getsTreatent() , size8font, 20, true, true, false));
                         break;
                     case DataColumnsUtils.COL_DATE:
                         tableContent.addCell(mircoSoftFont(value.getsDate(), size8font, 20, true, true, false));
@@ -170,7 +172,6 @@ public class PdfUtils {
                         break;
                     case DataColumnsUtils.COL_ROOM:
                         tableContent.addCell(mircoSoftFont(value.getsRoom(), size8font, 20, true, true, false));
-
                         break;
                     case DataColumnsUtils.COL_CONTENT:
                         tableContent.addCell(mircoSoftFont(value.getsContent(), size8font, 20, true, true, false));

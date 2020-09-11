@@ -184,6 +184,7 @@ public   class CommonUtils implements SerialPortEventListener {
                         return ;
                     }
                     if(sendMessag.indexOf("setting:") >=0){
+
                         showSettingValue(sendMessag,result);
                         return ;
                     }
@@ -281,9 +282,10 @@ public   class CommonUtils implements SerialPortEventListener {
             //写txt文件
             try {
                 if (Start.getInstance().getTableDataList(Start.getInstance().dataModel).size() > 0) {
-                    FileUtil.setJsonFileData(Start.getInstance().getTableDataList(Start.getInstance().dataModel));
-                }
+                     FileUtil.setJsonFileData(Start.getInstance().getTableDataList(Start.getInstance().dataModel));
+                 }
             } catch (Exception e) {
+                System.out.println(e.getMessage());
 
             }finally {
                 PublicParameter.isReadRecordOver = true;

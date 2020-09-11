@@ -5,7 +5,7 @@
   "rate": "19200",
   "pdf-font": "simhei.ttf",
   "sys-font": "simhei.ttf",
-  "debug": "yes",
+  "debug": "no",
   "-------指令列表--------": "------***指令返回信息***-----------",
   "cxsbmc": {"remark":"查询设备名称","order":"at+name=?","success": "at+name=#name","error": "at+name=error" },
   "sdsbmc": {"remark":"设定设备名称","order":"at+name=#name","success": "at+name=ok","error": "at+name=error" },
@@ -33,5 +33,6 @@
   "hfscjl": {"remark":"恢复删除记录","order":"at+recordndel=#recordndel","success": "at+recordndel=ok","error": "at+recordndel=error" },
   "xgjl": {"remark":"修改记录","order":"at+restore=#restore","success": "at+restore=ok","error": "at+restore=error" },
   "hqjlzsl": {"remark":"获取记录总数量","order":"at+recordnum=?","success": "at+recordnum=#recordnum","error": "at+recordnum=error" },
+  "setnum": {"remark":"设置待还原的记录总数,设置后，配合 at+restore=#restore进行还原 ","order":"at+setnum=#setnum","success": "at+setnum=ok","error": "at+recordnum=error" },
   "1.3.12版本及以后新增功能-end": "1.3.12以前不支持"
 }

@@ -136,6 +136,7 @@ public class JsonRead {
         result += ("\"" + "time" + "\"" + ":" + "\"#time#\"" + ",");
         result += ("\"" + "volume" + "\"" + ":" + "\"#volume#\"" + ",");
         result += ("\"" + "duration" + "\"" + ":" + "\"#duration#\"" + ",");
+        result += ("\"" + "del" + "\"" + ":" + "\"#del#\"" + ",");
         result += ("\"" + "operatorname" + "\"" + ":" + "\"#operatorname#\"" + ",");
         result += ("\"" + "room" + "\"" + ":" + "\"#room#\"" + ",");
         result += ("\"" + "content" + "\"" + ":" + "\"#content#\"" );
@@ -177,6 +178,7 @@ prcessTableModelData 注意start.java中参照
             data.setsTime(value.get("time").toString());
             data.setsVolume(value.get("volume").toString());
             data.setsDuration(value.get("duration").toString());
+            data.setsDel(value.containsKey("del")?value.get("del").toString():"");
             data.setsOperatorName(value.get("operatorname").toString());
             data.setsRoom(value.get("room").toString());
             data.setsContent(value.get("content").toString());

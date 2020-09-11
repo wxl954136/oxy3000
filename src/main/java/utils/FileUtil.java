@@ -57,6 +57,7 @@ public class FileUtil {
         String content = "";
         if (listData.size() <=0 ) return ;
         String records = "";
+
         for (int index = 0 ; index<listData.size() ;index++ ){
             DataEntity data = listData.get(index);
             records = JsonRead.getStr2JsonEntity(  (index==listData.size()-1)?"":",");
@@ -65,6 +66,9 @@ public class FileUtil {
             records = records.replaceAll("#time#",data.getsTime());
             records = records.replaceAll("#volume#",data.getsVolume());
             records = records.replaceAll("#duration#",data.getsDuration());
+
+            records = records.replaceAll("#del#",data.getsDel());
+
             records = records.replaceAll("#operatorname#",data.getsOperatorName());
             records = records.replaceAll("#room#",data.getsRoom());
             records = records.replaceAll("#content#",data.getsContent());
@@ -203,7 +207,7 @@ public class FileUtil {
         }
         return list;
     }
-
+//
     public static String getSearchFile(String deviceid,String date)
     {
         String fileTemp ="REC-" + deviceid.trim()+ "#" + date.replaceAll("-","");

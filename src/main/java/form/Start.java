@@ -24,8 +24,6 @@ import java.util.*;
 /**
  * http://www.icosky.com/icon-search/save图标合集选择自己喜欢的图标
  *
- *
- *
  */
 public class Start extends JFrame {
     private JPanel contentPane;
@@ -270,6 +268,7 @@ public class Start extends JFrame {
         columnNames.add("Time");
         columnNames.add("Volume");
         columnNames.add("Duration");
+        columnNames.add("Del");
         columnNames.add("Operator name");
         columnNames.add("Room");
         columnNames.add("Content");
@@ -286,7 +285,9 @@ public class Start extends JFrame {
         tableData.getTableHeader().setBackground(fontColor);
         scrollPanelData.setBackground(colorBackGround);
 //        tableData.getColumnModel().getColumn(DataColumnsUtils.COL_ID).setPreferredWidth(20); //设置列宽
-
+//隐藏一列
+       tableData.getColumnModel().getColumn(DataColumnsUtils.COL_DEL).setMinWidth(0);
+       tableData.getColumnModel().getColumn(DataColumnsUtils.COL_DEL).setMaxWidth(0);
         tableHistory.setRowHeight(30);
         tableHistory.setForeground(Color.BLACK);
         tableHistory.setFont(new Font(null, Font.PLAIN, 14));
@@ -294,8 +295,9 @@ public class Start extends JFrame {
         tableHistory.setSelectionBackground(Color.LIGHT_GRAY);
         tableHistory.setGridColor(Color.GRAY);
         tableHistory.getTableHeader().setBackground(fontColor);
-//        tableHistory.getColumnModel().getColumn(DataColumnsUtils.COL_ID).setPreferredWidth(20); //设置列宽
-
+//隐藏一列
+        tableHistory.getColumnModel().getColumn(DataColumnsUtils.COL_DEL).setMinWidth(0);
+        tableHistory.getColumnModel().getColumn(DataColumnsUtils.COL_DEL).setMaxWidth(0);
         this.scrollPanelHIstory.setBackground(colorBackGround);
         this.setBackground(colorBackGround);
         this.setResizable(false);
@@ -453,6 +455,9 @@ public class Start extends JFrame {
                     case DataColumnsUtils.COL_DURATION:
                         value.setsDuration(val);
                         break;
+                    case DataColumnsUtils.COL_DEL:
+                        value.setsDel(val);
+                        break;
                     case DataColumnsUtils.COL_OPERATORNAME:
                         value.setsOperatorName(val);
                         break;
@@ -483,13 +488,19 @@ public class Start extends JFrame {
             String _use2 = receive.substring(17,19);  //用量2
             String _time1 = receive.substring(20,22); //持续时间1
             String _time2 = receive.substring(22,24); //持续时间2
+            String _del = "" ;
+            if (receive.length() > 25  )
+            {
+                _del = receive.substring(25,27); //删除标记,1.3.12版本时增加了del删除功能和标记
+            }
+
             DataEntity data = new DataEntity();
-//            data.setsId(String.valueOf(dataModel.getRowCount()+1));
             data.setsTreatent(String.valueOf(dataModel.getRowCount()+1));
             data.setsDate(_day + "/" + _month + "/" + _year);
             data.setsTime(_hour + ":" + _sec);
             data.setsVolume(_use1 + _use2);
             data.setsDuration(_time1 + _time2);
+            data.setsDel(_del);
             data.setsRoom("");
             data.setsContent("");
             dataModel.addRow(DataColumnsUtils.getListContent(data));

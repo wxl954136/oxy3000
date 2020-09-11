@@ -5,19 +5,23 @@ package form;
 https://how2j.cn/k/gui/gui-datepicker/421.html#nowhere
 http://www.java2s.com/Code/Jar/s/Downloadswingxcore1651sourcesjar.htm
  */
+
+import bean.DataEntity;
+import bean.PublicValue;
 import bean.SettingField;
 import common.CommonUtils;
 import org.jdesktop.swingx.JXDatePicker;
+import utils.DataColumnsUtils;
 import utils.JsonRead;
 import utils.PublicParameter;
 import utils.ToolUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.*;
 
 
 public class Setting extends JDialog {
@@ -30,6 +34,7 @@ public class Setting extends JDialog {
     private JComboBox comboxHour;
     private JComboBox comboxMinute;
     private JXDatePicker datepicker;
+    private JButton buttonRestore;
     private JPanel datePanel;
     private SettingField settingField;
     public Map<String,String> mapOrder = new HashMap<>();
@@ -48,6 +53,7 @@ public class Setting extends JDialog {
         getRootPane().setDefaultButton(buttonOK);
 
         buttonOK.addActionListener(e -> onOK());
+        buttonRestore.addActionListener(e -> onRestore());
         buttonCancel.addActionListener(e -> onCancel());
 
         /*
@@ -75,10 +81,16 @@ public class Setting extends JDialog {
         //panelTop.setPreferredSize(dim);
         settingPanel.setSize(dim);
         settingPanel.updateUI();
+        buttonRestore.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/restore.png"),0.3));
+        buttonRestore.setText("Restore");
+        buttonRestore.setPreferredSize(new Dimension(90, 30));
+        buttonRestore.setBorder(null);
+
         buttonOK.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/save.png"),0.3));
         buttonOK.setText("Save");
         buttonOK.setPreferredSize(new Dimension(80, 30));
         buttonOK.setBorder(null);
+
         buttonCancel.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/cancel.png"),0.2));
         buttonCancel.setPreferredSize(new Dimension(80, 30));
         buttonCancel.setText("Cancel");
@@ -106,7 +118,6 @@ public class Setting extends JDialog {
         mapResult.put("sdsj","NONE");
     }
     private void onOK() {
-        // add your code here
         settingField.setAnswer(true);
         settingField.setDeviceName(txtName.getText());
         settingField.setDeviceDate(new SimpleDateFormat("yyyyMMdd").format(datepicker.getDate()));
@@ -138,11 +149,106 @@ public class Setting extends JDialog {
         serialPortSend(sdsjOrder);
 
     }
+    private void onRestore() {
+        if (!ToolUtils.izVersionSupport(PublicValue.FIRMWARE)){
+            JOptionPane.showMessageDialog(null,
+                    "固件低于1.3.12以下版本不支持该功能(" +PublicValue.FIRMWARE + ")"
+                    ,"提示信息", 1);
+            return ;
+        }
+        readRestoreFile();
+    }
+
+    public void readRestoreFile() {
+        String deviceId = Start.getInstance().resultDeviceId;
+        deviceId = deviceId.replace("at+deviceid=","");
+        String fileFullPath = ToolUtils.getUserDir() + "\\resources\\txt\\history";
+        File dirs = new File(fileFullPath);
+        File files[] = dirs.listFiles();
+        String searchFileName = deviceId.replaceAll("\r","");
+        searchFileName = searchFileName.replaceAll("\n","");
+        java.util.List<String> fileList = new ArrayList<>();
+        for (File file : files) {
+            if (file.isFile()) {
+                if (file.getName().indexOf(searchFileName) >= 0) {
+                    fileList.add(file.toString());
+                }
+            }
+        }
+
+        if (fileList.size() <= 0) return;
+
+        List<String> listResult = new ArrayList<String>();
+        for (String file : fileList) {
+            List<DataEntity> list = JsonRead.getJsonRecordFileToEntity(file);
+            for(int i = 0  ;i< list.size();i++)
+            {
+                DataEntity data = list.get(i);
+                String result = "";
+                result += (String.valueOf(i+1)+ " "); //添加序号 ,注意此地是否控制位数，要测试
+                String year = data.getsDate().substring(6,data.getsDate().length()) + " ";
+                result += year;
+                String month  = data.getsDate().substring(0,2);
+                String day = data.getsDate().substring(3,5);
+                result += (month + day + " ");
+                String time = data.getsTime().replaceAll(":","") + " ";
+                result += time;
+                String volume = data.getsVolume() + " ";
+                result += volume;
+                String duration = data.getsDuration() + " ";
+                result += duration;
+                //删除标记怎么处理
+                listResult.add(result);
+            }
+        }
+        //处理，并发一条条还原数据
+        if (listResult.size() > 0 ){
+
+            //先设置要恢复的行数----start
+            String setnumOrder = "setting:" + JsonRead.getInstance().getJsonTarget("setnum","order");
+            String setnumKey =  ToolUtils.getSendOrderKey(setnumOrder);
+            //在这里取到当前设备份数据的行数
+            setnumOrder = setnumOrder.replaceAll(setnumKey ,String.valueOf(listResult.size()));
+            mapOrder.put(JsonRead.getInstance().getJsonTarget("setnum","order"),setnumOrder.replaceAll("setting:",""));
+            serialPortSend(setnumOrder);
+            try{Thread.sleep(1000);}catch(Exception eg){ }
+            //先设置要恢复的行数----end
+
+            //准备一行行恢复数据----start
+            String xgjlOrder = "setting:" + JsonRead.getInstance().getJsonTarget("xgjl","order");
+            String xgjlKey =  ToolUtils.getSendOrderKey(xgjlOrder);
+            for(int i = 0 ;i<listResult.size() ; i++)
+            {
+                String order = xgjlOrder;
+                String value = listResult.get(i);
+                order = order.replaceAll(xgjlKey ,value);
+                mapOrder.put(JsonRead.getInstance().getJsonTarget("xgjl","order"),order.replaceAll("setting:",""));
+                serialPortSend(order);
+                try{Thread.sleep(1000);}catch(Exception eg){ }
+            }
+            JOptionPane.showMessageDialog(this,"Restore data over","Information", 1);
+        }
+    }
     public void serialPortSend(String sendMsg){
         PublicParameter.commonUtils = CommonUtils.getInstance(PublicParameter.currentPort);
         PublicParameter.commonUtils.send(ToolUtils.getFormatMsg(sendMsg));
     }
+
     public static void showSettingValue(String sendMessage,String result){
+
+        System.out.println("x====获取sendMessage 如果是send_num则单独处理==========" + sendMessage );
+        String setnum = setting.mapOrder.get(JsonRead.getInstance().getJsonTarget("sdsbmc","order"));
+        if (sendMessage.equalsIgnoreCase(setnum))
+        {
+//            处理返回数据: 设定总记录行数
+            return ;
+        }
+        String xgjlOrder = setting.mapOrder.get(JsonRead.getInstance().getJsonTarget("xgjl","order"));
+        if (sendMessage.equalsIgnoreCase(xgjlOrder))
+        {
+//            处理返回数据   : 一定条数据恢复逻辑
+            return ;
+        }
         String sdsbmc = setting.mapOrder.get(JsonRead.getInstance().getJsonTarget("sdsbmc","order"));
         if (sendMessage.equalsIgnoreCase( sdsbmc))
         {

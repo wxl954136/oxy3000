@@ -10,18 +10,26 @@ public class DataEntity {
     private String sTime;
     private String sVolume;
     private String sDuration;
+
+
+
+    private String sDel;
     private String sOperatorName;
     private String sRoom;
     private String sContent;
 
+
     public DataEntity(){}
-    public DataEntity(String sTreatent, String sDate , String sTime, String sVolume, String sDuration, String sOperatorName,
+    public DataEntity(String sTreatent, String sDate , String sTime, String sVolume, String sDuration,
+                      String sDel,
+                      String sOperatorName,
                       String sRoom, String sContent){
         this.sTreatent = sTreatent;
         this.sDate = sDate;
         this.sTime = sTime;
         this.sVolume = sVolume;
         this.sDuration = sDuration;
+        this.sDel = sDel;
         this.sOperatorName = sOperatorName;
         this.sRoom = sRoom;
         this.sContent = sContent;
@@ -72,7 +80,13 @@ public class DataEntity {
     public void setsDuration(String sDuration) {
         this.sDuration = sDuration;
     }
+    public String getsDel() {
+        return sDel;
+    }
 
+    public void setsDel(String sDel) {
+        this.sDel = sDel;
+    }
     public String getsOperatorName() {
         return sOperatorName;
     }
