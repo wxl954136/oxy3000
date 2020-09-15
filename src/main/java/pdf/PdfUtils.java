@@ -152,15 +152,12 @@ public class PdfUtils {
                         break;
                     case DataColumnsUtils.COL_DATE:
                         tableContent.addCell(mircoSoftFont(value.getsDate(), size8font, 20, true, true, false));
-
                         break;
                     case DataColumnsUtils.COL_TIME:
                         tableContent.addCell(mircoSoftFont(value.getsTime(), size8font, 20, true, true, false));
-
                         break;
                     case DataColumnsUtils.COL_VOLUME:
                         tableContent.addCell(mircoSoftFont(value.getsVolume(), size8font, 20, true, true, false));
-
                         break;
                     case DataColumnsUtils.COL_DURATION:
                         tableContent.addCell(mircoSoftFont(value.getsDuration(), size8font, 20, true, true, false));

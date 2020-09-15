@@ -119,7 +119,7 @@ public class Login extends JDialog{
         Map map = new HashMap<String,UserEntity>();
         for(UserEntity data:listUsers)
         {
-            map.put(data.getUser(),data);
+            map.put(data.getUser().toLowerCase().trim(),data);
         }
         PublicValue.USERS = map;
     }
@@ -128,6 +128,7 @@ public class Login extends JDialog{
         String _user = this.txtUserName.getText().toLowerCase().trim();
         String _pwd = this.txtPassword.getText().toLowerCase().trim();
         UserEntity user = PublicValue.USERS.get(_user);
+
         if ( user != null)
         {
             if (user.getUser().equalsIgnoreCase(_user) &&

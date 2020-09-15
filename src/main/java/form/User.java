@@ -61,7 +61,7 @@ public class User  extends JDialog{
     {
         tablePopupMenu = new JPopupMenu();
         JMenuItem addMenItem = new JMenuItem();
-        addMenItem.setText("新增行");
+        addMenItem.setText("Add row");
         addMenItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addRow();
@@ -69,7 +69,7 @@ public class User  extends JDialog{
         });
         tablePopupMenu.add(addMenItem);
         JMenuItem delMenItem = new JMenuItem();
-        delMenItem.setText("删除行");
+        delMenItem.setText("Delete row");
         delMenItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 //该操作需要做的事

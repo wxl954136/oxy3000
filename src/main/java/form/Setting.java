@@ -152,8 +152,8 @@ public class Setting extends JDialog {
     private void onRestore() {
         if (!ToolUtils.izVersionSupport(PublicValue.FIRMWARE)){
             JOptionPane.showMessageDialog(null,
-                    "固件低于1.3.12以下版本不支持该功能(" +PublicValue.FIRMWARE + ")"
-                    ,"提示信息", 1);
+                    "Firmware version must more than 1.3.12(" +PublicValue.FIRMWARE + ")"
+                    ,"Information", 1);
             return ;
         }
         readRestoreFile();
@@ -185,7 +185,8 @@ public class Setting extends JDialog {
             {
                 DataEntity data = list.get(i);
                 String result = "";
-                result += (String.valueOf(i+1)+ " "); //添加序号 ,注意此地是否控制位数，要测试
+                String num = String.format("%04d", (i+1));
+                result += (num + " "); //添加序号 ,注意此地是否控制位数，要测试
                 String year = data.getsDate().substring(6,data.getsDate().length()) + " ";
                 result += year;
                 String month  = data.getsDate().substring(0,2);
@@ -197,7 +198,8 @@ public class Setting extends JDialog {
                 result += volume;
                 String duration = data.getsDuration() + " ";
                 result += duration;
-                //删除标记怎么处理
+                String del = data.getsDel();
+                result += del;
                 listResult.add(result);
             }
         }
@@ -236,7 +238,7 @@ public class Setting extends JDialog {
 
     public static void showSettingValue(String sendMessage,String result){
 
-        System.out.println("x====获取sendMessage 如果是send_num则单独处理==========" + sendMessage );
+//        System.out.println("x====获取sendMessage 如果是send_num则单独处理==========" + sendMessage );
         String setnum = setting.mapOrder.get(JsonRead.getInstance().getJsonTarget("sdsbmc","order"));
         if (sendMessage.equalsIgnoreCase(setnum))
         {

@@ -256,11 +256,10 @@ public class Config extends JDialog {
     }
     private void onScjl()
     {
-
         if (!ToolUtils.izVersionSupport(PublicValue.FIRMWARE)){
             JOptionPane.showMessageDialog(null,
-                    "固件低于1.3.12以下版本不支持该功能(" +PublicValue.FIRMWARE + ")"
-                    ,"提示信息", 1);
+                    "Firmware version must more than 1.3.12(" +PublicValue.FIRMWARE + ")"
+                    ,"Information", 1);
             return ;
         }
         String debugOrder = "debug:" + JsonRead.getInstance().getJsonTarget("scjl","order");
@@ -274,8 +273,8 @@ public class Config extends JDialog {
     {
         if (!ToolUtils.izVersionSupport(PublicValue.FIRMWARE)){
             JOptionPane.showMessageDialog(null,
-                    "固件低于1.3.12以下版本不支持该功能(" +PublicValue.FIRMWARE + ")"
-                    ,"提示信息", 1);
+                    "Firmware version must more than 1.3.12(" +PublicValue.FIRMWARE + ")"
+                    ,"Information", 1);
             return ;
         }
         String debugOrder = "debug:" + JsonRead.getInstance().getJsonTarget("hfscjl","order");
@@ -288,8 +287,8 @@ public class Config extends JDialog {
     {
         if (!ToolUtils.izVersionSupport(PublicValue.FIRMWARE)){
             JOptionPane.showMessageDialog(null,
-                    "固件低于1.3.12以下版本不支持该功能(" +PublicValue.FIRMWARE + ")"
-                    ,"提示信息", 1);
+                    "Firmware version must more than 1.3.12(" +PublicValue.FIRMWARE + ")"
+                    ,"Information", 1);
             return ;
         }
         String debugOrder = "debug:" + JsonRead.getInstance().getJsonTarget("xgjl","order");
@@ -305,8 +304,8 @@ public class Config extends JDialog {
     {
         if (!ToolUtils.izVersionSupport(PublicValue.FIRMWARE)){
             JOptionPane.showMessageDialog(null,
-                    "固件低于1.3.12以下版本不支持该功能(" +PublicValue.FIRMWARE + ")"
-                    ,"提示信息", 1);
+                    "Firmware version must more than 1.3.12(" +PublicValue.FIRMWARE + ")"
+                    ,"Information", 1);
             return ;
         }
         String debugOrder = "debug:" + JsonRead.getInstance().getJsonTarget("hqjlzsl","order");
