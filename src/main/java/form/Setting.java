@@ -181,11 +181,19 @@ public class Setting extends JDialog {
         List<String> listResult = new ArrayList<String>();
         for (String file : fileList) {
             List<DataEntity> list = JsonRead.getJsonRecordFileToEntity(file);
+            int records = 0 ;
             for(int i = 0  ;i< list.size();i++)
             {
                 DataEntity data = list.get(i);
                 String result = "";
-                String num = String.format("%04d", (i+1));
+                String del = data.getsDel();
+                //如果是删除，则忽略不还原
+                if (del.equalsIgnoreCase("01"))
+                {
+                    continue;
+                }
+                records++;
+                String num = String.format("%04d", (records));
                 result += (num + " "); //添加序号 ,注意此地是否控制位数，要测试
                 String year = data.getsDate().substring(6,data.getsDate().length()) + " ";
                 result += year;
@@ -198,7 +206,7 @@ public class Setting extends JDialog {
                 result += volume;
                 String duration = data.getsDuration() + " ";
                 result += duration;
-                String del = data.getsDel();
+//                String del = data.getsDel(); //放到最前面判断
                 result += del;
                 listResult.add(result);
             }
@@ -211,6 +219,7 @@ public class Setting extends JDialog {
             String setnumKey =  ToolUtils.getSendOrderKey(setnumOrder);
             //在这里取到当前设备份数据的行数
             setnumOrder = setnumOrder.replaceAll(setnumKey ,String.valueOf(listResult.size()));
+
             mapOrder.put(JsonRead.getInstance().getJsonTarget("setnum","order"),setnumOrder.replaceAll("setting:",""));
             serialPortSend(setnumOrder);
             try{Thread.sleep(1000);}catch(Exception eg){ }
