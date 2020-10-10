@@ -53,6 +53,7 @@ public class Start extends JFrame {
     private JTable tableHistory;
     private JScrollPane scrollPanelHIstory;
     private JButton btnUsers;
+    private JButton btnConsole;
     public DefaultTableModel dataModelHistory;
     public final static Color colorBackGround = new Color(47,63,80);
     public final static Color fontColor = new Color(173,206,47);
@@ -83,6 +84,7 @@ public class Start extends JFrame {
         initDetailTable(this.tableData);
         initDetailTable(this.tableHistory);
         initDetailTableStyle();
+
 
     }
 
@@ -124,6 +126,14 @@ public class Start extends JFrame {
         btnUsers.addActionListener(e -> {
             showUsers();
         });
+
+        btnConsole.setText("");
+        btnConsole.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/console.png"),0.5));
+        btnConsole.setToolTipText("Console");
+        btnConsole.addActionListener(e -> {
+            showConsole();
+        });
+
         btnQuery.setText("");
         btnQuery.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/search.png"),0.5));
         btnQuery.setToolTipText("Search");
@@ -144,6 +154,20 @@ public class Start extends JFrame {
         btnSetting.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/settings.png"),0.5));
         btnSetting.setText("");
         btnSetting.addActionListener(e -> {
+
+                if (ToolUtils.isPower().equalsIgnoreCase("HIGH") ||
+                        ToolUtils.isPower().equalsIgnoreCase("NORMAL"))
+                {
+                    //正常可以操作
+                }else
+                {
+                    JOptionPane.showMessageDialog(null,
+                            " No operation permission"
+                            ,"Information", 1);
+                    return ;
+                }
+
+
                 if (!PublicParameter.isReadRecordOver ){
                     if (PublicParameter.currentPort.equalsIgnoreCase("NONE"))
                     {
@@ -158,8 +182,11 @@ public class Start extends JFrame {
                 else showSetting();
 
         });
+        btnConsole.setBackground(colorBackGround);
+        btnConsole.setBorder(null);
         btnUsers.setBackground(colorBackGround);
         btnUsers.setBorder(null);
+
         btnQuery.setBackground(colorBackGround);
         btnQuery.setBorder(null);
         btnExport.setToolTipText("Setting");
@@ -428,18 +455,16 @@ public class Start extends JFrame {
        if (dataModel != null) dataModel.setRowCount( 0 );
     }
 
-    public List<DataEntity> getTableDataList(DefaultTableModel selectDataModel){
+    public List<DataEntity> getTableDataList(DefaultTableModel selectDataModel,JTable table){
         List<DataEntity> list = new ArrayList<DataEntity>();
-        for (int row = 0 ; row< selectDataModel.getRowCount(); row++){
+        int rowSelect[] = table.getSelectedRows();
+        for (int row = 0 ; row < rowSelect.length; row++){
             DataEntity value = new DataEntity();
             for (int col = 0 ; col <selectDataModel.getColumnCount() ; col ++ )
             {
                 String val = selectDataModel.getValueAt(row,col) == null?"":selectDataModel.getValueAt(row,col).toString();
                 switch(col)
                 {
-//                    case DataColumnsUtils.COL_ID :
-//                        value.setsId(val);
-//                        break;
                     case DataColumnsUtils.COL_TREATENT :
                         value.setsTreatent(val);
                         break;
@@ -474,6 +499,51 @@ public class Start extends JFrame {
         }
         return list;
     }
+
+    public List<DataEntity> getTableDataList(DefaultTableModel selectDataModel){
+        List<DataEntity> list = new ArrayList<DataEntity>();
+        for (int row = 0 ; row< selectDataModel.getRowCount(); row++){
+            DataEntity value = new DataEntity();
+            for (int col = 0 ; col <selectDataModel.getColumnCount() ; col ++ )
+            {
+                String val = selectDataModel.getValueAt(row,col) == null?"":selectDataModel.getValueAt(row,col).toString();
+                switch(col)
+                {
+                    case DataColumnsUtils.COL_TREATENT :
+                        value.setsTreatent(val);
+                        break;
+                    case DataColumnsUtils.COL_DATE:
+                        value.setsDate(val);
+                        break;
+                    case DataColumnsUtils.COL_TIME:
+                        value.setsTime(val);
+                        break;
+                    case DataColumnsUtils.COL_VOLUME:
+                        value.setsVolume(val);
+                        break;
+                    case DataColumnsUtils.COL_DURATION:
+                        value.setsDuration(val);
+                        break;
+                    case DataColumnsUtils.COL_DEL:
+                        value.setsDel(val);
+                        break;
+                    case DataColumnsUtils.COL_OPERATORNAME:
+                        value.setsOperatorName(val);
+                        break;
+                    case DataColumnsUtils.COL_ROOM:
+                        value.setsRoom(val);
+                        break;
+                    case DataColumnsUtils.COL_CONTENT:
+                        value.setsContent(val);
+                        break;
+                }
+            }
+            list.add(value);
+
+        }
+        return list;
+    }
+
     public void prcessTableModelData(String receive){
         try{
             receive = receive.replaceAll("\r","");
@@ -514,6 +584,41 @@ public class Start extends JFrame {
 
 
     }
+
+    private void  showConsole()
+    {
+
+
+
+        if (ToolUtils.isPower().equalsIgnoreCase("HIGH"))
+        {
+            //正常可以操作
+        }else
+        {
+            JOptionPane.showMessageDialog(null,
+                    " No operation permission"
+                    ,"Information", 1);
+            return ;
+        }
+        if (!PublicParameter.isReadRecordOver  ){
+            if (PublicParameter.currentPort.equalsIgnoreCase("NONE"))
+            {
+                JOptionPane.showMessageDialog(this, "串口信息连接异常!", "提示信息", 1);
+                return ;
+            }
+            JOptionPane.showMessageDialog(this, "数据正在采集或无数据时，不可导出数据", "提示信息", 1);
+            return ;
+        }
+
+        if (Console.getInstance() !=null)
+        {
+            Console.console = null;
+        }
+        Console console = Console.getInstance();
+        if (!console.isVisible()){
+            console.setVisible(true);
+        }
+    }
     private void  showConfig()
     {
         Config config  = Config.getInstance();
@@ -532,6 +637,7 @@ public class Start extends JFrame {
         }
         settingField.setCurrentPort(currentPort);
         Setting setting = Setting.getInstance(settingField);
+
         setting.setIconImage(new ImageIcon("./resources/img/start.png").getImage());//设置图
         setting.setTitle(JsonRead.getInstance().getJsonTarget("title"));
         setting.setSize(300,200);
@@ -540,7 +646,21 @@ public class Start extends JFrame {
         //setting.setResizable(false);
         setting.setUndecorated(true);// 不绘制边框
         setting.initComponentValue();
+        String sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbmc","order")); //查询设备序列号
+        serialPortSend(sendMsg);
+        try{
+            Thread.sleep(400);
+        }catch(Exception eg){}
+        String deviceName = "OXY-30000";
+        String cxsbmcOrderName = ToolUtils.getOrderName("cxsbmc");
+        if (resultDeviceName.indexOf(cxsbmcOrderName)>=0 && resultDeviceName.indexOf("ERROR") < 0){
+            deviceName = resultDeviceName.substring((cxsbmcOrderName+"=").length() ).trim();
+        }
+        //这里给name值
+        setting.txtName.setText(deviceName);
+
         setting.setVisible(true);
+
         if (settingField.getAnswer()){
             //deviceDate.setText(settingField.getDeviceDate());
             //返回日期的取值
@@ -549,6 +669,16 @@ public class Start extends JFrame {
     }
     private void showUsers()
     {
+        if (ToolUtils.isPower().equalsIgnoreCase("HIGH"))
+        {
+            //正常可以操作
+        }else
+        {
+            JOptionPane.showMessageDialog(null,
+                    " No operation permission"
+                    ,"Information", 1);
+            return ;
+        }
         if (User.getInstance() !=null)
         {
             User.user = null;
@@ -664,41 +794,37 @@ public class Start extends JFrame {
             JOptionPane.showMessageDialog(this, "数据正在采集或无数据时，不可导出数据", "提示信息", 1);
             return ;
         }
-        JFileChooser jfc=new JFileChooser();
-        //jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );
-        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);  //仅能选择目录
-        int jfcOper = jfc.showDialog(new JLabel(), "请选择文件导出路径");
-        if (jfcOper != JFileChooser.APPROVE_OPTION) return ;  //当点击取消按钮时
-
-        File file=jfc.getSelectedFile();
-        if (!file.exists()) {
-            JOptionPane.showMessageDialog(this, "导出文件的路径不存在", "提示信息", 1);
-            return;
-        }
-        if(file.isDirectory()){
-            System.out.println("文件夹:"+file.getAbsolutePath());
-        }else if(file.isFile()){
-            System.out.println("java-文件:"+file.getAbsolutePath());
-        }
+//        JFileChooser jfc=new JFileChooser();
+//        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);  //仅能选择目录
+//        int jfcOper = jfc.showDialog(new JLabel(), "请选择文件导出路径");
+//        if (jfcOper != JFileChooser.APPROVE_OPTION) return ;  //当点击取消按钮时
+//
+//        File file=jfc.getSelectedFile();
+//        if (!file.exists()) {
+//            JOptionPane.showMessageDialog(this, "导出文件的路径不存在", "提示信息", 1);
+//            return;
+//        }
+//        if(file.isDirectory()){
+//            System.out.println("文件夹:"+file.getAbsolutePath());
+//        }else if(file.isFile()){
+//            System.out.println("java-文件:"+file.getAbsolutePath());
+//        }
+        File file  = new File(ToolUtils.getUserDir());
         Date currentDate = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
-        String fileFullName = file.getAbsolutePath() + "\\" + sdf.format(currentDate) + ".pdf";
+        String fileFullName = file.getAbsolutePath() + "\\resources\\export\\" + sdf.format(currentDate) + ".pdf";
         fileFullName = fileFullName.replace("\\\\","\\"); //，当选择根目录的时候，可能会有异常,不替换windows下适配
         try{
             if (this.tabbedPane1.getSelectedIndex() == 0)
             {
-                PdfUtils.createHardwarePDF(fileFullName,getTableDataList(this.dataModel));
+                PdfUtils.createHardwarePDF(fileFullName,getTableDataList(this.dataModel,tableData));
+
             }else
             {
-
-//                String fileFullPath=ToolUtils.getUserDir() + "\\resources\\txt\\history\\"  ;
-//                String  jsonFile = fileFullPath + this.comboBoxDeviceId.getSelectedItem().toString() + ".json";
-//                this.
-                PdfUtils.createHardwarePDF(fileFullName,getTableDataList(this.dataModelHistory));
+                PdfUtils.createHardwarePDF(fileFullName,getTableDataList(this.dataModelHistory,tableHistory));
             }
-
-            JOptionPane.showMessageDialog(this, "数据导出成功", "提示信息", 1);
+            JOptionPane.showMessageDialog(this, "Export success(file name:" + fileFullName + "):", "提示信息", 1);
         }catch(Exception e){
             e.printStackTrace();
         }

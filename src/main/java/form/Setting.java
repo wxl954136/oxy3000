@@ -30,11 +30,11 @@ public class Setting extends JDialog {
     private JButton buttonCancel;
     private JLabel settings;
     private JPanel settingPanel;
-    private JTextField txtName;
+    public JTextField txtName;
     private JComboBox comboxHour;
     private JComboBox comboxMinute;
     private JXDatePicker datepicker;
-    private JButton buttonRestore;
+//    private JButton buttonRestore;
     private JPanel datePanel;
     private SettingField settingField;
     public Map<String,String> mapOrder = new HashMap<>();
@@ -44,6 +44,8 @@ public class Setting extends JDialog {
         if(setting==null){
             setting = new Setting(settingField);
         }
+
+
         return setting;
     }
     public Setting(SettingField settingField) {
@@ -53,7 +55,7 @@ public class Setting extends JDialog {
         getRootPane().setDefaultButton(buttonOK);
 
         buttonOK.addActionListener(e -> onOK());
-        buttonRestore.addActionListener(e -> onRestore());
+//        buttonRestore.addActionListener(e -> onRestore());
         buttonCancel.addActionListener(e -> onCancel());
 
         /*
@@ -73,6 +75,8 @@ public class Setting extends JDialog {
         contentPane.setBorder(BorderFactory.createEtchedBorder() );
         initComponentStyle();
 
+
+
     }
     private void initComponentStyle()
     {
@@ -81,10 +85,10 @@ public class Setting extends JDialog {
         //panelTop.setPreferredSize(dim);
         settingPanel.setSize(dim);
         settingPanel.updateUI();
-        buttonRestore.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/restore.png"),0.3));
-        buttonRestore.setText("Restore");
-        buttonRestore.setPreferredSize(new Dimension(90, 30));
-        buttonRestore.setBorder(null);
+//        buttonRestore.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/restore.png"),0.3));
+//        buttonRestore.setText("Restore");
+//        buttonRestore.setPreferredSize(new Dimension(90, 30));
+//        buttonRestore.setBorder(null);
 
         buttonOK.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/save.png"),0.3));
         buttonOK.setText("Save");
@@ -132,6 +136,7 @@ public class Setting extends JDialog {
         try {
             Thread.sleep(1000);
         }catch(Exception e){}
+
         //设定日期
         String sdrqOrder = "setting:" + JsonRead.getInstance().getJsonTarget("sdrq","order");
         String sdrqKey =  ToolUtils.getSendOrderKey(sdrqOrder);
@@ -141,6 +146,7 @@ public class Setting extends JDialog {
         try {
             Thread.sleep(1000);
         }catch(Exception e){}
+
         //设定时间
         String sdsjOrder = "setting:" + JsonRead.getInstance().getJsonTarget("sdsj","order");
         String sdsjKey =  ToolUtils.getSendOrderKey(sdsjOrder);
@@ -160,6 +166,7 @@ public class Setting extends JDialog {
     }
 
     public void readRestoreFile() {
+        /*  功能转移至config.java
         String deviceId = Start.getInstance().resultDeviceId;
         deviceId = deviceId.replace("at+deviceid=","");
         String fileFullPath = ToolUtils.getUserDir() + "\\resources\\txt\\history";
@@ -239,6 +246,8 @@ public class Setting extends JDialog {
             }
             JOptionPane.showMessageDialog(this,"Restore data over","Information", 1);
         }
+
+         */
     }
     public void serialPortSend(String sendMsg){
         PublicParameter.commonUtils = CommonUtils.getInstance(PublicParameter.currentPort);
@@ -247,8 +256,9 @@ public class Setting extends JDialog {
 
     public static void showSettingValue(String sendMessage,String result){
 
+        /*
 //        System.out.println("x====获取sendMessage 如果是send_num则单独处理==========" + sendMessage );
-        String setnum = setting.mapOrder.get(JsonRead.getInstance().getJsonTarget("sdsbmc","order"));
+        String setnum = setting.mapOrder.get(JsonRead.getInstance().getJsonTarget("setnum","order"));
         if (sendMessage.equalsIgnoreCase(setnum))
         {
 //            处理返回数据: 设定总记录行数
@@ -260,6 +270,7 @@ public class Setting extends JDialog {
 //            处理返回数据   : 一定条数据恢复逻辑
             return ;
         }
+         */
         String sdsbmc = setting.mapOrder.get(JsonRead.getInstance().getJsonTarget("sdsbmc","order"));
         if (sendMessage.equalsIgnoreCase( sdsbmc))
         {

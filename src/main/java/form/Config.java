@@ -1,5 +1,6 @@
 package form;
 
+import bean.DataEntity;
 import bean.PublicValue;
 import common.CommonUtils;
 import utils.JsonRead;
@@ -7,7 +8,10 @@ import utils.PublicParameter;
 import utils.ToolUtils;
 
 import javax.swing.*;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Config extends JDialog {
@@ -56,6 +60,7 @@ public class Config extends JDialog {
     private JButton btnHqjlzsl;
     private JTextField txtXgjl;
     private JTextField txtHqjlzsl;
+    private JButton btnHfsyjl;
     public Map<String,String>  mapOrder = new HashMap<>();
     public static Config config;
 
@@ -90,6 +95,7 @@ public class Config extends JDialog {
         btnCxsbxlh.addActionListener(e -> onCxsbxlh());
         btnSdsbxlh.addActionListener(e -> onSdsbxlh());
         btnCxsbsyjl.addActionListener(e -> onCxsbsyjl());
+        btnHfsyjl.addActionListener(e -> onHfsyjl());
         /**
          * 1.3.12新增功能
          */
@@ -247,6 +253,115 @@ public class Config extends JDialog {
         String debugOrder = "debug:" + JsonRead.getInstance().getJsonTarget("cxsbsyjl","order");
         serialPortSend(debugOrder);
     }
+    //恢复使用记录
+    private void onHfsyjl(){
+
+        if (!ToolUtils.izVersionSupport(PublicValue.FIRMWARE)){
+            JOptionPane.showMessageDialog(null,
+                    "Firmware version must more than 1.3.12(" +PublicValue.FIRMWARE + ")"
+                    ,"Information", 1);
+            return ;
+        }
+        readRestoreFile();
+    }
+
+
+    public void readRestoreFile() {
+        String deviceId = Start.getInstance().resultDeviceId;
+        deviceId = deviceId.replace("at+deviceid=","");
+        String fileFullPath = ToolUtils.getUserDir() + "\\resources\\txt\\history";
+        File dirs = new File(fileFullPath);
+        File files[] = dirs.listFiles();
+        String searchFileName = deviceId.replaceAll("\r","");
+        searchFileName = searchFileName.replaceAll("\n","");
+        java.util.List<String> fileList = new ArrayList<>();
+        for (File file : files) {
+            if (file.isFile()) {
+                if (file.getName().indexOf(searchFileName) >= 0) {
+                    fileList.add(file.toString());
+                }
+            }
+        }
+
+        if (fileList.size() <= 0) return;
+
+        List<String> listResult = new ArrayList<String>();
+        for (String file : fileList) {
+            List<DataEntity> list = JsonRead.getJsonRecordFileToEntity(file);
+            int records = 0 ;
+            for(int i = 0  ;i< list.size();i++)
+            {
+                DataEntity data = list.get(i);
+                String result = "";
+                String del = data.getsDel();
+                //如果是删除，则忽略不还原
+                if (del.equalsIgnoreCase("01"))
+                {
+                    continue;
+                }
+                records++;
+                String num = String.format("%04d", (records));
+                result += (num + " "); //添加序号 ,注意此地是否控制位数，要测试
+                String year = data.getsDate().substring(6,data.getsDate().length()) + " ";
+                result += year;
+                String month  = data.getsDate().substring(0,2);
+                String day = data.getsDate().substring(3,5);
+                result += (month + day + " ");
+                String time = data.getsTime().replaceAll(":","") + " ";
+                result += time;
+                String volume = data.getsVolume() + " ";
+                result += volume;
+                String duration = data.getsDuration() + " ";
+                result += duration;
+//                String del = data.getsDel(); //放到最前面判断
+                result += del;
+                listResult.add(result);
+            }
+        }
+        //处理，并发一条条还原数据
+        if (listResult.size() > 0 ){
+
+            //先设置要恢复的行数----start
+//            String setnumOrder = "debug:" + JsonRead.getInstance().getJsonTarget("setnum","order");
+//            String setnumKey =  ToolUtils.getSendOrderKey(setnumOrder);
+//            //在这里取到当前设备份数据的行数
+//            setnumOrder = setnumOrder.replaceAll(setnumKey ,String.valueOf(listResult.size()));
+//
+//            System.out.println("x0====" + setnumOrder );
+//            mapOrder.put(JsonRead.getInstance().getJsonTarget("setnum","order"),setnumOrder.replaceAll("debug:",""));
+//            serialPortSend(setnumOrder);
+//            try{Thread.sleep(1000);}catch(Exception eg){ }
+            //先设置要恢复的行数----end
+
+            //准备一行行恢复数据----start
+            String xgjlOrder = "debug:" + JsonRead.getInstance().getJsonTarget("xgjl","order");
+            String xgjlKey =  ToolUtils.getSendOrderKey(xgjlOrder);
+            for(int i = 0 ;i<listResult.size() ; i++)
+            {
+
+                //先设置要恢复的行数----start
+                String setnumOrder = "debug:" + JsonRead.getInstance().getJsonTarget("setnum","order");
+                String setnumKey =  ToolUtils.getSendOrderKey(setnumOrder);
+                //在这里取到当前设备份数据的行数
+                setnumOrder = setnumOrder.replaceAll(setnumKey ,String.valueOf(listResult.size()));
+
+//                System.out.println("x0====" + setnumOrder );
+                mapOrder.put(JsonRead.getInstance().getJsonTarget("setnum","order"),setnumOrder.replaceAll("debug:",""));
+                serialPortSend(setnumOrder);
+                try{Thread.sleep(1000);}catch(Exception eg){ }
+                //先设置要恢复的行数----end
+                String order = xgjlOrder;
+                String value = listResult.get(i);
+                order = order.replaceAll(xgjlKey ,value);
+//                System.out.println("x1====" + order);
+                mapOrder.put(JsonRead.getInstance().getJsonTarget("xgjl","order"),order.replaceAll("debug:",""));
+                serialPortSend(order);
+                try{Thread.sleep(1000);}catch(Exception eg){ }
+            }
+            JOptionPane.showMessageDialog(this,"Restore data over","Information", 1);
+        }
+    }
+
     private void waitExecute()
     {
         try{

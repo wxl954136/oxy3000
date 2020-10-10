@@ -2,6 +2,7 @@ package utils;
 
 
 import bean.DataEntity;
+import bean.PublicValue;
 import com.sun.deploy.util.StringUtils;
 
 import javax.swing.*;
@@ -273,6 +274,11 @@ public class ToolUtils {
             }
         }
         return true;
+    }
+    public static String isPower()
+    {
+        if ( PublicValue.CURRENT_USER == null ) return "";
+        return PublicValue.CURRENT_USER.getLevel().trim().toUpperCase();
     }
 
 }

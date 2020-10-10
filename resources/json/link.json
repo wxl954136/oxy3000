@@ -1,11 +1,11 @@
 {
-  "version": "1.9.1",
+  "version": "1.9.2",
   "title": "OXY-30000",
   "port": "",
   "rate": "19200",
   "pdf-font": "simhei.ttf",
   "sys-font": "simhei.ttf",
-  "debug": "no",
+  "debug": "yes",
   "-------指令列表--------": "------***指令返回信息***-----------",
   "cxsbmc": {"remark":"查询设备名称","order":"at+name=?","success": "at+name=#name","error": "at+name=error" },
   "sdsbmc": {"remark":"设定设备名称","order":"at+name=#name","success": "at+name=ok","error": "at+name=error" },

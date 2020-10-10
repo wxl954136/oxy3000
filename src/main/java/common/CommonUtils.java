@@ -1,6 +1,7 @@
 package common;
 
 import form.Config;
+import form.Console;
 import form.Setting;
 import form.Start;
 import gnu.io.CommPortIdentifier;
@@ -176,15 +177,19 @@ public   class CommonUtils implements SerialPortEventListener {
                     //"不能加线程等待，否则会丢失数据-------------"
                     String result = receive();
 
+
 //                    System.out.println("1-指令:" + sendMessag + "   接收数据内容:" + result);
                     if (result.length() == 0 ) return ;
-
+                    if(sendMessag.indexOf("console:") >=0){
+                        showConsoleValue(sendMessag,result);
+                        return ;
+                    }
                     if(sendMessag.indexOf("debug:") >=0){
+//
                         showCollectValue(sendMessag,result);
                         return ;
                     }
                     if(sendMessag.indexOf("setting:") >=0){
-
                         showSettingValue(sendMessag,result);
                         return ;
                     }
@@ -236,6 +241,12 @@ public   class CommonUtils implements SerialPortEventListener {
                 break;
         }
     }
+    //和Console.java窗体文件关联
+    public void showConsoleValue(String sendMessag,String result){
+        sendMessag = sendMessag.replace("config:","");
+        sendMessag = sendMessag.replace("\r\n","");
+        Console.showConsoleValue(sendMessag,result);
+    }
     //和Config.java窗体文件关联
     public void showCollectValue(String sendMessag,String result){
         sendMessag = sendMessag.replace("debug:","");
@@ -246,6 +257,7 @@ public   class CommonUtils implements SerialPortEventListener {
     public void showSettingValue(String sendMessag,String result){
         sendMessag = sendMessag.replace("setting:","");
         sendMessag = sendMessag.replace("\r\n","");
+
         Setting.showSettingValue(sendMessag,result);
     }
     public void processRecordsData(String result){

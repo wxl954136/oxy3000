@@ -102,7 +102,7 @@ public class PdfUtils {
                         "Device id :" + rDeviceId ,
                 size8font, 15, false, true,false));
 //        firstRowContent.addCell(mircoSoftFont(Start.getInstance().deviceName.getText() , size12font, 30, true, true,false));
-        firstRowContent.addCell(mircoSoftFont("读取数据列表" , size12font, 30, true, true,false));
+        firstRowContent.addCell(mircoSoftFont("" , size12font, 30, true, true,false));
         Image img = Image.getInstance("./resources/img/logo.jpg");
         img.scalePercent(30); //依照比例缩放
         PdfPCell imgCell = new PdfPCell(img,false);
