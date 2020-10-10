@@ -1,0 +1,8 @@
+{
+"users":
+	[
+		{
+			"user":"admin","pwd":"123456","level":"High"
+		} 
+	]
+}

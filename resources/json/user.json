@@ -1,0 +1,14 @@
+{
+"users":
+	[
+		{
+			"user":"admin","pwd":"123456","level":"High"
+		} ,
+		{
+			"user":"luke","pwd":"123456","level":"Low"
+		} ,
+		{
+			"user":"King","pwd":"1","level":"Low"
+		} 
+	]
+}
