@@ -168,6 +168,7 @@ public class ToolUtils {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(new Date());
     }
+
     public static boolean isEmpty(String obj){
         if (obj == null) return true;
         if ("" == obj) return true;

@@ -293,7 +293,7 @@ public class Start extends JFrame {
         columnNames.add("Treatent");
         columnNames.add("Date");
         columnNames.add("Time");
-        columnNames.add("Volume");
+        columnNames.add("Volume(ml)");
         columnNames.add("Duration");
         columnNames.add("Del");
         columnNames.add("Operator name");
@@ -376,13 +376,20 @@ public class Start extends JFrame {
                 break;
             }
         }
+        if (resultDeviceId.indexOf("=") >=0)
+        {
+            int index = resultDeviceId.indexOf("=") + 1;
+            tabbedPane1.setTitleAt(0,"Records:"   +  resultDeviceId.substring(index));
+        }
+
+
         if (!isUsePort) {
             connectStatus.setText("Disconnected");
             return ;
         }
         connectStatus.setText("Connected");
         try{
-            //获取DeviceId
+
             CommonUtils.commUtil = null;
             PublicParameter.currentPort = currentPort;
             String sendMsg =  "start:" + ToolUtils.getFormatMsg(JsonRead.getInstance().getJsonTarget("cxsbmc","order")); //查询设备序列号
@@ -462,7 +469,7 @@ public class Start extends JFrame {
             DataEntity value = new DataEntity();
             for (int col = 0 ; col <selectDataModel.getColumnCount() ; col ++ )
             {
-                String val = selectDataModel.getValueAt(row,col) == null?"":selectDataModel.getValueAt(row,col).toString();
+                String val = selectDataModel.getValueAt(rowSelect[row],col) == null?"":selectDataModel.getValueAt(rowSelect[row],col).toString();
                 switch(col)
                 {
                     case DataColumnsUtils.COL_TREATENT :
@@ -475,10 +482,21 @@ public class Start extends JFrame {
                         value.setsTime(val);
                         break;
                     case DataColumnsUtils.COL_VOLUME:
-                        value.setsVolume(val);
+                        String s_str = String.format("%04d", Integer.parseInt(val));
+                        value.setsVolume(s_str);
+//                        value.setsVolume(val);
                         break;
                     case DataColumnsUtils.COL_DURATION:
-                        value.setsDuration(val);
+
+                        String s = val;
+                        int m_index = s.indexOf("m");
+                        String str_m_str = s.substring(0,m_index);
+                        int i_m = Integer.parseInt(str_m_str) * 60;
+                        int s_index =  m_index + 1;
+                        String  str_s_str = s.substring(s_index,s.length()-1);
+                        int i_s = Integer.parseInt(str_s_str) ;
+                        String s_result = String.format("%04d", (i_m + i_s));
+                        value.setsDuration(s_result);
                         break;
                     case DataColumnsUtils.COL_DEL:
                         value.setsDel(val);
@@ -519,10 +537,20 @@ public class Start extends JFrame {
                         value.setsTime(val);
                         break;
                     case DataColumnsUtils.COL_VOLUME:
-                        value.setsVolume(val);
+                        String s_str = String.format("%04d", Integer.parseInt(val));
+                        value.setsVolume(s_str);
                         break;
                     case DataColumnsUtils.COL_DURATION:
-                        value.setsDuration(val);
+                        String s = val;
+                        int m_index = s.indexOf("m");
+                        String str_m_str = s.substring(0,m_index);
+                        int i_m = Integer.parseInt(str_m_str) * 60;
+                        int s_index =  m_index + 1;
+                        String  str_s_str = s.substring(s_index,s.length()-1);
+                        int i_s = Integer.parseInt(str_s_str) ;
+                        String s_result = String.format("%04d", (i_m + i_s));
+                        value.setsDuration(s_result);
+
                         break;
                     case DataColumnsUtils.COL_DEL:
                         value.setsDel(val);
@@ -568,8 +596,13 @@ public class Start extends JFrame {
             data.setsTreatent(String.valueOf(dataModel.getRowCount()+1));
             data.setsDate(_day + "/" + _month + "/" + _year);
             data.setsTime(_hour + ":" + _sec);
-            data.setsVolume(_use1 + _use2);
-            data.setsDuration(_time1 + _time2);
+//            data.setsVolume(_use1 + _use2 + "-----");
+            data.setsVolume(String.valueOf(Integer.parseInt(_use1 + _use2)));
+            int i_time = Integer.parseInt(_time1 + _time2);
+            int i_m = i_time/60;
+            int i_s = i_time%60;
+//            data.setsDuration(_time1 + _time2);
+            data.setsDuration(i_m + "m" +  i_s + "s");
             data.setsDel(_del);
             data.setsRoom("");
             data.setsContent("");
@@ -587,8 +620,6 @@ public class Start extends JFrame {
 
     private void  showConsole()
     {
-
-
 
         if (ToolUtils.isPower().equalsIgnoreCase("HIGH"))
         {
@@ -716,6 +747,12 @@ public class Start extends JFrame {
             List<DataEntity>  list =JsonRead.getJsonRecordFileToEntity(file);
             for(DataEntity data : list)
             {
+                data.setsVolume(String.valueOf(Integer.parseInt(data.getsVolume())));
+                int i_time = Integer.parseInt(data.getsDuration().trim());
+                int i_m = i_time/60;
+                int i_s = i_time%60;
+                data.setsDuration(i_m + "m" +  i_s + "s");
+
                 data.setsTreatent(String.valueOf(dataModelHistory.getRowCount() + 1));
                 dataModelHistory.addRow(DataColumnsUtils.getListContent(data));
                 dataModelHistory.fireTableDataChanged();
@@ -809,6 +846,17 @@ public class Start extends JFrame {
 //        }else if(file.isFile()){
 //            System.out.println("java-文件:"+file.getAbsolutePath());
 //        }
+
+
+
+        int dialogButton = JOptionPane.showConfirmDialog (null, "Are you sure export file?","Information",JOptionPane.YES_NO_OPTION);
+
+        if(dialogButton != JOptionPane.YES_OPTION) {
+            return ;
+//            System.exit(0);}else {remove(dialogButton);
+        }
+
+
         File file  = new File(ToolUtils.getUserDir());
         Date currentDate = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -818,11 +866,27 @@ public class Start extends JFrame {
         try{
             if (this.tabbedPane1.getSelectedIndex() == 0)
             {
-                PdfUtils.createHardwarePDF(fileFullName,getTableDataList(this.dataModel,tableData));
 
+                int rowSelect[] = tableData.getSelectedRows();
+                if (rowSelect.length > 0 )
+                {
+                    PdfUtils.createHardwarePDF(fileFullName,getTableDataList(this.dataModel,tableData));
+                }else
+                {
+                    PdfUtils.createHardwarePDF(fileFullName,getTableDataList(this.dataModel));
+                }
             }else
             {
-                PdfUtils.createHardwarePDF(fileFullName,getTableDataList(this.dataModelHistory,tableHistory));
+                int rowSelect[] = tableHistory.getSelectedRows();
+                if (rowSelect.length > 0 )
+                {
+                    PdfUtils.createHardwarePDF(fileFullName,getTableDataList(this.dataModelHistory,tableHistory));
+                }else
+                {
+                    PdfUtils.createHardwarePDF(fileFullName,getTableDataList(this.dataModelHistory));
+
+                }
+
             }
             JOptionPane.showMessageDialog(this, "Export success(file name:" + fileFullName + "):", "提示信息", 1);
         }catch(Exception e){

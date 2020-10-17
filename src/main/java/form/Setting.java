@@ -11,7 +11,6 @@ import bean.PublicValue;
 import bean.SettingField;
 import common.CommonUtils;
 import org.jdesktop.swingx.JXDatePicker;
-import utils.DataColumnsUtils;
 import utils.JsonRead;
 import utils.PublicParameter;
 import utils.ToolUtils;
@@ -34,7 +33,8 @@ public class Setting extends JDialog {
     private JComboBox comboxHour;
     private JComboBox comboxMinute;
     private JXDatePicker datepicker;
-//    private JButton buttonRestore;
+    private JButton buttonRestore;
+
     private JPanel datePanel;
     private SettingField settingField;
     public Map<String,String> mapOrder = new HashMap<>();
@@ -55,7 +55,7 @@ public class Setting extends JDialog {
         getRootPane().setDefaultButton(buttonOK);
 
         buttonOK.addActionListener(e -> onOK());
-//        buttonRestore.addActionListener(e -> onRestore());
+        buttonRestore.addActionListener(e -> onRestore());
         buttonCancel.addActionListener(e -> onCancel());
 
         /*
@@ -85,10 +85,10 @@ public class Setting extends JDialog {
         //panelTop.setPreferredSize(dim);
         settingPanel.setSize(dim);
         settingPanel.updateUI();
-//        buttonRestore.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/restore.png"),0.3));
-//        buttonRestore.setText("Restore");
-//        buttonRestore.setPreferredSize(new Dimension(90, 30));
-//        buttonRestore.setBorder(null);
+        buttonRestore.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/restore.png"),0.3));
+        buttonRestore.setText("Restore");
+        buttonRestore.setPreferredSize(new Dimension(90, 30));
+        buttonRestore.setBorder(null);
 
         buttonOK.setIcon( ToolUtils.changeImage(new ImageIcon("./resources/img/save.png"),0.3));
         buttonOK.setText("Save");
@@ -166,7 +166,18 @@ public class Setting extends JDialog {
     }
 
     public void readRestoreFile() {
-        /*  功能转移至config.java
+        String pwd = ToolUtils.getCurrentDate("hhmmss");
+        Long enpwd = Long.parseLong(pwd) * 2;
+        String senpwd = String.valueOf(enpwd).substring(0,6);
+//        System.out.println("密码是====" + senpwd);
+        String ienpwd = JOptionPane.showInputDialog( "Please input password(Auth code:" + pwd + ")" );
+        if (!senpwd.equalsIgnoreCase(ienpwd)) {
+            JOptionPane.showMessageDialog(null,
+                    "Password error!"
+                    ,"Information", 1);
+            return ;
+        }
+
         String deviceId = Start.getInstance().resultDeviceId;
         deviceId = deviceId.replace("at+deviceid=","");
         String fileFullPath = ToolUtils.getUserDir() + "\\resources\\txt\\history";
@@ -218,36 +229,52 @@ public class Setting extends JDialog {
                 listResult.add(result);
             }
         }
+
         //处理，并发一条条还原数据
         if (listResult.size() > 0 ){
 
             //先设置要恢复的行数----start
-            String setnumOrder = "setting:" + JsonRead.getInstance().getJsonTarget("setnum","order");
-            String setnumKey =  ToolUtils.getSendOrderKey(setnumOrder);
-            //在这里取到当前设备份数据的行数
-            setnumOrder = setnumOrder.replaceAll(setnumKey ,String.valueOf(listResult.size()));
-
-            mapOrder.put(JsonRead.getInstance().getJsonTarget("setnum","order"),setnumOrder.replaceAll("setting:",""));
-            serialPortSend(setnumOrder);
-            try{Thread.sleep(1000);}catch(Exception eg){ }
+//            String setnumOrder = "debug:" + JsonRead.getInstance().getJsonTarget("setnum","order");
+//            String setnumKey =  ToolUtils.getSendOrderKey(setnumOrder);
+//            //在这里取到当前设备份数据的行数
+//            setnumOrder = setnumOrder.replaceAll(setnumKey ,String.valueOf(listResult.size()));
+//
+//            System.out.println("x0====" + setnumOrder );
+//            mapOrder.put(JsonRead.getInstance().getJsonTarget("setnum","order"),setnumOrder.replaceAll("debug:",""));
+//            serialPortSend(setnumOrder);
+//            try{Thread.sleep(1000);}catch(Exception eg){ }
             //先设置要恢复的行数----end
+
+            //先设置要恢复的行数----start
+            String setnumOrder = "setting:" + JsonRead.getInstance().getJsonTarget("setnum", "order");
+            String setnumKey = ToolUtils.getSendOrderKey(setnumOrder);
+            setnumOrder = setnumOrder.replaceAll(setnumKey, String.valueOf(listResult.size()));
+            mapOrder.put(JsonRead.getInstance().getJsonTarget("setnum", "order"), setnumOrder.replaceAll("setting:", ""));
+            serialPortSend(setnumOrder);
+            try {
+                Thread.sleep(500);
+            } catch (Exception eg) {
+            }
+
+            //先设置要恢复的行数----end
+
 
             //准备一行行恢复数据----start
             String xgjlOrder = "setting:" + JsonRead.getInstance().getJsonTarget("xgjl","order");
             String xgjlKey =  ToolUtils.getSendOrderKey(xgjlOrder);
             for(int i = 0 ;i<listResult.size() ; i++)
             {
+
                 String order = xgjlOrder;
                 String value = listResult.get(i);
                 order = order.replaceAll(xgjlKey ,value);
                 mapOrder.put(JsonRead.getInstance().getJsonTarget("xgjl","order"),order.replaceAll("setting:",""));
                 serialPortSend(order);
-                try{Thread.sleep(1000);}catch(Exception eg){ }
+                try{Thread.sleep(400);}catch(Exception eg){ }
             }
             JOptionPane.showMessageDialog(this,"Restore data over","Information", 1);
         }
 
-         */
     }
     public void serialPortSend(String sendMsg){
         PublicParameter.commonUtils = CommonUtils.getInstance(PublicParameter.currentPort);

@@ -176,8 +176,13 @@ prcessTableModelData 注意start.java中参照
             data.setsTreatent(value.get("treatment").toString());
             data.setsDate(value.get("date").toString());
             data.setsTime(value.get("time").toString());
+//            data.setsVolume(String.valueOf(Integer.parseInt(value.get("volume").toString())));
             data.setsVolume(value.get("volume").toString());
             data.setsDuration(value.get("duration").toString());
+//            int i_time = Integer.parseInt(value.get("duration").toString().trim());
+//            int i_m = i_time/60;
+//            int i_s = i_time%60;
+//            data.setsDuration(i_m + "m" +  i_s + "s");
             data.setsDel(value.containsKey("del")?value.get("del").toString():"");
             data.setsOperatorName(value.get("operatorname").toString());
             data.setsRoom(value.get("room").toString());

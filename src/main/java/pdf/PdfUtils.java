@@ -129,14 +129,14 @@ public class PdfUtils {
         tableContent.setWidthPercentage(90);  //表格的宽度，百分比缩放
         tableContent.setWidths(tableWidth);
         //tableContent.setTotalWidth(new float[]{0.3f, 0.2f, 0.2f,0.2f,0.2f,0.4f,0.4f,0.4f});
-        tableContent.addCell(mircoSoftFont(" Treatent", size12font, 20, true, true, true));
-        tableContent.addCell(mircoSoftFont(" Date", size12font, 20, true, true, true));
-        tableContent.addCell(mircoSoftFont(" Time", size12font, 20, true, true, true));
-        tableContent.addCell(mircoSoftFont(" Volume", size12font, 20, true, true, true));
-        tableContent.addCell(mircoSoftFont(" Duration", size12font, 20, true, true, true));
-        tableContent.addCell(mircoSoftFont(" Operator Name", size12font, 20, true, true, true));
-        tableContent.addCell(mircoSoftFont(" Room", size12font, 20, true, true, true));
-        tableContent.addCell(mircoSoftFont(" Content", size12font, 20, true, true, true));
+        tableContent.addCell(mircoSoftFont(" Treatent", size8font, 20, true, true, true));
+        tableContent.addCell(mircoSoftFont(" Date", size8font, 20, true, true, true));
+        tableContent.addCell(mircoSoftFont(" Time", size8font, 20, true, true, true));
+        tableContent.addCell(mircoSoftFont(" Volume[ml]", size8font, 20, true, true, true));
+        tableContent.addCell(mircoSoftFont(" Duration", size8font, 20, true, true, true));
+        tableContent.addCell(mircoSoftFont(" Operator Name", size8font, 20, true, true, true));
+        tableContent.addCell(mircoSoftFont(" Room", size8font, 20, true, true, true));
+        tableContent.addCell(mircoSoftFont(" Content", size8font, 20, true, true, true));
         //document.add(tableHead);
 
         //添加表明细
@@ -157,11 +157,16 @@ public class PdfUtils {
                         tableContent.addCell(mircoSoftFont(value.getsTime(), size8font, 20, true, true, false));
                         break;
                     case DataColumnsUtils.COL_VOLUME:
-                        tableContent.addCell(mircoSoftFont(value.getsVolume(), size8font, 20, true, true, false));
+                        String s_volume = String.valueOf(Integer.parseInt(value.getsVolume()));
+
+                        tableContent.addCell(mircoSoftFont(s_volume, size8font, 20, true, true, false));
                         break;
                     case DataColumnsUtils.COL_DURATION:
-                        tableContent.addCell(mircoSoftFont(value.getsDuration(), size8font, 20, true, true, false));
-
+                        int i_time = Integer.parseInt(value.getsDuration());
+                        int i_m = i_time/60;
+                        int i_s = i_time%60;
+                        String s_dur = i_m + "m" +  i_s + "s";
+                        tableContent.addCell(mircoSoftFont(s_dur, size8font, 20, true, true, false));
                         break;
                     case DataColumnsUtils.COL_OPERATORNAME:
                         tableContent.addCell(mircoSoftFont(value.getsOperatorName(), size8font, 20, true, true, false));
