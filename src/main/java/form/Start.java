@@ -821,8 +821,8 @@ public class Start extends JFrame {
      */
     private void exportPDF()
     {
-        //|| dataModel.getRowCount() <=0
-        if (!PublicParameter.isReadRecordOver  ){
+
+        if (!PublicParameter.isReadRecordOver  &&  this.tabbedPane1.getSelectedIndex() == 0){
             if (PublicParameter.currentPort.equalsIgnoreCase("NONE"))
             {
                 JOptionPane.showMessageDialog(this, "串口信息连接异常!", "提示信息", 1);
