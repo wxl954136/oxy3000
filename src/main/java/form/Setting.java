@@ -215,8 +215,9 @@ public class Setting extends JDialog {
                 result += (num + " "); //添加序号 ,注意此地是否控制位数，要测试
                 String year = data.getsDate().substring(6,data.getsDate().length()) + " ";
                 result += year;
-                String month  = data.getsDate().substring(0,2);
-                String day = data.getsDate().substring(3,5);
+                //20201124
+                String day  = data.getsDate().substring(0,2);
+                String month = data.getsDate().substring(3,5);
                 result += (month + day + " ");
                 String time = data.getsTime().replaceAll(":","") + " ";
                 result += time;

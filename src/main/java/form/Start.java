@@ -591,10 +591,9 @@ public class Start extends JFrame {
             {
                 _del = receive.substring(25,27); //删除标记,1.3.12版本时增加了del删除功能和标记
             }
-
             DataEntity data = new DataEntity();
             data.setsTreatent(String.valueOf(dataModel.getRowCount()+1));
-            data.setsDate(_day + "/" + _month + "/" + _year);
+            data.setsDate(_day + "/" + _month + "/" + _year);  //20201124日期为日月年
             data.setsTime(_hour + ":" + _sec);
 //            data.setsVolume(_use1 + _use2 + "-----");
             data.setsVolume(String.valueOf(Integer.parseInt(_use1 + _use2)));
