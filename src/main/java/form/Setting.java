@@ -167,17 +167,19 @@ public class Setting extends JDialog {
 
     public void readRestoreFile() {
         String pwd = ToolUtils.getCurrentDate("hhmmss");
+        pwd = "045502";
         Long enpwd = Long.parseLong(pwd) * 2;
-        String senpwd = String.valueOf(enpwd).substring(0,6);
+//        String senpwd = String.valueOf(enpwd).substring(0,6);
+        String senpwd = String.valueOf(enpwd);
 //        System.out.println("密码是====" + senpwd);
         String ienpwd = JOptionPane.showInputDialog( "Please input password(Auth code:" + pwd + ")" );
-        if (!senpwd.equalsIgnoreCase(ienpwd)) {
+        System.out.println("1====" + ienpwd + "====" + senpwd);
+        if (!senpwd.trim().equalsIgnoreCase(ienpwd.trim())) {
             JOptionPane.showMessageDialog(null,
                     "Password error!"
                     ,"Information", 1);
             return ;
         }
-
         String deviceId = Start.getInstance().resultDeviceId;
         deviceId = deviceId.replace("at+deviceid=","");
         String fileFullPath = ToolUtils.getUserDir() + "\\resources\\txt\\history";
@@ -265,7 +267,6 @@ public class Setting extends JDialog {
             String xgjlKey =  ToolUtils.getSendOrderKey(xgjlOrder);
             for(int i = 0 ;i<listResult.size() ; i++)
             {
-
                 String order = xgjlOrder;
                 String value = listResult.get(i);
                 order = order.replaceAll(xgjlKey ,value);

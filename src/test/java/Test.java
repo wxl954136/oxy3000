@@ -1,4 +1,6 @@
 
+import utils.ToolUtils;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -14,6 +16,12 @@ public class Test extends JFrame {
     public static void main(String args[]) {
         boolean x = true;
         System.out.println(x);
+        String pwd = ToolUtils.getCurrentDate("hhmmss");
+        System.out.println("0===" + pwd);
+        Long enpwd = Long.parseLong(pwd) * 2;
+        System.out.println("1====" + enpwd);
+        String senpwd = String.valueOf(enpwd).substring(0);
+
 //        String str = String.format("%04d", 100);
 //        System.out.println(str);
 //
